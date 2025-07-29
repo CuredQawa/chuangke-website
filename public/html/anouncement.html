@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>公告栏-创客社</title>
+    <link rel="stylesheet" href="../css/bulma.min.css">
+    <link rel="stylesheet" href="../css/font/iconfont.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/anouncement.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <!-- <script src="../js/transition.js"></script> -->
+    <script src="../js/theme-change.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- 这是过渡动画 -->
+    
+
+    <!-- 以下为导航栏 -->
+    <script src="../js/load-header.js"></script>
+    
+
+    <!-- 新增公告按钮 -->
+    <button id="add-announcement-btn" class="button is-success is-medium is-fixed-bottom-right is-perple">
+      <span class="icon">
+        <i class="iconfont icon-xitongguanli"></i>
+      </span>
+    </button>
+
+    <!-- 弹窗 Modal -->
+    <div id="add-announcement-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">新增公告</p>
+          <button class="delete close-btn" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <form id="add-announcement-form">
+            <div class="field">
+              <label class="label">标题</label>
+              <div class="control">
+                <input class="input" type="text" id="title" name="title" placeholder="请输入公告标题" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">正文内容</label>
+              <div class="control">
+                <textarea class="textarea" id="content" name="content" placeholder="请输入公告正文" required></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">管理员账号</label>
+              <div class="control">
+                <input class="input" type="text" id="administrator" name="administrator" placeholder="请输入管理员账号" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">密钥</label>
+              <div class="control">
+                <input class="input" type="password" id="key" name="key" placeholder="请输入密钥" required>
+              </div>
+            </div>
+            
+            <br></br>
+
+            <div class="control">
+              <button type="submit" class="button is-perple is-fullwidth">提交公告</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      // 显示弹窗
+      document.getElementById("add-announcement-btn").addEventListener("click", function () {
+        document.getElementById("add-announcement-modal").classList.add("is-active");
+      });
+    
+      // 关闭弹窗 - 点击 ×
+      document.querySelector(".close-btn").addEventListener("click", function () {
+        document.getElementById("add-announcement-modal").classList.remove("is-active");
+      });
+    
+      // 关闭弹窗 - 点击遮罩层
+      document.querySelector(".modal-background").addEventListener("click", function () {
+        document.getElementById("add-announcement-modal").classList.remove("is-active");
+      });
+    
+      // 表单提交
+      document.getElementById("add-announcement-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+    
+        const formData = {
+          title: document.getElementById("title").value,
+          content: document.getElementById("content").value,
+          administrator: document.getElementById("administrator").value,
+          key: document.getElementById("key").value
+        };
+    
+        fetch('/api/announcements', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('公告已成功添加！');
+              location.reload(); // 刷新页面显示新公告
+            } else {
+              alert(`错误：${data.message}`);
+            }
+          })
+          .catch(error => {
+            console.error('提交公告时出错:', error);
+            alert('提交公告时发生错误，请稍后再试。');
+          });
+      });
+    </script>
+
+
+    <section class="section">
+
+      <div id="div1" class="frontboard has-text-centered">
+
+        <h1 class="title btitle">创客社公告栏</h1>
+
+        <p>本周五<font class="strong">正常上课</font>，请勿缺席</p>
+
+        <div id="announcements-container" class="container"></div>
+
+        <div class="containner ccontainner has-text-right">
+
+          <p class="subtitle">————湛江一中创客社</p>
+          
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("announcements-container");
+
+    fetch('/api/announcements')
+      .then(response => response.json())
+      .then(data => {
+        // 反转数组实现倒序显示
+        data.reverse().forEach(announcement => {
+          const formattedContent = announcement.content.replace(/\n/g, '<br>');
+          const div = document.createElement('div');
+          div.className = 'announcement';
+          div.innerHTML = `
+            <p class="titlep">${announcement.title}</p>
+            <p class="contentp">${formattedContent}</p>
+            <p class="administrator">by ${announcement.administrator}</p>
+            <p class="date">${announcement.date}</p>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(error => {
+        console.error('加载公告时出错:', error);
+        container.innerText = '无法加载公告信息';
+      });
+    });
+
+    </script>
+
+
+    <!-- 以上为主要内容，以下为页脚 -->
+    <script src="../js/load-footer.js"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,132 @@
+.section{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+.frontboard{
+    width: 60%;
+    min-width: 600px;
+    height: auto;
+    padding:  40px 20px 0;
+}
+.container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 5%;
+}
+.ccontainner{
+    margin-top: 15vh;
+    margin-bottom: 5vh;
+    padding: 20px;
+}
+.announcement{
+    margin-bottom: 20px;
+    border-radius: 20px;
+    padding: 10px 10%;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.titlep{
+    font-size: 25px;
+    font-weight: 900;
+}
+.contentp{
+    margin: 20px 0;
+    font-weight: 600;
+}
+
+
+
+/* 固定右下角按钮 */
+.is-fixed-bottom-right {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+.icon-xitongguanli{
+    color: aliceblue;
+}
+/* 弹窗自定义样式 */
+.modal.is-custom .modal-card {
+    max-width: 500px;
+    width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.modal.is-custom .modal-card-head {
+    background-color: rgb(166, 84, 241);
+    color: white;
+}
+.modal.is-custom .modal-card-title {
+    font-weight: bold;
+}
+.is-perple{
+    background-color: rgb(166, 84, 241);
+    color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+[data-theme=light],
+.theme-light {
+    /* .frontboard{ */
+        /* background-color: rgb(201, 201, 201); */
+        /* background-color: aliceblue; */
+        /* box-shadow: 5px 0 5px rgb(150, 150, 150), -5px 0 5px rgb(150, 150, 150); */
+    /* } */
+    .announcement{
+        background-color: rgb(230, 230, 230);
+        border-right: 4px solid gray;
+        border-bottom: 4px solid gray;
+    }
+    .titlep{
+        color: rgb(0, 0, 0);
+        font-weight: 300;
+    }
+    .contentp{
+        color: rgb(0, 0, 0);
+    }
+    .administrator{
+        color: rgb(0, 0, 0);
+    }
+    .date{
+        color: rgb(0, 0, 0);
+    }
+    .section{
+        background-color: aliceblue;
+    }
+}
+
+[data-theme=dark],
+.theme-dark {
+    /* .frontboard{
+        background-color: rgb(31, 31, 31);
+    } */
+    .announcement{
+        background-color: rgb(51, 51, 51);
+    }
+    .titlep{
+        color: aliceblue;
+        font-weight: 200;
+    }
+    .contentp{
+        color: aliceblue;
+    }
+    .administrator{
+        color: aliceblue;
+    }
+    .date{
+        color: aliceblue;
+    }
+}

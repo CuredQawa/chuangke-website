@@ -1,0 +1,295 @@
+
+
+
+
+.header{
+    position: relative;
+    height: 15vh;
+    min-height: 100px;
+    align-items: center;
+    display: flex;
+    padding: 20px;
+    border-radius: 0 0 8vh 8vh;
+    border-bottom: 4px solid rgb(166, 84, 241);
+    z-index: 20;
+}
+.icon-rocket{
+    font-size: 40px;
+    color: rgb(166, 84, 241);
+}
+.s1{
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0 5px;
+}
+.navbar-menu{
+    margin-left: 30px;
+}
+header a{
+    margin-left: auto;
+}
+.main-icon-a{
+    min-width: 330px;
+}
+section{
+    min-height: 60vh;
+}
+
+
+/* 过渡层的样式 */
+.transition{
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 10000;
+    pointer-events: none;
+}
+.transition-row{
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    display: flex;
+}
+.transition-row.row-1 .blockt{
+    margin: 0;
+    padding: 0;
+    transform-origin: top;
+}
+.transition-row.row-2 .blockt{
+    margin: 0;
+    padding: 0;
+    transform-origin: bottom;
+}
+.blockt{
+    margin: 0;
+    padding: 0;
+    flex: 1 0 20%;
+    background-color: rgb(166, 84, 241);
+    backface-visibility: hidden;
+    transform: scaleY(1);
+    /* will-change: transform; */
+}
+/* #746df8 */
+
+
+
+
+
+
+
+
+
+/* 以下 是 导航栏内的入口样式 */
+/* 即 item 的样式 */
+.navbar-item{
+    border-radius: 20px;
+}
+.navbar-item:hover{
+    transform: scale(1.1);
+}
+.icon-gonggao09{
+    color: rgb(185, 185, 185);
+}
+.a-anounce:hover{
+    background-color: rgba(185, 185, 185, 0.2);
+}
+.icon-a-lujing37238{
+    color: rgb(88, 169, 240);
+}
+.a-rule:hover{
+    background-color: rgb(88, 169, 240, 0.2);
+}
+.icon-xunzhang{
+    color: rgb(223, 226, 58);
+}
+.a-prize:hover{
+    background-color: rgb(223, 226, 58, 0.2);
+}
+.icon-terminal-box-fill{
+    color: rgb(252, 144, 144);
+}
+.a-kaifa:hover{
+    background-color: rgb(252, 144, 144, 0.2);
+}
+.icon-renminbi1{
+    color: rgb(85, 241, 202);
+}
+.a-serve:hover{
+    background-color: rgb(85, 241, 202, 0.2);
+}
+.icon-huodong{
+    color: rgb(240, 137, 40);
+}
+.a-activity:hover{
+    background-color: rgb(240, 137, 40, 0.2);
+}
+.icon-name{
+    font-weight: 700;
+}
+.navbar-link{
+    border-radius: 20px;
+}
+
+
+/* 主题和语言切换按钮的样式 */
+.theme-switch{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+}
+.icon-ai250{
+    font-size: xx-large;
+    font-weight: 500;
+}
+.icon-yueliang{
+    font-size: x-large;
+    font-weight: 500;
+}
+.lang-switch{
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+
+
+
+
+/* 汉堡的样式 */
+.burgerdiv{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.burgerbutton{
+    width: 90%;
+    border-radius: 15px;
+}
+#burgerfloat{
+    margin-left: auto;
+}
+
+
+
+/* 字体样式 */
+.btitle{
+    font-size: 40px;
+}
+.strong{
+    color: rgb(166, 84, 241);
+    font-weight: 700;
+}
+.sa{
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 深浅转换（以下） */
+
+  
+[data-theme=light],
+.theme-light {
+    .icon-name{
+        color: black;
+    }
+    .s1 {
+        color: black;
+    }
+    .is-risecolor{
+        background-color: #ffffff;
+    }
+    .burgerbutton{
+        background-color: rgba(212, 210, 203, 0.301);
+    }
+
+    .a-anounce:hover{
+        background-color: rgba(170, 170, 170, 0.4);
+    }
+    .a-rule:hover{
+        background-color: rgb(88, 169, 240, 0.4);
+    }
+    .a-prize:hover{
+        background-color: rgb(223, 226, 58, 0.4);
+    }
+    .a-kaifa:hover{
+        background-color: rgb(252, 144, 144, 0.4);
+    }
+    .a-serve:hover{
+        background-color: rgb(85, 241, 202, 0.4);
+    }
+    .a-activity:hover{
+        background-color: rgb(240, 137, 40, 0.4);
+    }
+
+    .footerlink-button{
+        background-color: rgb(191, 124, 253);
+    }
+    .ga{
+        color: #6e6e6e;
+        font-weight: 500;
+    }
+    .ga:hover{
+        color: rgb(144, 35, 247);
+        font-weight: 700;
+    }
+    
+}
+
+/* 浅色模式（上） */
+/* 深色模式（下） */
+
+  
+[data-theme=dark],
+.theme-dark {
+    .icon-name{
+        color: aliceblue;
+    }
+    .s1{
+        color: aliceblue;
+    }
+    .is-risecolor{
+        background-color: #202020;
+    }
+    .theme-switch{
+        background-color: #202020;
+    }
+    .theme-switch:hover{
+        background-color: #7c7c7c46;
+    }
+    .footerlink-button{
+        background-color: rgb(166, 84, 241);
+    }
+    .ga{
+        color: #aaaaaa;
+        font-weight: 500;
+    }
+    .ga:hover{
+        color: rgb(166, 84, 241);
+        font-weight: 700;
+    }
+    
+    
+
+}

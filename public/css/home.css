@@ -1,0 +1,248 @@
+
+.header{
+    border-radius: 0;
+}
+.footer{
+    border-radius: 0;
+}
+
+
+/* 全局 */
+.bold-title {
+font-size: 4rem;
+text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+font-weight: 700;
+}
+.slide-up {
+opacity: 0;
+transform: translateY(20px);
+animation: slideUp 1s forwards;
+}
+
+@keyframes slideUp {
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+}
+
+.pulse {
+animation: pulsate 2s infinite;
+color: #4facfe;
+font-size: 5rem;
+text-shadow: 0 0 20px rgba(79, 172, 254, 0.6);
+}
+@keyframes pulsate {
+0% { transform: scale(1); }
+50% { transform: scale(1.1); }
+100% { transform: scale(1); }
+}
+
+/* 视差英雄区 */
+.parallax-hero {
+background-attachment: fixed;
+background-position: center;
+background-size: cover;
+position: relative;
+}
+#parallax1 {
+background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+}
+#parallax2 {
+background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+}
+
+/* 半透明深色背景区 */
+.has-bg-dark {
+background-color: #121212;
+color: #eee;
+}
+.has-bg-light {
+background-color: #f9f9f9;
+}
+
+/* 圆角大图 */
+.rounded-lg {
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.shadow-xl {
+box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* 卡片悬停抬升 */
+.hover-lift {
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+transform: translateY(-10px);
+box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+/* 按钮呼吸动效 */
+.hover-pulse:hover {
+animation: pulseButton 1.5s infinite;
+}
+@keyframes pulseButton {
+0% { transform: scale(1); }
+50% { transform: scale(1.05); }
+100% { transform: scale(1); }
+}
+
+/* 跳转按钮 */
+.jump-btn {
+background: linear-gradient(90deg, #4facfe, #00f2fe);
+color: white;
+padding: 1rem 2.5rem;
+font-weight: bold;
+transition: all 0.3s ease;
+}
+.jump-btn:hover {
+transform: translateY(-3px);
+box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
+}
+
+/* 视差图文块 */
+.parallax-section {
+height: 60vh;
+background-attachment: fixed;
+background-position: center;
+background-size: cover;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.parallax-overlay {
+    width: 200%;
+    height: 25vh;
+    background-color: #000000b2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* transform: rotateZ(20deg); */
+    /* transform: scaleX(2); */
+    /* border-radius: 20px; */
+}
+
+/* 照片墙 */
+.photo-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 12px;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    margin-top: 2rem;
+}
+.photo-item {
+    border-radius: 12px;
+    /* height: 20vh; */
+    /* margin: 6px; */
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.4s ease;
+}
+.photo-item:hover {
+    transform: scale(1.1);
+}
+.zoom-in {
+opacity: 0;
+transform: scale(0.8);
+}
+.zoom-in.loaded {
+opacity: 1;
+transform: scale(1);
+}
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+
+/* 动画类 */
+.fade-in-left {
+opacity: 0;
+transform: translateX(-30px);
+}
+.fade-in-right {
+opacity: 0;
+transform: translateX(30px);
+}
+.animated {
+transition: all 1s ease;
+}
+
+
+.is-perple{
+    background-color: rgb(166, 84, 241);
+}
+.button-a{
+    color: rgb(255, 255, 255);
+}
+
+.is-title{
+    font-size: 8vw;
+}
+.is-subtitle{
+    font-size: 2vw;
+}
+.button-A{
+    border: none;
+}
+.button-A:hover{
+    transform: scale(1.1);
+}
+.is-4-h2{
+    font-size: 5vw;
+    font-weight: 500;
+}
+.section-4{
+    height: 90vh;
+}
+.section-5{
+    min-height: 100vh;
+}
+
+
+
+
+
+/* 深浅转换（以下） */
+
+  
+[data-theme=light],
+.theme-light {
+    .section-4{
+        background-image: url('../images/home-use/lab-view.jpg');
+    }
+    #parallax1{
+        background-image: url(../images/home-use/bg-coding-light.png);
+    }
+    #parallax2{
+        background-image: url(../images/home-use/snowmoutain.jpg);
+    }
+    .is-title{
+        background-color: #1212129c;
+    }
+    .is-subtitle{
+        background-color: #1212129c;
+    }
+}
+
+/* 浅色模式（上） */
+/* 深色模式（下） */
+
+  
+[data-theme=dark],
+.theme-dark {
+    .section-4{
+        background-image: url('../images/home-use/lab-view.jpg');
+    }
+    #parallax1{
+        background-image: url(../images/home-use/bg-code-grid.jpg);
+    }
+    #parallax2{
+        background-image: url(../images/home-use/bg-stars.jpg);
+    }
+}

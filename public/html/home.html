@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>湛江一中创客社首页</title>
+    <link rel="stylesheet" href="../css/bulma.min.css">
+    <link rel="stylesheet" href="../css/font/iconfont.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <!-- <script src="../js/transition.js"></script> -->
+    <script src="../js/theme-change.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js "></script>
+  </head>
+
+  <body>
+
+    <!-- 这是过渡动画 -->
+    
+    
+    <!-- 这是导航栏 -->
+    <script src="../js/load-header.js"></script>
+
+
+    
+    <main class="homepage">
+
+      <!-- ==================== 第一屏：英雄区域（带视差背景）==================== -->
+      <section class="hero is-fullheight parallax-hero" id="parallax1">
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <!-- <span class="iconfont icon-rocket main-icon pulse"></span> -->
+            <h1 class="title has-text-white bold-title is-title">湛江一中创客社</h1>
+            <p class="subtitle has-text-white slide-up is-subtitle">用代码创造未来 · 用热爱点燃灵感</p>
+            <br><br><br><br><br><br>
+            <button class="button button-A is-large is-perple"><a class="button-a" href="#projects">查看我们的项目</a></button>
+          </div>
+        </div>
+      </section>
+    
+    
+      <!-- ==================== 第二屏：社团简介（修复版）==================== -->
+      <section class="section is-risecolor" style="min-height: 600px; padding: 5rem 0;">
+        <div class="container">
+          <div class="columns is-vcentered is-desktop">
+
+            <!-- 左侧文字 -->
+            <div class="column is-6">
+              <h2 class="title is-2 has-text-weight-bold">
+                我们是谁？
+              </h2>
+              <p class="content is-large">
+                湛江一中创客社成立于2020年(?)，是由一群热爱编程、硬件、人工智能与创意设计的学生和老师组成的技术型社团。
+              </p>
+              <p class="content">
+                我们相信：<strong style="color: rgb(166, 84, 241);font-size: large;">每一个想法都值得被实现</strong>。在这里，没有“不可能”，只有“还没开始”。
+                从第一行 Python 到编撰社团网站，从 Arduino 小车到 AI 图像识别项目，我们一步步把想象变成现实。
+              </p>
+              <div class="tags mt-4">
+                <span class="tag is-success is-large">Python</span>
+                <span class="tag is-success is-large">Web 开发</span>
+                <span class="tag is-info is-large">物联网</span>
+                <span class="tag is-warning is-large">AI & ML</span>
+                <span class="tag is-danger is-large">3D建模和打印</span>
+                <span class="tag is-danger is-large">激光切割</span>
+              </div>
+            </div>
+
+            <!-- 右侧图片 -->
+            <div class="column is-6 has-text-centered">
+              <!-- 使用占位图测试是否是图片路径问题 -->
+              <figure class="image rounded-lg shadow-xl" style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <!-- 🔽 临时使用在线图片测试 -->
+                <img 
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=entropy&q=80" 
+                  alt="学生编程场景" 
+                  style="width: 100%; height: auto; display: block;"
+                  onerror="this.src=' https://via.placeholder.com/600x400?text=图片加载失败';"
+                >
+              </figure>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    
+    
+      <!-- ==================== 第三屏：项目作品墙（多图网格）==================== -->
+      <!-- <section class="section is-risecolor id="projects">
+        <div class="container">
+          <h2 class="title is-2 has-text-centered has-text-white mb-6">我们的项目成果</h2>
+          <div class="columns is-multiline is-variable is-4">
+    
+            <div class="column is-4 project-item" data-img="../images/project-smartbell.jpg">
+              <div class="card hover-lift">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="../images/project-smartbell.jpg" alt="智能上课铃系统">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-5">智能上课铃系统</p>
+                  <p class="content">基于 ESP32 和 NTP 时间同步，自动控制教学楼电铃，支持节假日模式与临时调课。</p>
+                </div>
+              </div>
+            </div>
+    
+            <div class="column is-4 project-item" data-img="../images/project-libraryapp.jpg">
+              <div class="card hover-lift">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="../images/project-libraryapp.jpg" alt="图书管理系统">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-5">校园图书助手</p>
+                  <p class="content">微信小程序 + 后台管理，支持扫码借书、归还提醒、热门推荐功能。</p>
+                </div>
+              </div>
+            </div>
+    
+            <div class="column is-4 project-item" data-img="../images/project-robot.jpg">
+              <div class="card hover-lift">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="../images/project-robot.jpg" alt="机器人小车">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-5">AI 足球机器人</p>
+                  <p class="content">参加青少年机器人大赛获奖作品，搭载OpenCV进行球体识别，自主导航踢球。</p>
+                </div>
+              </div>
+            </div>
+    
+            <div class="column is-4 project-item" data-img="../images/project-website.jpg">
+              <div class="card hover-lift">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="../images/project-website.jpg" alt="社团官网">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-5">本社团网站</p>
+                  <p class="content">由社员从零开发，使用 HTML/CSS/JS + Bulma 框架构建，支持暗黑主题切换。</p>
+                </div>
+              </div>
+            </div>
+    
+            <div class="column is-4 project-item" data-img="../images/project-dataviz.jpg">
+              <div class="card hover-lift">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="../images/project-dataviz.jpg" alt="数据可视化大屏">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-5">校园数据大屏</p>
+                  <p class="content">实时展示全校社团活动、考试安排、天气信息，用于学校大厅电子屏展示。</p>
+                </div>
+              </div>
+            </div>
+    
+            <div class="column is-4 project-item" data-img="../images/project-drone.jpg">
+              <div class="card hover-lift">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img src="../images/project-drone.jpg" alt="无人机航拍测绘">
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <p class="title is-5">无人机测绘系统</p>
+                  <p class="content">利用树莓派+摄像头实现校园航拍建模，生成3D地图用于地理课教学。</p>
+                </div>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+      </section> -->
+    
+    
+      <!-- ==================== 第四屏：视差图层（可替换为视频或其他）==================== -->
+      <section class="parallax-section section-4">
+        <div class="parallax-overlay">
+          <h2 class="has-text-white has-text-centered is-4-h2">
+            在这里，每个点子都有机会发光
+          </h2>
+        </div>
+      </section>
+    
+    
+      <!-- ==================== 第五屏：活动剪影（照片墙）==================== -->
+      <section class="section section-5">
+        <div class="container">
+          <h2 class="title is-2 has-text-centered">活动剪影 · 记录我们的成长</h2>
+          <div class="photo-wall">
+            <img src="../images/home-use/event1.jpg" alt="社团招新" class="photo-item">
+            <img src="../images/home-use/event2.jpg" alt="社团招新" class="photo-item">
+            <img src="../images/home-use/event3.jpg" alt="社团活动" class="photo-item">
+            <img src="../images/home-use/event4.jpg" alt="社团活动" class="photo-item">
+            <img src="../images/home-use/event5.jpg" alt="3D打印" class="photo-item">
+            <img src="../images/home-use/event6.jpg" alt="激光切割" class="photo-item">
+            <img src="../images/home-use/event7.jpg" alt="红五月" class="photo-item">
+            
+          </div>
+        </div>
+      </section>
+    
+    
+      <!-- ==================== 第六屏：加入我们 ==================== -->
+      <section class="hero is-medium parallax-hero" id="parallax2">
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <h2 class="title is-2 has-text-white">想和我们一起改变世界吗？</h2>
+            <p class="subtitle is-4 has-text-light">无论你是编程小白还是技术大神，只要你有热情，我们都欢迎！</p>
+            <div class="buttons is-centered mt-6">
+              <a href="join.html" class="button is-success is-large is-rounded hover-pulse is-perple">
+                <!-- <span class="icon"><i class="iconfont icon-huiyuan"></i></span> -->
+                <span>立即报名加入</span>
+              </a>
+              <a href="awards.html" class="button is-outlined is-light is-large is-rounded ml-4">
+                查看获奖记录
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 初始化 GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+    
+        // 英雄标题动画
+        gsap.from(".bold-title", { opacity: 0, y: 30, duration: 1.2, ease: "power2.out" });
+        gsap.from(".slide-up", { opacity: 0, y: 20, duration: 1, delay: 0.4, ease: "power2.out" });
+    
+        // 简介左右滑入
+        gsap.from(".fade-in-left", {
+          scrollTrigger: ".fade-in-left",
+          opacity: 1,
+          x: -50,
+          duration: 1,
+          ease: "power2.out"
+        });
+        gsap.from(".fade-in-right", {
+          scrollTrigger: ".fade-in-right",
+          opacity: 0,
+          x: 50,
+          duration: 1,
+          ease: "power2.out"
+        });
+    
+        // 项目卡片逐个出现
+        gsap.utils.toArray('.project-item').forEach((item, i) => {
+          gsap.from(item, {
+            scrollTrigger: item,
+            opacity: 0,
+            y: 40,
+            duration: 0.8,
+            delay: i * 0.15,
+            ease: "back.out(1.1)"
+          });
+        });
+    
+        // 照片墙逐个淡入放大
+        const photos = document.querySelectorAll('.photo-item');
+        photos.forEach((img, i) => {
+          ScrollTrigger.create({
+            trigger: img,
+            start: "top 80%",
+            onEnter: () => {
+              img.classList.add('loaded');
+            },
+            once: true
+          });
+        });
+      });
+    </script>
+    <!-- 锚点跳转修复脚本（备用） -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const links = document.querySelectorAll('a[href^="#"]');
+        
+        links.forEach(link => {
+          if (link.getAttribute("href") === "#") return;
+
+          link.addEventListener("click", function (e) {
+            const targetId = this.getAttribute("href");
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+              e.preventDefault();
+              const offsetTop = targetElement.offsetTop - 70; // 70px 是导航栏高度
+
+              window.scrollTo({
+                top: offsetTop,
+                behavior: "smooth"
+              });
+            }
+          });
+        });
+      });
+    </script>
+    
+
+
+
+
+
+
+
+    <!-- 以上为主要内容，以下为页脚 -->
+    <script src="../js/load-footer.js"></script>
+    
+    
+  </body>
+</html>
