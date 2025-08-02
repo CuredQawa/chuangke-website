@@ -1,44 +1,14 @@
 [
   {
-    "title": "开学通知",
-    "content": "2025年春季学期将于3月1日正式开始。",
-    "administrator": "Disappear_Blank",
-    "date": "2025-02-20"
-  },
-  {
-    "title": "图书馆闭馆通知",
-    "content": "本周五下午图书馆将进行设备维护，暂停开放。",
-    "administrator": "Disappear_Blank",
-    "date": "2025-02-21"
-  },
-  {
-    "title": "校园招聘会",
-    "content": "本周六将在学生活动中心举办大型校园招聘会。<br>不需要文件",
-    "administrator": "Disappear_Blank",
-    "date": "2025-02-22"
-  },
-  {
     "title": "测试",
     "content": "这是一段测试文字\n换行测试",
-    "administrator": "Disappear",
+    "administrator": "Disappear_Blank",
     "date": "2025-07-13"
   },
   {
     "title": "创客社招新通告",
-    "content": "sdfg",
-    "administrator": "Disappear",
-    "date": "2025-07-24"
-  },
-  {
-    "title": "创客社招新通告",
-    "content": "<a class=\"strong sa\" href=\"./join.html>加入我们</a>",
-    "administrator": "Disappear",
-    "date": "2025-07-24"
-  },
-  {
-    "title": "创客社招新通告",
-    "content": "？",
-    "administrator": "Disappear",
+    "content": "社团暑假期间已经可以招新了，创客社社外交流群为261205414",
+    "administrator": "Disappear_Blank",
     "date": "2025-07-24"
   }
 ]

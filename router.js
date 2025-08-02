@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const marked = require('marked');
 
 // 首页路由：返回主页 HTML 文件
 router.get('/', (req, res) => {
@@ -84,5 +85,38 @@ router.post('/api/announcements', (req, res) => {
         }
     });
 });
+
+// 获取文档内容 API
+router.get('/api/docs/*path', (req, res) => {
+
+    // 构建 .md 文件的完整路径
+    const filePath = path.join(__dirname, './public/documents', req.params.path + '.md');
+
+    //空值判断
+    if (!req.params.path) {
+        return res.status(400).send('请指定文档路径');
+    }
+
+    // 读取文件
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            if (err.code === 'ENOENT') {
+                return res.status(404).send('文档不存在');
+            } else {
+                console.error('文件读取错误:', err);
+                return res.status(500).send('服务器内部错误');
+            }
+        }
+
+        // 返回 Markdown 内容
+        // res.type('text/plain; charset=utf-8');
+        // res.send(data);
+        // 转化为 HTML 再返回
+        res.header('Content-Type', 'text/html; charset=utf-8');
+        res.send(marked.parse(data)); // 将 Markdown 转为 HTML
+    });
+});
+
+
 
 module.exports = router;

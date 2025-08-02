@@ -27,16 +27,136 @@
 
 
 
-    <section class="section">
-        <div class="container has-text-centered">
-          <h1 class="title">
-            文档功能正在开发中
-          </h1>
-          <p class="subtitle">
-            敬请期待
-          </p>
+    
+    <br>
+    <section class="container">
+      <h1 class="title has-text-centered">📘 文档中心</h1>
+  
+      <div class="columns">
+  
+        <!-- 左侧菜单栏 -->
+        <div class="column is-one-third menu-column">
+          <aside class="menu">
+            <p class="menu-label">文档列表</p>
+            <ul class="menu-list" id="doc-menu">
+              <!-- 菜单项将由 JS 动态生成 -->
+              <li><a>加载中...</a></li>
+            </ul>
+          </aside>
         </div>
+  
+        <!-- 右侧内容区 -->
+        <div class="column">
+          <div id="content">
+            <p>请选择左侧文档以查看内容。</p>
+          </div>
+        </div>
+  
+      </div>
     </section>
+  
+    <!-- 引入 marked.js（用于渲染 Markdown） -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+    <script>
+      // === 配置：文档列表（你可以改为从服务器获取）===
+      const docs = [
+        { path: 'intro', title: '欢迎指南' },
+        { path: 'installation', title: '安装说明' },
+        { path: 'api-guide', title: 'API 使用指南' },
+        { path: 'troubleshooting', title: '常见问题' },
+        // 添加更多文档路径
+      ];
+  
+      // 当前选中的文档
+      let currentDoc = null;
+  
+      // === 提取 Markdown 中的标题（# 标题）===
+      function extractTitle(mdText) {
+        const match = mdText.trim().match(/^#\s+(.+)$/m);
+        return match ? match[1].trim() : '未命名文档';
+      }
+  
+      // === 加载文档内容并显示 ===
+      async function loadDocument(path, index) {
+        const menuItems = document.querySelectorAll('#doc-menu a');
+        menuItems.forEach(item => item.classList.remove('is-active'));
+        menuItems[index]?.classList.add('is-active');
+  
+        try {
+          const response = await fetch(`/api/docs/${path}`);
+          if (!response.ok) throw new Error('文档不存在');
+  
+          const mdText = await response.text();
+          const title = extractTitle(mdText);
+  
+          // 更新页面标题
+          document.getElementById('content').innerHTML = `
+            <h1 class="title is-3">${title}</h1>
+            <div class="content">
+              ${marked.parse(mdText)}
+            </div>
+          `;
+  
+          // 更新浏览器地址栏
+          history.pushState(null, '', `?doc=${encodeURIComponent(path)}`);
+          currentDoc = path;
+        } catch (err) {
+          document.getElementById('content').innerHTML = `
+            <div class="notification is-danger">
+              <strong>加载失败：</strong> ${err.message}
+            </div>
+          `;
+        }
+      }
+  
+      // === 生成左侧菜单 ===
+      function renderMenu() {
+        const menuEl = document.getElementById('doc-menu');
+        menuEl.innerHTML = '';
+  
+        docs.forEach((doc, index) => {
+          const a = document.createElement('a');
+          a.href = '#';
+          a.textContent = doc.title || '加载中...';
+  
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadDocument(doc.path, index);
+          });
+  
+          const li = document.createElement('li');
+          li.appendChild(a);
+          menuEl.appendChild(li);
+        });
+  
+        // 默认加载第一个
+        if (docs.length > 0) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const doc = urlParams.get('doc');
+          const index = docs.findIndex(d => d.path === doc);
+          const loadIndex = index >= 0 ? index : 0;
+          loadDocument(docs[loadIndex].path, loadIndex);
+        }
+      }
+  
+      // === 页面加载完成时初始化 ===
+      document.addEventListener('DOMContentLoaded', () => {
+        renderMenu();
+  
+        // 监听浏览器前进/后退
+        window.addEventListener('popstate', () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const doc = urlParams.get('doc');
+          const index = docs.findIndex(d => d.path === doc);
+          if (index >= 0 && doc !== currentDoc) {
+            loadDocument(doc, index);
+          }
+        });
+      });
+    </script>
+    
+    
 
 
 
