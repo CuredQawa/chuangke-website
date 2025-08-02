@@ -119,4 +119,54 @@ router.get('/api/docs/*path', (req, res) => {
 
 
 
+
+// API：获取所有文档列表（自动扫描 + 提取标题）
+router.get('/api/docs-list', (req, res) => {
+    // 指向 public/documents 目录
+    const docsDir = path.join(__dirname, '.', 'public', 'documents');
+
+    fs.readdir(docsDir, (err, files) => {
+        if (err) {
+            console.error('读取文档目录失败:', err);
+            return res.status(500).json([]);
+        }
+
+        // 过滤出 .md 文件
+        const markdownFiles = files.filter(file => 
+            path.extname(file).toLowerCase() === '.md'
+        );
+
+        const result = [];
+
+        markdownFiles.forEach(file => {
+            const filePath = path.join(docsDir, file);
+            const fileNameWithoutExt = path.basename(file, '.md');
+
+            // 读取文件内容，尝试提取 # 标题
+            try {
+                const content = fs.readFileSync(filePath, 'utf8');
+                const titleMatch = content.trim().match(/^#\s+(.+)$/m);
+                const title = titleMatch ? titleMatch[1].trim() : fileNameWithoutExt;
+
+                result.push({
+                    path: fileNameWithoutExt,  // 用于请求 /api/docs/xxx
+                    title: title               // 显示在菜单上
+                });
+            } catch (readErr) {
+                // 如果读取失败，只用文件名
+                result.push({
+                    path: fileNameWithoutExt,
+                    title: fileNameWithoutExt
+                });
+            }
+        });
+
+        // 按标题排序（可选）
+        result.sort((a, b) => a.title.localeCompare(b.title));
+
+        res.json(result);
+    });
+});
+
+
 module.exports = router;
