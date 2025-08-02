@@ -1,0 +1,43 @@
+body {
+    font-family: 'Noto Serif SC', 'Segoe UI', sans-serif;
+}
+
+.container {
+    margin-top: 2rem;
+}
+
+.menu-list a {
+    padding: 0.5em 0.8em;
+    border-radius: 4px;
+    margin-bottom: 0.2em;
+    /* color: #444; */
+}
+
+.menu-list a:hover {
+    background-color: #3f3f3f59;
+}
+
+.menu-list a.is-active {
+    background-color: rgb(166, 84, 241);
+    color: white;
+    font-weight: 600;
+}
+
+#content {
+    padding: 1.5rem;
+    /* background-color: white; */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    min-height: 80vh;
+}
+
+/* 响应式：小屏下菜单在上方 */
+@media (max-width: 768px) {
+    .columns {
+      flex-direction: column;
+    }
+    .menu-column {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+}
