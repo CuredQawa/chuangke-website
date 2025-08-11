@@ -21,8 +21,8 @@ app.use(express.static('public'));
 //     res.send(__dirname + "/index.html")
 // })
 
+const port = 3000
 
-
-app.listen(3000,function(){
-    console.log("服务器运行在3000端口上");
+app.listen(port,function(){
+    console.log(`服务器运行在:${port}端口上`);
 })
