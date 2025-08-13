@@ -1,18 +1,18 @@
-const express = require('express');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { marked } from 'marked';
+
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const marked = require('marked');
 
 // 首页路由：返回主页 HTML 文件
-router.get('/', (req, res) => {
-    // res.sendFile(path.join(__dirname, 'public', 'html', 'home.html'));
-    res.redirect(301,'/html/home.html')
+router.get('/', (_, res) => {
+    res.redirect(301, '/html/home.html')
 });
 
 // 获取所有公告 API
-router.get('/api/announcements', (req, res) => {
-    const filePath = path.join(__dirname, 'data', 'announcements.json');
+router.get('/api/announcements', (_, res) => {
+    const filePath = path.join(process.cwd(), 'data', 'announcements.json');
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('无法读取公告数据');
@@ -24,8 +24,8 @@ router.get('/api/announcements', (req, res) => {
 
 // 新增公告 API
 router.post('/api/announcements', (req, res) => {
-    const filePathAnnouncements = path.join(__dirname, 'data', 'announcements.json');
-    const filePathAdmins = path.join(__dirname, 'data', 'admins.json');
+    const filePathAnnouncements = path.join(process.cwd(), 'data', 'announcements.json');
+    const filePathAdmins = path.join(process.cwd(), 'data', 'admins.json');
 
     let body = '';
     req.on('data', chunk => {
@@ -90,7 +90,7 @@ router.post('/api/announcements', (req, res) => {
 router.get('/api/docs/*path', (req, res) => {
 
     // 构建 .md 文件的完整路径
-    const filePath = path.join(__dirname, './public/documents', req.params.path + '.md');
+    const filePath = path.join(process.cwd(), 'public', 'documents', req.params.path + '.md');
 
     //空值判断
     if (!req.params.path) {
@@ -117,13 +117,10 @@ router.get('/api/docs/*path', (req, res) => {
     });
 });
 
-
-
-
 // API：获取所有文档列表（自动扫描 + 提取标题）
-router.get('/api/docs-list', (req, res) => {
+router.get('/api/docs-list', (_, res) => {
     // 指向 public/documents 目录
-    const docsDir = path.join(__dirname, '.', 'public', 'documents');
+    const docsDir = path.join(process.cwd(), 'public', 'documents');
 
     fs.readdir(docsDir, (err, files) => {
         if (err) {
@@ -132,7 +129,7 @@ router.get('/api/docs-list', (req, res) => {
         }
 
         // 过滤出 .md 文件
-        const markdownFiles = files.filter(file => 
+        const markdownFiles = files.filter(file =>
             path.extname(file).toLowerCase() === '.md'
         );
 
@@ -168,5 +165,4 @@ router.get('/api/docs-list', (req, res) => {
     });
 });
 
-
-module.exports = router;
+export default router;
