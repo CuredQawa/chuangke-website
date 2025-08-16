@@ -139,6 +139,7 @@
         <p>本周五<font class="strong">正常上课</font>，请勿缺席</p>
 
         <div id="announcements-container" class="container"></div>
+        <!-- 输出的目标容器，所有的公告会插入到这里 -->
 
         <div class="containner ccontainner has-text-right">
 
@@ -153,31 +154,31 @@
 
     <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("announcements-container");
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("announcements-container"); //定位用于输出所有公告的容器
 
-    fetch('/api/announcements')
-      .then(response => response.json())
-      .then(data => {
-        // 反转数组实现倒序显示
-        data.reverse().forEach(announcement => {
-          const formattedContent = announcement.content.replace(/\n/g, '<br>');
-          const div = document.createElement('div');
-          div.className = 'announcement';
-          div.innerHTML = `
-            <p class="titlep">${announcement.title}</p>
-            <p class="contentp">${formattedContent}</p>
-            <p class="administrator">by ${announcement.administrator}</p>
-            <p class="date">${announcement.date}</p>
-          `;
-          container.appendChild(div);
-        });
-      })
-      .catch(error => {
-        console.error('加载公告时出错:', error);
-        container.innerText = '无法加载公告信息';
+        fetch('/api/announcements')
+          .then(response => response.json()) //将原始返回数据response（不能直接用）解析成json格式，作为data往下传
+          .then(data => {
+            // 反转数组实现倒序显示
+            data.reverse().forEach(announcement => {
+              const formattedContent = announcement.content.replace(/\n/g, '<br>');
+              const div = document.createElement('div');
+              div.className = 'announcement';
+              div.innerHTML = `
+                <p class="titlep">${announcement.title}</p>
+                <p class="contentp">${formattedContent}</p>
+                <p class="administrator">by ${announcement.administrator}</p>
+                <p class="date">${announcement.date}</p>
+              `;
+              container.appendChild(div);
+            });
+          })
+          .catch(error => {
+            console.error('加载公告时出错:', error);
+            container.innerText = '无法加载公告信息';
+          });
       });
-    });
 
     </script>
 
