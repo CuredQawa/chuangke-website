@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.6] - 2025-08-16
+
+### Changed
+
+- 存储亮暗色数据使用的方法由localStorage改为sessionStorage
+- 微操footer.html
+
 ## [1.7.5] - 2025-08-13
 
 ### Added
@@ -17,19 +24,3 @@
 ### Fixed
 
 - 修复 CommonJS 导致的错误
-
-
-## [1.7.6] - 2025-08-16
-
-### Added
-
-- Nothing
-
-### Changed
-
-- 存储亮暗色数据使用的方法由localStorage改为sessionStorage
-- 微操footer.html
-
-### Fixed
-
-- Nothing

@@ -1,169 +1,166 @@
 <!DOCTYPE html>
 <html lang="zh" data-theme="">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>文档-创客社</title>
-    <link rel="stylesheet" href="../css/bulma.min.css">
-    <link rel="stylesheet" href="../css/font/iconfont.css">
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/document.css">
-    <link rel="stylesheet" href="../css/footer.css">
-    <!-- <script src="../js/transition.js"></script> -->
-    <script src="../js/theme-change.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  </head>
 
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>文档-创客社</title>
+  <link rel="stylesheet" href="../css/bulma.min.css">
+  <link rel="stylesheet" href="../css/font/iconfont.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/document.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <!-- <script src="../js/transition.js"></script> -->
+  <script src="../js/theme-change.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
 
-    <!-- 这是过渡动画 -->
-    
-    <!-- 以下为导航栏 -->
-    <script src="../js/load-header.js"></script>
+<body>
 
+  <!-- 这是过渡动画 -->
 
-
+  <!-- 以下为导航栏 -->
+  <script src="../js/load-header.js"></script>
 
 
 
 
 
-    
-    
-    <br>
-    <section class="container">
-      <h1 class="title has-text-centered">📘 文档中心</h1>
-  
-      <div class="columns">
-  
-        <!-- 左侧菜单栏 -->
-        <div class="column is-one-third menu-column">
-          <aside class="menu">
-            <p class="menu-label">文档列表</p>
-            <ul class="menu-list" id="doc-menu">
-              <li><a>加载中...</a></li>
-            </ul>
-          </aside>
-        </div>
-  
-        <!-- 右侧内容区 -->
-        <div class="column">
-          <div id="content">
-            <p>请选择左侧文档以查看内容。</p>
-          </div>
-        </div>
-  
+
+
+
+
+
+  <br>
+  <section class="container">
+    <h1 class="title has-text-centered">📘 文档中心</h1>
+
+    <div class="columns">
+
+      <!-- 左侧菜单栏 -->
+      <div class="column is-one-third menu-column">
+        <aside class="menu">
+          <p class="menu-label">文档列表</p>
+          <ul class="menu-list" id="doc-menu">
+            <li><a>加载中...</a></li>
+          </ul>
+        </aside>
       </div>
-    </section>
-    <br>
-    <br>
-    <br>
-    <br>
-  
-    <!-- 引入 marked.js -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
-  
-    <script>
-      let docs = []; // 存储从服务器获取的文档列表
-      let currentDoc = null;
-  
-      // 提取 Markdown 中的标题（# 标题）
-      function extractTitle(mdText) {
-        const match = mdText.trim().match(/^#\s+(.+)$/m);
-        return match ? match[1].trim() : '未命名文档';
-      }
-  
-      // 加载并显示文档内容
-      async function loadDocument(path, index) {
-        const menuItems = document.querySelectorAll('#doc-menu a');
-        menuItems.forEach(item => item.classList.remove('is-active'));
-        if (menuItems[index]) menuItems[index].classList.add('is-active');
-  
-        try {
-          const response = await fetch(`/api/docs/${path}`);
-          if (!response.ok) throw new Error('文档不存在');
-  
-          const mdText = await response.text();
-          const title = extractTitle(mdText);
-  
-          document.getElementById('content').innerHTML = `
+
+      <!-- 右侧内容区 -->
+      <div class="column">
+        <div id="content">
+          <p>请选择左侧文档以查看内容。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- 引入 marked.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
+
+  <script>
+    let docs = []; // 存储从服务器获取的文档列表
+    let currentDoc = null;
+
+    // 提取 Markdown 中的标题（# 标题）
+    function extractTitle(mdText) {
+      const match = mdText.trim().match(/^#\s+(.+)$/m);
+      return match ? match[1].trim() : '未命名文档';
+    }
+
+    // 加载并显示文档内容
+    async function loadDocument(path, index) {
+      const menuItems = document.querySelectorAll('#doc-menu a');
+      menuItems.forEach(item => item.classList.remove('is-active'));
+      if (menuItems[index]) menuItems[index].classList.add('is-active');
+
+      try {
+        const response = await fetch(`/api/docs/${path}`);
+        if (!response.ok) throw new Error('文档不存在');
+
+        const mdText = await response.text();
+        const title = extractTitle(mdText);
+
+        document.getElementById('content').innerHTML = `
             <div class="content">
               ${marked.parse(mdText)}
             </div>
           `;
-  
-          history.pushState(null, '', `?doc=${encodeURIComponent(path)}`);
-          currentDoc = path;
-        } catch (err) {
-          document.getElementById('content').innerHTML = `
+
+        history.pushState(null, '', `?doc=${encodeURIComponent(path)}`);
+        currentDoc = path;
+      } catch (err) {
+        document.getElementById('content').innerHTML = `
             <div class="notification is-danger">
               <strong>加载失败：</strong> ${err.message}
             </div>
           `;
-        }
       }
-  
-      // 获取文档列表并生成菜单
-      async function fetchDocsList() {
-        try {
-          const response = await fetch('/api/docs-list');
-          docs = await response.json();
-  
-          if (docs.length === 0) {
-            document.getElementById('doc-menu').innerHTML = '<li><a>暂无文档</a></li>';
-            return;
-          }
-  
-          const menuEl = document.getElementById('doc-menu');
-          menuEl.innerHTML = '';
-  
-          docs.forEach((doc, index) => {
-            const a = document.createElement('a');
-            a.href = '#';
-            a.textContent = doc.title;
-  
-            a.addEventListener('click', (e) => {
-              e.preventDefault();
-              loadDocument(doc.path, index);
-            });
-  
-            const li = document.createElement('li');
-            li.appendChild(a);
-            menuEl.appendChild(li);
+    }
+
+    // 获取文档列表并生成菜单
+    async function fetchDocsList() {
+      try {
+        const response = await fetch('/api/docs');
+        docs = await response.json();
+
+        if (docs.length === 0) {
+          document.getElementById('doc-menu').innerHTML = '<li><a>暂无文档</a></li>';
+          return;
+        }
+
+        const menuEl = document.getElementById('doc-menu');
+        menuEl.innerHTML = '';
+
+        docs.forEach((doc, index) => {
+          const a = document.createElement('a');
+          a.href = '#';
+          a.textContent = doc.title;
+
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadDocument(doc.path, index);
           });
-  
-          // 加载默认文档
-          const urlParams = new URLSearchParams(window.location.search);
-          const docName = urlParams.get('doc');
-          const index = docs.findIndex(d => d.path === docName);
-          const loadIndex = index >= 0 ? index : 0;
-          loadDocument(docs[loadIndex].path, loadIndex);
-        } catch (err) {
-          console.error('获取文档列表失败:', err);
-          document.getElementById('doc-menu').innerHTML = '<li><a>加载失败</a></li>';
-        }
-      }
-  
-      // 页面加载完成后初始化
-      document.addEventListener('DOMContentLoaded', () => {
-        fetchDocsList();
-  
-        // 支持浏览器前进后退
-        window.addEventListener('popstate', () => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const doc = urlParams.get('doc');
-          const index = docs.findIndex(d => d.path === doc);
-          if (index >= 0 && doc !== currentDoc) {
-            loadDocument(doc, index);
-          }
+
+          const li = document.createElement('li');
+          li.appendChild(a);
+          menuEl.appendChild(li);
         });
+
+        // 加载默认文档
+        const urlParams = new URLSearchParams(window.location.search);
+        const docName = urlParams.get('doc');
+        const index = docs.findIndex(d => d.path === docName);
+        const loadIndex = index >= 0 ? index : 0;
+        loadDocument(docs[loadIndex].path, loadIndex);
+      } catch (err) {
+        console.error('获取文档列表失败:', err);
+        document.getElementById('doc-menu').innerHTML = '<li><a>加载失败</a></li>';
+      }
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchDocsList();
+
+      // 支持浏览器前进后退
+      window.addEventListener('popstate', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const doc = urlParams.get('doc');
+        const index = docs.findIndex(d => d.path === doc);
+        if (index >= 0 && doc !== currentDoc) {
+          loadDocument(doc, index);
+        }
       });
-    </script>
-    
-    
-    
-    
+    });
+  </script>
 
 
 
@@ -172,8 +169,13 @@
 
 
 
-    <!-- 以上为主要内容，以下为页脚 -->
-    <script src="../js/load-footer.js"></script>
-    
-  </body>
+
+
+
+
+  <!-- 以上为主要内容，以下为页脚 -->
+  <script src="../js/load-footer.js"></script>
+
+</body>
+
 </html>
