@@ -1,12 +1,12 @@
 import { setTokenCookie, signToken } from '../middleware/auth.js';
 import bcrypt from 'bcrypt';
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
     const { email, password } = req.body;
 
     // 验证请求参数
     if (!email || !password) {
-        return res.status(400).json({ message: '用户名和密码是必需的' });
+        return res.status(400).json({ message: '邮箱和密码是必需的' });
     }
 
     const db = req.db;
@@ -39,20 +39,11 @@ const login = async (req, res) => {
         }
     }
 
-    return res.status(401).json({ message: '用户名或密码错误' });
+    return res.status(401).json({ message: '邮箱或密码错误' });
 };
 
 // 登出功能
-const logout = (req, res) => {
+export const logout = (req, res) => {
     res.clearCookie('token');
     return res.json({ message: '登出成功' });
 };
-
-// 获取当前用户信息
-const getCurrentUser = (req, res) => {
-    res.json({
-        user: req.user
-    });
-};
-
-export { login, logout, getCurrentUser };

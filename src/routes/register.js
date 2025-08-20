@@ -1,14 +1,18 @@
 import bcrypt from 'bcrypt';
 import { setTokenCookie, signToken } from '../middleware/auth.js';
 import validator from 'validator';
+import { BCRYPT_SALT_ROUNDS } from '../constants.js';
 
 export const register = async (req, res) => {
-    const { username, password, email, graduationYear } = req.body;
+    const { username, password, email, graduation_year, role } = req.body;
     const db = req.db;
 
     // 验证请求参数
-    if (!username || !password || !email || !graduationYear) {
-        return res.status(400).json({ message: '所有字段都是必需的' });
+    const requiredFields = { username, password, email, graduation_year, role };
+    for (const [key, value] of Object.entries(requiredFields)) {
+        if (!value || (typeof value === 'string' && value.trim() === '')) {
+            return res.status(400).json({ message: `${key} 不能为空` });
+        }
     }
 
     // 邮箱格式验证
@@ -27,13 +31,12 @@ export const register = async (req, res) => {
     }
 
     // 密码加密
-    const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
     // 插入新用户
     const result = await db.query(
         'INSERT INTO accounts (username, password, graduation_year, email, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email',
-        [username, hashedPassword, graduationYear, email, 'user'] // 默认角色为 user
+        [username, hashedPassword, graduation_year, email, role]
     );
 
     const newUser = result.rows[0];
