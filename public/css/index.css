@@ -1,42 +1,6 @@
-.header {
-    position: relative;
-    height: 15vh;
-    min-height: 100px;
-    align-items: center;
-    display: flex;
-    padding: 20px;
-    border-radius: 0 0 8vh 8vh;
-    border-bottom: 4px solid rgb(166, 84, 241);
-    z-index: 20;
-}
-
-.icon-rocket {
-    font-size: 40px;
-    color: rgb(166, 84, 241);
-}
-
-.s1 {
-    font-size: 40px;
-    font-weight: 700;
-    margin: 0 5px;
-}
-
-.navbar-menu {
-    margin-left: 30px;
-}
-
-header a {
-    margin-left: auto;
-}
-
-.main-icon-a {
-    min-width: 330px;
-}
-
 section {
     min-height: 60vh;
 }
-
 
 /* 过渡层的样式 */
 .transition {
@@ -82,9 +46,8 @@ section {
     /* will-change: transform; */
 }
 
-/* 以下 是 导航栏内的入口样式 */
-/* 即 item 的样式 */
-.navbar-item {
+
+/* .navbar-item {
     border-radius: 20px;
 }
 
@@ -146,52 +109,8 @@ section {
 
 .navbar-link {
     border-radius: 20px;
-}
+} */
 
-/* 主题和语言切换按钮的样式 */
-.theme-switch {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-}
-
-/* 为整个页面添加主题切换过渡动画 */
-* {
-    transition: all 0.3s ease !important;
-}
-
-.icon-ai250 {
-    font-size: xx-large;
-    font-weight: 500;
-}
-
-.icon-yueliang {
-    font-size: x-large;
-    font-weight: 500;
-}
-
-.lang-switch {
-    width: 40px;
-    height: 40px;
-    border: none;
-}
-
-/* 汉堡的样式 */
-.burgerdiv {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    text-align: center;
-}
-
-.burgerbutton {
-    width: 90%;
-    border-radius: 15px;
-}
-
-#burgerfloat {
-    margin-left: auto;
-}
 
 /* 字体样式 */
 .btitle {
@@ -206,6 +125,15 @@ section {
 .sa {
     text-decoration: underline;
 }
+
+
+
+
+
+
+
+
+
 
 /* 深浅转换 */
 [data-theme=light],

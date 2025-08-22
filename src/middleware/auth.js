@@ -1,18 +1,22 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
+// 检查环境变量
 dotenv.config();
 if (!process.env.JWT_SECRET) {
     throw new Error('请设置环境变量 JWT_SECRET');
 }
 
 const auth = (req, res, role, next) => {
+    // 从cookie获取token
     let token = req.cookies.token;
 
     if (!token) {
+        // 用户(cookie里面)没有提供token,即无法识别用户
         return res.status(401).json({ message: '未授权' });
     }
 
+    // jwt.verify() 验证 token 是否有效（签名是否正确、是否过期）
     jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: '令牌无效' });

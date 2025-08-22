@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 - 湛江一中创客社</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="../css/font/iconfont.css" />
+  <link rel="stylesheet" href="../css/index.css" />
+  <!-- <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+    .login-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .icon-rocket {
+      font-size: 3rem;
+      color: #a654f1;
+    }
+
+    .field {
+      margin-bottom: 1.5rem;
+    }
+
+    .button.is-login {
+      background: #a654f1;
+      color: white;
+      width: 100%;
+    }
+  </style> -->
+</head>
+
+<body>
+  <section class="login-container">
+    <div class="login-box">
+      <div class="has-text-centered mb-5">
+        <span class="iconfont icon-rocket"></span>
+        <h2 class="title is-3">登录创客社系统</h2>
+      </div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label class="label">邮箱</label>
+          <div class="control">
+            <input class="input" type="email" id="email" placeholder="请输入邮箱" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">密码</label>
+          <div class="control">
+            <input class="input" type="password" id="password" placeholder="请输入密码" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <button type="submit" class="button is-large is-login">登录</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnTo = urlParams.get('returnTo') || '../home.html';
+        window.location.href = decodeURIComponent(returnTo);
+      } else {
+        const data = await res.json();
+        alert(data.message || '登录失败');
+      }
+    });
+  </script>
+</body>
+
+</html>

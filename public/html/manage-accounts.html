@@ -1,0 +1,236 @@
+<!-- html/manage-accounts.html -->
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>管理账户 - 湛江一中创客社</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css" />
+  <!-- <link rel="stylesheet" href="../css/font/iconfont.css" /> -->
+  <!-- <link rel="stylesheet" href="../css/index.css" /> -->
+  <!-- <style>
+    .container { padding: 2rem; }
+    .account-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    .role-tag {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75em;
+      font-weight: bold;
+    }
+    .role-tag.user { background: #4CAF50; color: white; }
+    .role-tag.admin { background: #F44336; color: white; }
+    .form-group { margin-bottom: 1rem; }
+    .button.is-small { font-size: 0.8rem; }
+  </style> -->
+</head>
+
+<body>
+
+  <section class="container">
+    <h1 class="title">管理账户</h1>
+    <p class="subtitle">注册、编辑、删除用户</p>
+
+    <!-- 注册新用户表单 -->
+    <div class="account-card">
+      <h2 class="title is-4">注册新用户</h2>
+      <form id="registerForm">
+        <div class="columns">
+          <div class="column">
+            <div class="form-group">
+              <label class="label">用户名</label>
+              <input class="input" type="text" name="username" id="reg-username" required />
+            </div>
+          </div>
+          <div class="column">
+            <div class="form-group">
+              <label class="label">邮箱</label>
+              <input class="input" type="email" name="email" id="reg-email" required />
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="form-group">
+              <label class="label">密码</label>
+              <input class="input" type="password" name="password" id="reg-password" required />
+            </div>
+          </div>
+          <div class="column">
+            <div class="form-group">
+              <label class="label">毕业年份</label>
+              <input class="input" type="number" name="graduation_year" id="reg-graduation_year" required />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="label">角色</label>
+          <div class="field">
+            <label class="radio">
+              <input type="radio" name="role" value="user" checked> 普通用户
+            </label>
+            <label class="radio" style="margin-left: 1rem;">
+              <input type="radio" name="role" value="admin"> 管理员
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="button is-success">注册</button>
+      </form>
+    </div>
+
+    <!-- 用户列表 -->
+    <h2 class="title is-4">用户列表</h2>
+    <div id="accounts-list">
+      <!-- 动态插入 -->
+    </div>
+  </section>
+
+  <script>
+    // 检查是否登录且为管理员
+    async function checkAdmin() {
+      const res = await fetch('/api/account', {
+        credentials: 'include'
+      });
+      if (!res.ok) {
+        alert('请先登录');
+        window.location.href = '/html/login.html?returnTo=' + encodeURIComponent(window.location.href);
+        return false;
+      }
+      const user = await res.json();
+      if (user.role !== 'admin') {
+        alert('需要管理员权限');
+        window.history.back();
+        return false;
+      }
+      return true;
+    }
+
+    // 加载所有用户
+    async function loadAccounts() {
+      const res = await fetch('/api/accounts', {
+        credentials: 'include'
+      });
+      if (!res.ok) {
+        alert('获取用户列表失败');
+        return;
+      }
+      const accounts = await res.json();
+      const container = document.getElementById('accounts-list');
+      container.innerHTML = '';
+
+      accounts.forEach(acc => {
+        const div = document.createElement('div');
+        div.className = 'account-card';
+        div.innerHTML = `
+          <div class="columns is-vcentered">
+            <div class="column">
+              <p><strong>用户名：</strong>${acc.username}</p>
+              <p><strong>邮箱：</strong>${acc.email}</p>
+              <p><strong>毕业年份：</strong>${acc.graduation_year}</p>
+              <p><strong>角色：</strong><span class="role-tag ${acc.role}">${acc.role === 'admin' ? '管理员' : '社员'}</span></p>
+            </div>
+            <div class="column is-narrow">
+              <button class="button is-small is-warning" onclick="editAccount('${acc.id}')">编辑</button>
+              <button class="button is-small is-danger" style="margin-left: 0.5rem;" onclick="deleteAccount('${acc.id}', '${acc.username}')">删除</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // 注册新用户
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        alert('注册成功');
+        e.target.reset();
+        loadAccounts();
+      } else {
+        const err = await res.json();
+        alert(err.message || '注册失败');
+      }
+    });
+
+    // 编辑用户
+    async function editAccount(id) {
+      const res = await fetch(`/api/account/${id}`, {
+        credentials: 'include'
+      });
+      const acc = await res.json();
+
+      const newRole = prompt(`修改角色（当前：${acc.role}），输入 user 或 admin：`, acc.role);
+      if (!newRole || (newRole !== 'user' && newRole !== 'admin')) return;
+
+      const newPassword = prompt('如需修改密码，请输入新密码（留空则不修改）：');
+
+      const updateData = { role: newRole };
+      if (newPassword && newPassword.trim() !== '') {
+        updateData.password = newPassword;
+      }
+
+      const saveRes = await fetch(`/api/account/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData),
+        credentials: 'include'
+      });
+
+      if (saveRes.ok) {
+        alert('更新成功');
+        loadAccounts();
+      } else {
+        const err = await saveRes.json();
+        alert(err.message || '更新失败');
+      }
+    }
+
+    // 删除用户
+    async function deleteAccount(id, username) {
+      if (!confirm(`确定要删除用户 ${username} 吗？`)) return;
+
+      const res = await fetch(`/api/account/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        alert('删除成功');
+        loadAccounts();
+      } else {
+        const err = await res.json();
+        alert(err.message || '删除失败');
+      }
+    }
+
+    // 初始化
+    (async () => {
+      if (await checkAdmin()) {
+        loadAccounts();
+      }
+    })();
+  </script>
+</body>
+
+</html>

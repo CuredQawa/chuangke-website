@@ -40,16 +40,17 @@ export const register = async (req, res) => {
     );
 
     const newUser = result.rows[0];
+    console.log(`用户[${username}]被添加，所使用的邮箱为[${email}],${graduation_year}届`);//测试&监控，打印到控制台
 
-    // 签发 JWT 令牌
-    const token = signToken({
-        id: newUser.id,
-        username: newUser.username,
-        email: newUser.email
-    });
+    // 签发 JWT 令牌 会导致添加新用户时登录的管理员token被覆盖
+    // const token = signToken({
+    //     id: newUser.id,
+    //     username: newUser.username,
+    //     email: newUser.email
+    // });
 
     // 设置 cookie
-    setTokenCookie(res, token);
+    // setTokenCookie(res, token);
 
     return res.status(201).json({
         message: '注册成功',
