@@ -1,5 +1,5 @@
 .footer{
-    border-radius: 10vh 10vh 0 0;
+    border-radius: 7vh 7vh 0 0;
     height: auto;
     border-top: 4px solid rgb(166, 84, 241);
     padding-bottom: 0;
@@ -47,5 +47,10 @@
     margin: 10vh 0;
 }
 
-
+.where-our-web{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
 

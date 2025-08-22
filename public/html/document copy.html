@@ -1,6 +1,5 @@
-<!-- document.html -->
 <!DOCTYPE html>
-<html lang="zh" data-theme="dark">
+<html lang="zh" data-theme="">
 
 <head>
   <meta charset="utf-8">
@@ -12,29 +11,34 @@
   <link rel="stylesheet" href="../css/document.css">
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/footer.css">
+  <!-- <script src="../js/transition.js"></script> -->
   <script src="../js/theme-change.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
 </head>
 
 <body>
 
-  <!-- 导航栏 -->
+  <!-- 这是过渡动画 -->
+
+  <!-- 以下为导航栏 -->
   <script src="../js/load-header.js"></script>
 
-  <!-- 管理文档按钮（仅登录用户显示） -->
-  <button id="manage-docs-btn" class="button is-success is-medium is-fixed-bottom-right is-perple" 
-          style="display: none;" 
-          onclick="gotoManageDocs()">
-    <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
-  </button>
+
+
+
+
+
+
+
+
 
   <br>
   <section class="container">
     <h1 class="title has-text-centered">📘 文档中心</h1>
 
     <div class="columns">
-      <!-- 左侧菜单 -->
+
+      <!-- 左侧菜单栏 -->
       <div class="column is-one-third menu-column">
         <aside class="menu">
           <p class="menu-label">文档列表</p>
@@ -44,57 +48,69 @@
         </aside>
       </div>
 
-      <!-- 右侧内容 -->
+      <!-- 右侧内容区 -->
       <div class="column">
         <div id="content">
           <p>请选择左侧文档以查看内容。</p>
         </div>
       </div>
+
     </div>
   </section>
-  <br><br><br><br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- 引入 marked.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
 
   <script>
-    let docs = [];
+    let docs = []; // 存储从服务器获取的文档列表
     let currentDoc = null;
 
-    // 提取标题
+    // 提取 Markdown 中的标题（# 标题）
     function extractTitle(mdText) {
       const match = mdText.trim().match(/^#\s+(.+)$/m);
       return match ? match[1].trim() : '未命名文档';
     }
 
-    // 加载文档
-    async function loadDocument(id, index) {
+    // 加载并显示文档内容
+    async function loadDocument(path, index) {
       const menuItems = document.querySelectorAll('#doc-menu a');
       menuItems.forEach(item => item.classList.remove('is-active'));
       if (menuItems[index]) menuItems[index].classList.add('is-active');
 
       try {
-        const res = await fetch(`/api/doc/${id}`);
-        const data = await res.json();
+        const response = await fetch(`/api/docs/${path}`);
+        if (!response.ok) throw new Error('文档不存在');
+
+        const mdText = await response.text();
+        const title = extractTitle(mdText);
 
         document.getElementById('content').innerHTML = `
-          <h2 class="title">${data.title}</h2>
-          <div class="content">${marked.parse(data.content)}</div>
-          <p class="administrator">by ${data.author?.username || '未知用户'}</p>
-          <p class="date">${new Date(data.datetime).toLocaleString()}</p>
-        `;
+            <div class="content">
+              ${marked.parse(mdText)}
+            </div>
+          `;
 
-        history.pushState(null, '', `?doc=${id}`);
-        currentDoc = id;
+        history.pushState(null, '', `?doc=${encodeURIComponent(path)}`);
+        currentDoc = path;
       } catch (err) {
         document.getElementById('content').innerHTML = `
-          <div class="notification is-danger">加载失败：${err.message}</div>
-        `;
+            <div class="notification is-danger">
+              <strong>加载失败：</strong> ${err.message}
+            </div>
+          `;
       }
     }
 
-    // 加载文档列表
+    // 获取文档列表并生成菜单
     async function fetchDocsList() {
       try {
-        const res = await fetch('/api/docs');
-        docs = await res.json();
+        const response = await fetch('/api/docs');
+        docs = await response.json();
 
         if (docs.length === 0) {
           document.getElementById('doc-menu').innerHTML = '<li><a>暂无文档</a></li>';
@@ -111,7 +127,7 @@
 
           a.addEventListener('click', (e) => {
             e.preventDefault();
-            loadDocument(doc.id, index);
+            loadDocument(doc.path, index);
           });
 
           const li = document.createElement('li');
@@ -119,52 +135,48 @@
           menuEl.appendChild(li);
         });
 
-        // 默认加载
+        // 加载默认文档
         const urlParams = new URLSearchParams(window.location.search);
-        const docId = urlParams.get('doc');
-        const index = docs.findIndex(d => d.id == docId);
+        const docName = urlParams.get('doc');
+        const index = docs.findIndex(d => d.path === docName);
         const loadIndex = index >= 0 ? index : 0;
-        loadDocument(docs[loadIndex].id, loadIndex);
+        loadDocument(docs[loadIndex].path, loadIndex);
       } catch (err) {
-        console.error('加载文档列表失败', err);
+        console.error('获取文档列表失败:', err);
         document.getElementById('doc-menu').innerHTML = '<li><a>加载失败</a></li>';
       }
     }
 
-    // 检查登录状态，显示管理按钮
-    async function checkLogin() {
-      try {
-        const res = await fetch('/api/account', { credentials: 'include' });
-        if (res.ok) {
-          document.getElementById('manage-docs-btn').style.display = 'inline-block';
-        }
-      } catch (err) {
-        console.error('检查登录状态失败', err);
-      }
-    }
-
-    // 跳转管理页
-    function gotoManageDocs() {
-      window.location.href = '/html/manage-docs.html';
-    }
-
-    // 初始化
-    document.addEventListener('DOMContentLoaded', async () => {
-      await checkLogin();
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
       fetchDocsList();
 
+      // 支持浏览器前进后退
       window.addEventListener('popstate', () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const docId = urlParams.get('doc');
-        const index = docs.findIndex(d => d.id == docId);
-        if (index >= 0 && docId !== currentDoc) {
-          loadDocument(docId, index);
+        const doc = urlParams.get('doc');
+        const index = docs.findIndex(d => d.path === doc);
+        if (index >= 0 && doc !== currentDoc) {
+          loadDocument(doc, index);
         }
       });
     });
   </script>
 
-  <!-- 页脚 -->
+
+
+
+
+
+
+
+
+
+
+
+  <!-- 以上为主要内容，以下为页脚 -->
   <script src="../js/load-footer.js"></script>
+
 </body>
+
 </html>

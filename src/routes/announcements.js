@@ -2,7 +2,27 @@ export const getAllAnnouncements = async (req, res) => {
     const query = 'SELECT id, title, content, datetime, author_id FROM announcements ORDER BY datetime DESC';
 
     const result = await req.db.query(query);
-    res.json(result.rows);
+
+    // 为每个公告获取作者信息
+    const announcements = [];
+    for (const row of result.rows) {
+        const authorQuery = 'SELECT username, graduation_year, email FROM accounts WHERE id = $1';
+        const authorResult = await req.db.query(authorQuery, [row.author_id]);
+
+        const announcementWithoutAuthorId = {
+            id: row.id,
+            title: row.title,
+            content: row.content,
+            datetime: row.datetime
+        };
+
+        announcements.push({
+            ...announcementWithoutAuthorId,
+            author: authorResult.rows[0]
+        });
+    }
+
+    res.json(announcements);
 };
 
 export const newAnnouncement = async (req, res) => {

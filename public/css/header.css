@@ -7,7 +7,7 @@
     min-height: 100px;
     align-items: center;
     padding: 0 20px;
-    border-radius: 0 0 8vh 8vh;
+    border-radius: 0 0 4vh 4vh;
     border-bottom: 4px solid rgb(166, 84, 241);
     z-index: 20;
 }
@@ -163,7 +163,13 @@
 } */
 
 
-
+/* 登陆按钮 */
+#login-btn{
+    height: 6vh;
+    border-radius: 3vh;
+    font-size: medium;
+    border: none;
+}
   
 
   

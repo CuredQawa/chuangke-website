@@ -31,6 +31,21 @@ body {
     min-height: 80vh;
 }
 
+/* 按钮样式 */
+.is-fixed-bottom-right {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+.is-perple{
+    background-color: rgb(166, 84, 241);
+    color: black;
+}
+.icon-xitongguanli{
+    color: aliceblue;
+}
+
 /* 响应式：小屏下菜单在上方 */
 @media (max-width: 768px) {
     .columns {
