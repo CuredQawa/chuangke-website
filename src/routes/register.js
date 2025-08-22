@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { setTokenCookie, signToken } from '../middleware/auth.js';
 import validator from 'validator';
 import { BCRYPT_SALT_ROUNDS } from '../constants.js';
 
@@ -34,23 +33,12 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
     // 插入新用户
-    const result = await db.query(
+    await db.query(
         'INSERT INTO accounts (username, password, graduation_year, email, role) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email',
         [username, hashedPassword, graduation_year, email, role]
     );
 
-    const newUser = result.rows[0];
-    console.log(`用户[${username}]被添加，所使用的邮箱为[${email}],${graduation_year}届`);//测试&监控，打印到控制台
-
-    // 签发 JWT 令牌 会导致添加新用户时登录的管理员token被覆盖
-    // const token = signToken({
-    //     id: newUser.id,
-    //     username: newUser.username,
-    //     email: newUser.email
-    // });
-
-    // 设置 cookie
-    // setTokenCookie(res, token);
+    // console.log(`用户 ${username} 被添加，所使用的邮箱为 ${email}（${graduation_year}届）`);
 
     return res.status(201).json({
         message: '注册成功',

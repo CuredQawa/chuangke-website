@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { COOKIE_MAX_AGE } from '../constants.js';
 
 // 检查环境变量
 dotenv.config();
@@ -7,7 +8,7 @@ if (!process.env.JWT_SECRET) {
     throw new Error('请设置环境变量 JWT_SECRET');
 }
 
-const auth = (req, res, role, next) => {
+const auth = (req, res, requiredRole, next) => {
     // 从cookie获取token
     let token = req.cookies.token;
 
@@ -32,7 +33,7 @@ const auth = (req, res, role, next) => {
             const user = result.rows[0];
 
             // 管理员需要特殊角色，普通用户只要账户存在即可
-            if (role === 'admin' && user.role !== 'admin') {
+            if (requiredRole === 'admin' && user.role !== 'admin') {
                 return res.status(403).json({ message: '需要管理员权限' });
             }
 
@@ -61,6 +62,6 @@ export const setTokenCookie = (res, token) => {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        maxAge: 24 * 60 * 60 * 1000 // 24小时
+        maxAge: COOKIE_MAX_AGE
     });
 };

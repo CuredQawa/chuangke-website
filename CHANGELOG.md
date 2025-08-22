@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.8.1] - 2025-08-13
+## [1.8.1] - 2025-08-22
 
 ### Added
 
@@ -10,8 +10,8 @@
 ### Changed
 
 - 改用数据库储存信息
-- 公告和文档修改了api
-- 修改了header,添加了登录状态显示
+- 公告和文档修改了 api
+- 修改了 header,添加了登录状态显示
 
 ### Fixed
 
@@ -21,8 +21,8 @@
 
 ### Changed
 
-- 存储亮暗色数据使用的方法由localStorage改为sessionStorage
-- 微操footer.html
+- 存储亮暗色数据使用的方法由 localStorage 改为 sessionStorage
+- 微操 footer.html
 
 ## [1.7.5] - 2025-08-13
 
