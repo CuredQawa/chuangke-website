@@ -25,8 +25,6 @@ export const login = async (req, res) => {
             // 签发 JWT 令牌
             const token = signToken({
                 id: user.id,
-                username: user.username,
-                email: user.email,
             });
 
             // 设置 cookie

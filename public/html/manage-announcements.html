@@ -14,32 +14,46 @@
   <link rel="stylesheet" href="../css/footer.css" />
   <script src="../js/theme-change.js"></script>
   <style>
-    .container { padding: 2rem; }
-    .input{
-        border:2px solid rgb(166, 84, 241);
+    .container {
+      padding: 2rem;
     }
-    .textarea{
-        border:2px solid rgb(166, 84, 241);
+
+    .input {
+      border: 2px solid rgb(166, 84, 241);
     }
+
+    .textarea {
+      border: 2px solid rgb(166, 84, 241);
+    }
+
     .announcement-card-A {
       /* background: white; */
       padding: 1.5rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       margin-bottom: 1rem;
     }
+
     .announcement-card {
       /* background: white; */
       padding: 1.5rem;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       margin-bottom: 1rem;
       border-bottom: 4px solid yellowgreen;
     }
-    
-    .form-group { margin-bottom: 1rem; }
-    .button.is-small { font-size: 0.8rem; }
-    textarea { min-height: 150px; }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .button.is-small {
+      font-size: 0.8rem;
+    }
+
+    textarea {
+      min-height: 150px;
+    }
   </style>
 </head>
 
@@ -113,7 +127,7 @@
             <div class="column">
               <p><strong>${item.title}</strong></p>
               <p class="contentp">${item.content.replace(/\n/g, '<br>')}</p>
-              <p class="administrator">by ${authorName}</p>
+              <p class="administrator">By&nbsp;&nbsp;<a class="strong" href="mailto:${item.author.email}" title="给${item.author.graduation_year}届的 ${item.author?.username || '未知用户'} 发邮件">${item.author?.username || '未知用户'}</a></p>
               <p class="date">${new Date(item.datetime).toLocaleString()}</p>
             </div>
             <div class="column is-narrow">

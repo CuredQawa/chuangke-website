@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { COOKIE_MAX_AGE } from '../constants.js';
+import { COOKIE_MAX_AGE, JWT_MAX_AGE } from '../constants.js';
 
 // 检查环境变量
 dotenv.config();
@@ -9,15 +9,13 @@ if (!process.env.JWT_SECRET) {
 }
 
 const auth = (req, res, requiredRole, next) => {
-    // 从cookie获取token
     let token = req.cookies.token;
 
     if (!token) {
-        // 用户(cookie里面)没有提供token,即无法识别用户
         return res.status(401).json({ message: '未授权' });
     }
 
-    // jwt.verify() 验证 token 是否有效（签名是否正确、是否过期）
+    // 验证 token 是否有效
     jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: '令牌无效' });
@@ -54,7 +52,7 @@ export const adminAuth = (req, res, next) => {
 
 // JWT token 签发
 export const signToken = (payload) => {
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: JWT_MAX_AGE });
 };
 
 export const setTokenCookie = (res, token) => {

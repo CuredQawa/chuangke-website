@@ -21,9 +21,8 @@
   <script src="../js/load-header.js"></script>
 
   <!-- 管理员专用：发布公告按钮 -->
-  <button id="manage-announcements-btn" class="button is-success is-medium is-fixed-bottom-right is-perple" 
-          style="display: none;" 
-          onclick="gotoManageAnnouncements()">
+  <button id="manage-announcements-btn" class="button is-success is-medium is-fixed-bottom-right is-perple"
+    style="display: none;" onclick="gotoManageAnnouncements()">
     <span class="icon">
       <i class="iconfont icon-xitongguanli"></i>
     </span>
@@ -59,21 +58,21 @@
         console.error('检查管理员身份失败', err);
       }
     }
-  
+
     // 跳转到管理页面
     function gotoManageAnnouncements() {
       window.location.href = '/html/manage-announcements.html';
     }
-  
+
     // 加载公告列表
     document.addEventListener("DOMContentLoaded", async () => {
       await checkAdmin(); // 检查权限并显示按钮
-  
+
       const container = document.getElementById("announcements-container");
       try {
         const res = await fetch('/api/announcements');
         const data = await res.json();
-  
+
         // 倒序显示（最新在前）
         data.reverse().forEach(announcement => {
           const div = document.createElement('div');
@@ -81,7 +80,7 @@
           div.innerHTML = `
             <p class="titlep">${announcement.title}</p>
             <p class="contentp">${announcement.content.replace(/\n/g, '<br>')}</p>
-            <p class="administrator">by ${announcement.author?.username || '未知用户'}</p>
+            <p class="administrator">By&nbsp;&nbsp;<a class="strong" href="mailto:${announcement.author.email}" title="给${announcement.author.graduation_year}届的 ${announcement.author?.username || '未知用户'} 发邮件">${announcement.author?.username || '未知用户'}</a></p>
             <p class="date">${new Date(announcement.datetime).toLocaleString()}</p>
           `;
           container.appendChild(div);
@@ -97,4 +96,5 @@
   <script src="../js/load-footer.js"></script>
 
 </body>
+
 </html>

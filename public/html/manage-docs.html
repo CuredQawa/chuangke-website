@@ -13,7 +13,10 @@
   <link rel="stylesheet" href="../css/footer.css">
   <script src="../js/theme-change.js"></script>
   <style>
-    .container { padding: 2rem; }
+    .container {
+      padding: 2rem;
+    }
+
     .doc-item {
       display: flex;
       justify-content: space-between;
@@ -21,14 +24,20 @@
       padding: 1rem;
       border-bottom: 1px solid #eee;
     }
+
     .doc-info {
       flex: 1;
     }
+
     .doc-actions {
       display: flex;
       gap: 0.5rem;
     }
-    .button.is-small { font-size: 0.8rem; }
+
+    .button.is-small {
+      font-size: 0.8rem;
+    }
+
     .button.is-static {
       pointer-events: none;
       opacity: 0.5;
@@ -121,21 +130,24 @@
           const titleEscaped = escapeHtml(doc.title);
           const authorName = escapeHtml(doc.author?.username || '未知用户');
           const datetime = new Date(doc.datetime).toLocaleString();
+          const authorEmail = doc.author.email;
+          const authorGraduationYear = doc.author.graduation_year;
 
           const div = document.createElement('div');
           div.className = 'doc-item';
           div.innerHTML = `
             <div class="doc-info">
-              <strong>${titleEscaped}</strong><br>
-              <small>by ${authorName} • ${datetime}</small>
+              <strong>${titleEscaped}</strong>
+              <br/>
+              <small>By&nbsp;&nbsp;<a class="strong" href="mailto:${authorEmail}" title="给${authorGraduationYear}届的 ${authorName} 发邮件">${authorName}</a></small>
             </div>
             <div class="doc-actions">
               <button class="button is-small is-warning ${canEdit ? '' : 'is-static'}" 
                       ${canEdit ? '' : 'disabled'} 
-                      onclick="editDoc(${doc.id})">编辑</button>
+                      onclick="editDoc(${doc.id})" title="${canEdit ? '' : '权限不足'}">编辑</button>
               <button class="button is-small is-danger ${canEdit ? '' : 'is-static'}" 
                       ${canEdit ? '' : 'disabled'} 
-                      onclick="deleteDoc(${doc.id}, '${titleEscaped}')">删除</button>
+                      onclick="deleteDoc(${doc.id}, '${titleEscaped}')" title="${canEdit ? '' : '权限不足'}">删除</button>
             </div>
           `;
           container.appendChild(div);
@@ -192,4 +204,5 @@
   <!-- 页脚 -->
   <script src="../js/load-footer.js"></script>
 </body>
+
 </html>

@@ -1,53 +1,56 @@
-// docs.js
-
 export const getDocById = async (req, res) => {
-    const query = 'SELECT id, title, content, datetime, author_id FROM docs WHERE id = $1';
-    const result = await req.db.query(query, [req.params.id]);
+    // 从数据库中获取文档内容
+    const query = 'SELECT title, content, datetime, author_id FROM docs WHERE id = $1';
 
+    const result = await req.db.query(query, [req.params.id]);
     if (result.rows.length === 0) {
         return res.status(404).json({ message: "文档不存在" });
     }
 
+    // 获取作者信息
     const doc = result.rows[0];
-
-    // 获取作者信息（只返回非敏感字段）
     const authorQuery = 'SELECT username, graduation_year, email FROM accounts WHERE id = $1';
     const authorResult = await req.db.query(authorQuery, [doc.author_id]);
 
-    // 返回 author_id（用于权限判断）和 author 信息
-    res.json({
-        id: doc.id,
+    const docWithoutAuthorId = {
         title: doc.title,
         content: doc.content,
-        datetime: doc.datetime,
-        author_id: doc.author_id,
+        datetime: doc.datetime
+    };
+
+    res.json({
+        ...docWithoutAuthorId,
         author: authorResult.rows[0]
     });
 };
 
 export const getAllDocs = async (req, res) => {
     const query = 'SELECT id, title, content, datetime, author_id FROM docs ORDER BY datetime DESC';
+
     const result = await req.db.query(query);
 
+    // 为每个文档获取作者信息
     const docs = [];
     for (const row of result.rows) {
         const authorQuery = 'SELECT username, graduation_year, email FROM accounts WHERE id = $1';
         const authorResult = await req.db.query(authorQuery, [row.author_id]);
 
-        // 修复：保留 author_id 字段
-        docs.push({
+        const docInfo = {
             id: row.id,
             title: row.title,
             content: row.content,
             datetime: row.datetime,
-            author_id: row.author_id,  // 返回
+            author_id: row.author_id
+        };
+
+        docs.push({
+            ...docInfo,
             author: authorResult.rows[0]
         });
     }
 
     res.json(docs);
 };
-
 
 export const newDoc = async (req, res) => {
     const { title, content } = req.body;

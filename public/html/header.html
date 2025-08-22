@@ -1,116 +1,119 @@
 <!-- header.html -->
 <header class="header is-risecolor" style="transition: all 0.3s ease;">
 
-    <!-- 左侧：主图标 + 原始导航栏 -->
-    <div class="header-left">
-  
-      <!-- 主图标 -->
-      <a class="main-icon-a" href="home.html">
-        <span class="iconfont icon-rocket"></span>
-        <span class="s1">湛江一中创客社</span>
-      </a>
-  
-      <!-- 原始导航栏（保持原有结构） -->
-      <nav class="navbar is-active is-risecolor" role="navigation" aria-label="main navigation">
-        <div id="navbarBasicExample" class="navbar-menu is-risecolor">
-          <div class="navbar-start is-risecolor">
-  
-            <a class="navbar-item a-anounce" title="为社员发布上课和活动公告" href="anouncement.html">
-              <span class="iconfont icon-gonggao09"></span>
-              <span class="icon-name">公告</span>
+  <!-- 左侧：主图标 + 原始导航栏 -->
+  <div class="header-left">
+
+    <!-- 主图标 -->
+    <a class="main-icon-a" href="home.html">
+      <span class="iconfont icon-rocket"></span>
+      <span class="s1">湛江一中创客社</span>
+    </a>
+
+    <!-- 原始导航栏（保持原有结构） -->
+    <nav class="navbar is-active is-risecolor" role="navigation" aria-label="main navigation">
+      <div id="navbarBasicExample" class="navbar-menu is-risecolor">
+        <div class="navbar-start is-risecolor">
+
+          <a class="navbar-item a-anounce" title="为社员发布上课和活动公告" href="anouncement.html">
+            <span class="iconfont icon-gonggao09"></span>
+            <span class="icon-name">公告</span>
+          </a>
+
+          <a class="navbar-item a-rule" title="收录社团的文档" href="document.html">
+            <span class="iconfont icon-a-lujing37238"></span>
+            <span class="icon-name">文档</span>
+          </a>
+
+          <a class="navbar-item a-kaifa" title="开发工具导航页" href="development.html">
+            <span class="iconfont icon-terminal-box-fill"></span>
+            <span class="icon-name">开发</span>
+          </a>
+
+          <a class="navbar-item a-serve" title="社员接单，赚点零花钱" href="serve.html">
+            <span class="iconfont icon-renminbi1"></span>
+            <span class="icon-name">服务</span>
+          </a>
+
+          <a class="navbar-item a-activity" title="学校有趣活动实时更新" href="activity.html">
+            <span class="iconfont icon-huodong"></span>
+            <span class="icon-name">活动</span>
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              更多
             </a>
-  
-            <a class="navbar-item a-rule" title="收录社团的文档" href="document.html">
-              <span class="iconfont icon-a-lujing37238"></span>
-              <span class="icon-name">文档</span>
-            </a>
-  
-            <a class="navbar-item a-kaifa" title="开发工具导航页" href="development.html">
-              <span class="iconfont icon-terminal-box-fill"></span>
-              <span class="icon-name">开发</span>
-            </a>
-  
-            <a class="navbar-item a-serve" title="社员接单，赚点零花钱" href="serve.html">
-              <span class="iconfont icon-renminbi1"></span>
-              <span class="icon-name">服务</span>
-            </a>
-  
-            <a class="navbar-item a-activity" title="学校有趣活动实时更新" href="activity.html">
-              <span class="iconfont icon-huodong"></span>
-              <span class="icon-name">活动</span>
-            </a>
-  
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                更多
-              </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item" href="about.html">关于</a>
-                <a class="navbar-item" href="rules.html">规章制度</a>
-                <a class="navbar-item" href="join.html">加入我们</a>
-                <hr class="navbar-divider">
-                <a class="navbar-item" href="contact.html">联系我们</a>
-              </div>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="about.html">关于</a>
+              <a class="navbar-item" href="rules.html">规章制度</a>
+              <a class="navbar-item" href="join.html">加入我们</a>
+              <hr class="navbar-divider">
+              <a class="navbar-item" href="contact.html">联系我们</a>
             </div>
-  
           </div>
+
         </div>
-      </nav>
-  
-    </div>
-  
-    <!-- 右侧：用户状态 + 主题切换 + 汉堡按钮 -->
-    <div class="header-right">
-  
-      <!-- 主题切换按钮 -->
-      <button class="button theme-switch" onclick="switchTheme()" title="切换主题">
-        <span id="theme-switch" class="iconfont icon-ai250"></span>
-      </button>
-  
-      <!-- 用户信息（登录后显示） -->
-      <div id="user-info" class="user-info" style="display: none; margin-left: 10px;">
-        <span id="username"></span>
-        <span id="role" class="role-tag"></span>
       </div>
-  
-        <!-- 登录/登出按钮 -->
-        <button id="login-btn" class="button is-small" style="display: none; margin-left: 10px;">登录</button>
-        <button id="logout-btn" class="button is-small is-danger" style="display: none; margin-left: 10px;" onclick="handleLogout()">登出</button>
-        <!-- 管理账户按钮（仅管理员显示） -->
-        <button id="manage-accounts-btn" class="button is-small is-warning" style="display: none;" onclick="gotoManageAccounts()">管理账户</button>
-      
-        <!-- 汉堡按钮（移动端） -->
-        <div class="hamburger" id="hamburger" style="margin-left: 15px;">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    </nav>
+
+  </div>
+
+  <!-- 右侧：用户状态 + 主题切换 + 汉堡按钮 -->
+  <div class="header-right">
+
+    <!-- 主题切换按钮 -->
+    <button class="button theme-switch" onclick="switchTheme()" title="切换主题">
+      <span id="theme-switch" class="iconfont icon-ai250"></span>
+    </button>
+
+    <!-- 用户信息（登录后显示） -->
+    <div id="user-info" class="user-info" style="display: none; margin-left: 10px;">
+      <span id="username"></span>
+      <span id="role" class="role-tag"></span>
     </div>
-  
-    <!-- 移动端侧边栏（Vercel 风格，参考 navbar.html） -->
-    <div class="mobile-sidebar" id="mobileSidebar">
-      <div class="mobile-sidebar-item" onclick="navigateTo('anouncement.html')">公告</div>
-      <div class="mobile-sidebar-item" onclick="navigateTo('document.html')">文档</div>
-      <div class="mobile-sidebar-item" onclick="navigateTo('development.html')">开发</div>
-      <div class="mobile-sidebar-item" onclick="navigateTo('serve.html')">服务</div>
-      <div class="mobile-sidebar-item" onclick="navigateTo('activity.html')">活动</div>
-      <div class="mobile-sidebar-item" data-mobile-dropdown="more">更多 ▼</div>
-      <div class="mobile-sidebar-submenu" data-submenu="more">
-        <a href="about.html">关于</a>
-        <a href="rules.html">规章制度</a>
-        <a href="join.html">加入我们</a>
-        <hr>
-        <a href="contact.html">联系我们</a>
-      </div>
-  
-      <div class="mobile-user-section">
-        <div id="mobile-user-info" class="mobile-user-info" style="display: none;">
-          <p><strong>用户：</strong><span id="mobile-username"></span></p>
-          <p><strong>身份：</strong><span id="mobile-role" class="role-tag"></span></p>
-        </div>
-        <button id="mobile-login-btn" class="button is-fullwidth" style="display: none;" onclick="gotoLogin()">登录</button>
-        <button id="mobile-logout-btn" class="button is-fullwidth is-danger" style="display: none;" onclick="handleLogout()">登出</button>
-      </div>
+
+    <!-- 登录/登出按钮 -->
+    <button id="login-btn" class="button is-small" style="display: none; margin-left: 10px;">登录</button>
+    <button id="logout-btn" class="button is-small is-danger" style="display: none; margin-left: 10px;"
+      onclick="handleLogout()">登出</button>
+    <!-- 管理账户按钮（仅管理员显示） -->
+    <button id="manage-accounts-btn" class="button is-small is-warning" style="display: none;"
+      onclick="gotoManageAccounts()">管理账户</button>
+
+    <!-- 汉堡按钮（移动端） -->
+    <div class="hamburger" id="hamburger" style="margin-left: 15px;">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-  
+  </div>
+
+  <!-- 移动端侧边栏（Vercel 风格，参考 navbar.html） -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="mobile-sidebar-item" onclick="navigateTo('anouncement.html')">公告</div>
+    <div class="mobile-sidebar-item" onclick="navigateTo('document.html')">文档</div>
+    <div class="mobile-sidebar-item" onclick="navigateTo('development.html')">开发</div>
+    <div class="mobile-sidebar-item" onclick="navigateTo('serve.html')">服务</div>
+    <div class="mobile-sidebar-item" onclick="navigateTo('activity.html')">活动</div>
+    <div class="mobile-sidebar-item" data-mobile-dropdown="more">更多 ▼</div>
+    <div class="mobile-sidebar-submenu" data-submenu="more">
+      <a href="about.html">关于</a>
+      <a href="rules.html">规章制度</a>
+      <a href="join.html">加入我们</a>
+      <hr>
+      <a href="contact.html">联系我们</a>
+    </div>
+
+    <div class="mobile-user-section">
+      <div id="mobile-user-info" class="mobile-user-info" style="display: none;">
+        <p><strong>用户：</strong><span id="mobile-username"></span></p>
+        <p><strong>身份：</strong><span id="mobile-role" class="role-tag"></span></p>
+      </div>
+      <button id="mobile-login-btn" class="button is-fullwidth" style="display: none;" onclick="gotoLogin()">登录</button>
+      <button id="mobile-logout-btn" class="button is-fullwidth is-danger" style="display: none;"
+        onclick="handleLogout()">登出</button>
+    </div>
+  </div>
+
 </header>
