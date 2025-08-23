@@ -107,13 +107,14 @@ export const deleteImage = async (req, res) => {
 export const getAllImages = async (req, res) => {
     try {
         // 从数据库获取所有图片信息
-        const query = 'SELECT id, filename, description FROM images ORDER BY id DESC';
+        const query = 'SELECT id, filename, description, author_id FROM images ORDER BY id DESC';
         const result = await req.db.query(query);
 
         const images = result.rows.map(row => ({
             id: row.id,
             fileName: row.filename,
             description: row.description,
+            authorId: row.author_id,
         }));
 
         res.json(images);

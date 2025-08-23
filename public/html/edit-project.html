@@ -1,10 +1,10 @@
-<!-- html/edit-doc.html -->
+<!-- html/edit-project.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>编辑文档 - 湛江一中创客社</title>
+  <title>编辑项目 - 湛江一中创客社</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/font/iconfont.css">
   <link rel="stylesheet" href="../css/index.css">
@@ -76,10 +76,10 @@
   <script src="../js/load-header.js"></script>
 
   <div class="container">
-    <h1 class="title" id="page-title">新建文档</h1>
-    <form id="doc-form">
+    <h1 class="title" id="page-title">新建项目</h1>
+    <form id="project-form">
       <div class="field">
-        <label class="label">文档标题</label>
+        <label class="label">项目标题</label>
         <div class="control">
           <input class="input" type="text" id="title-input" required>
         </div>
@@ -96,7 +96,7 @@
       </div>
       <div class="field mt-4">
         <button type="submit" class="button is-success">提交</button>
-        <a href="/html/manage-docs.html" class="button is-light">取消</a>
+        <a href="/html/manage-projects.html" class="button is-light">取消</a>
       </div>
     </form>
   </div>
@@ -106,9 +106,9 @@
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const docId = urlParams.get('id');
+    const projectId = urlParams.get('id');
     const isNew = urlParams.get('new');
-    const form = document.getElementById('doc-form');
+    const form = document.getElementById('project-form');
     const titleInput = document.getElementById('title-input');
     const contentInput = document.getElementById('content-input');
     const preview = document.getElementById('preview');
@@ -127,7 +127,7 @@
 
     contentInput.addEventListener('input', updatePreview);
 
-    // 提交文档
+    // 提交项目
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -151,17 +151,15 @@
       const data = {
         title,
         content,
-        cover_image_url  // ✅ 字段名必须与后端一致
+        cover_image_url
       };
-
-      console.log('提交数据:', data); // 调试用
 
       let url, method;
       if (isNew) {
-        url = '/api/doc';
+        url = '/api/project';
         method = 'POST';
       } else {
-        url = `/api/doc/${docId}`;
+        url = `/api/project/${projectId}`;
         method = 'PUT';
       }
 
@@ -176,8 +174,8 @@
         });
 
         if (res.ok) {
-          alert(isNew ? '文档创建成功' : '文档更新成功');
-          window.location.href = '/html/manage-docs.html';
+          alert(isNew ? '项目创建成功' : '项目更新成功');
+          window.location.href = '/html/manage-projects.html';
         } else {
           const err = await res.json();
           alert('❌ ' + (err.message || '操作失败'));
@@ -187,31 +185,31 @@
       }
     });
 
-    // 加载文档（编辑模式）
-    async function loadDoc() {
-      if (!docId) return;
+    // 加载项目（编辑模式）
+    async function loadProject() {
+      if (!projectId) return;
       try {
-        const res = await fetch(`/api/doc/${docId}`);
+        const res = await fetch(`/api/project/${projectId}`);
         const data = await res.json();
         titleInput.value = data.title;
         contentInput.value = data.content;
-        updatePreview(); // 触发预览和头图提取
-        pageTitle.textContent = `编辑文档：${data.title}`;
+        updatePreview();
+        pageTitle.textContent = `编辑项目：${data.title}`;
       } catch (err) {
-        alert('加载文档失败');
-        window.location.href = '/html/manage-docs.html';
+        alert('加载项目失败');
+        window.location.href = '/html/manage-projects.html';
       }
     }
 
     // 初始化
     (async () => {
-      if (docId) {
-        await loadDoc();
+      if (projectId) {
+        await loadProject();
       } else if (isNew) {
-        contentInput.value = '# 新文档\n请输入内容...';
+        contentInput.value = '# 新项目\n请输入内容...';
         updatePreview();
       } else {
-        window.location.href = '/html/manage-docs.html';
+        window.location.href = '/html/manage-projects.html';
       }
     })();
   </script>

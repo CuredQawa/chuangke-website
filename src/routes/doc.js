@@ -6,7 +6,7 @@
  */
 export const getDocById = async (req, res) => {
     // 从数据库中获取文档内容
-    const query = 'SELECT title, content, datetime, author_id, cover_image_filename FROM docs WHERE id = $1 AND category = $2';
+    const query = 'SELECT title, content, datetime, author_id, cover_image_url FROM docs WHERE id = $1 AND category = $2';
 
     const result = await req.db.query(query, [req.params.id, "doc"]);
     if (result.rows.length === 0) {
@@ -22,7 +22,7 @@ export const getDocById = async (req, res) => {
         title: doc.title,
         content: doc.content,
         datetime: doc.datetime,
-        cover_image_filename: doc.cover_image_filename
+        cover_image_url: doc.cover_image_url
     };
 
     res.json({
@@ -38,7 +38,7 @@ export const getDocById = async (req, res) => {
  * @returns {Array} 文档列表
  */
 export const getAllDocs = async (req, res) => {
-    const query = 'SELECT id, title, datetime, author_id, cover_image_filename FROM docs WHERE category = $1 ORDER BY datetime DESC';
+    const query = 'SELECT id, title, datetime, author_id, cover_image_url FROM docs WHERE category = $1 ORDER BY datetime DESC';
 
     const result = await req.db.query(query, ["doc"]);
 
@@ -52,7 +52,7 @@ export const getAllDocs = async (req, res) => {
             id: row.id,
             title: row.title,
             datetime: row.datetime,
-            cover_image_filename: row.cover_image_filename,
+            cover_image_url: row.cover_image_url,
             author_id: row.author_id
         };
 
@@ -72,14 +72,14 @@ export const getAllDocs = async (req, res) => {
  * @returns {Object} 创建成功消息
  */
 export const newDoc = async (req, res) => {
-    const { title, content, cover_image_filename } = req.body;
+    const { title, content, cover_image_url } = req.body;
     const authorID = req.user.id;
 
     const datetime = new Date();
-    const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_filename) VALUES ($1, $2, $3, $4, $5, $6)';
+    const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_url) VALUES ($1, $2, $3, $4, $5, $6)';
 
     try {
-        await req.db.query(query, [title, content, datetime, authorID, "doc", cover_image_filename]);
+        await req.db.query(query, [title, content, datetime, authorID, "doc", cover_image_url]);
         res.json({ message: "文档发布成功" });
     } catch (err) {
         console.error("数据库错误:", err);
@@ -95,7 +95,7 @@ export const newDoc = async (req, res) => {
  */
 export const editDoc = async (req, res) => {
     const docID = req.params.id;
-    const { title, content, cover_image_filename } = req.body;
+    const { title, content, cover_image_url } = req.body;
     const userID = req.user.id;
     const userRole = req.user.role;
 
@@ -113,10 +113,10 @@ export const editDoc = async (req, res) => {
         return res.status(403).json({ message: "权限不足，无法编辑此文档" });
     }
 
-    const query = 'UPDATE docs SET title = $1, content = $2, cover_image_filename = $3 WHERE id = $4 AND category = $5';
+    const query = 'UPDATE docs SET title = $1, content = $2, cover_image_url = $3 WHERE id = $4 AND category = $5';
 
     try {
-        await req.db.query(query, [title, content, cover_image_filename, docID, "doc"]);
+        await req.db.query(query, [title, content, cover_image_url, docID, "doc"]);
         res.json({ message: "文档修改成功" });
     } catch (err) {
         console.error("数据库错误:", err);

@@ -6,7 +6,7 @@
  */
 export const getProjectById = async (req, res) => {
     // 从数据库中获取项目内容
-    const query = 'SELECT title, content, datetime, author_id, cover_image_filename FROM docs WHERE id = $1 AND category = $2';
+    const query = 'SELECT title, content, datetime, author_id, cover_image_url FROM docs WHERE id = $1 AND category = $2';
 
     const result = await req.db.query(query, [req.params.id, "project"]);
     if (result.rows.length === 0) {
@@ -22,7 +22,7 @@ export const getProjectById = async (req, res) => {
         title: project.title,
         content: project.content,
         datetime: project.datetime,
-        cover_image_filename: project.cover_image_filename
+        cover_image_url: project.cover_image_url
     };
 
     res.json({
@@ -38,7 +38,7 @@ export const getProjectById = async (req, res) => {
  * @returns {Array} 项目列表
  */
 export const getAllProjects = async (req, res) => {
-    const query = 'SELECT id, title, datetime, author_id, cover_image_filename FROM docs WHERE category = $1 ORDER BY datetime DESC';
+    const query = 'SELECT id, title, datetime, author_id, cover_image_url FROM docs WHERE category = $1 ORDER BY datetime DESC';
 
     const result = await req.db.query(query, ["project"]);
 
@@ -52,7 +52,7 @@ export const getAllProjects = async (req, res) => {
             id: row.id,
             title: row.title,
             datetime: row.datetime,
-            cover_image_filename: row.cover_image_filename,
+            cover_image_url: row.cover_image_url,
             author_id: row.author_id
         };
 
@@ -72,14 +72,14 @@ export const getAllProjects = async (req, res) => {
  * @returns {Object} 创建成功消息
  */
 export const newProject = async (req, res) => {
-    const { title, content, cover_image_filename } = req.body;
+    const { title, content, cover_image_url } = req.body;
     const authorID = req.user.id;
 
     const datetime = new Date();
-    const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_filename) VALUES ($1, $2, $3, $4, $5, $6)';
+    const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_url) VALUES ($1, $2, $3, $4, $5, $6)';
     
     try {
-        await req.db.query(query, [title, content, datetime, authorID, "project", cover_image_filename]);
+        await req.db.query(query, [title, content, datetime, authorID, "project", cover_image_url]);
         res.json({ message: "项目发布成功" });
     } catch (err) {
         console.error("数据库错误:", err);
@@ -95,7 +95,7 @@ export const newProject = async (req, res) => {
  */
 export const editProject = async (req, res) => {
     const projectID = req.params.id;
-    const { title, content, cover_image_filename } = req.body;
+    const { title, content, cover_image_url } = req.body;
     const userID = req.user.id;
     const userRole = req.user.role;
 
@@ -113,10 +113,10 @@ export const editProject = async (req, res) => {
         return res.status(403).json({ message: "权限不足，无法编辑此项目" });
     }
 
-    const query = 'UPDATE docs SET title = $1, content = $2, cover_image_filename = $3 WHERE id = $4 AND category = $5';
+    const query = 'UPDATE docs SET title = $1, content = $2, cover_image_url = $3 WHERE id = $4 AND category = $5';
     
     try {
-        await req.db.query(query, [title, content, cover_image_filename, projectID, "project"]);
+        await req.db.query(query, [title, content, cover_image_url, projectID, "project"]);
         res.json({ message: "项目修改成功" });
     } catch (err) {
         console.error("数据库错误:", err);

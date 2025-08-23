@@ -28,7 +28,7 @@ CREATE TABLE public.docs (
 	datetime timestamp NOT NULL,
 	author_id int4 NOT NULL,
 	category varchar(50) DEFAULT 'doc'::character varying NOT NULL,
-	cover_image_filename varchar NULL,
+	cover_image_url varchar NULL,
 	CONSTRAINT docs_pk PRIMARY KEY (id)
 );
 

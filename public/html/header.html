@@ -16,6 +16,10 @@
             <span class="iconfont icon-gonggao09"></span>
             <span class="icon-name">公告</span>
           </a>
+          <a class="navbar-item a-rule" title="社团成员的项目展示" href="project.html">
+            <span class="iconfont icon-a-lujing37238"></span>
+            <span class="icon-name">项目</span>
+          </a>
           <a class="navbar-item a-rule" title="收录社团的文档" href="document.html">
             <span class="iconfont icon-a-lujing37238"></span>
             <span class="icon-name">文档</span>
@@ -61,6 +65,7 @@
     <button id="login-btn" class="button is-small" style="display: none;">登录</button>
     <button id="logout-btn" class="button is-small is-danger" style="display: none;" onclick="handleLogout()">登出</button>
     <button id="manage-accounts-btn" class="button is-small is-warning" style="display: none;" onclick="gotoManageAccounts()">管理账户</button>
+    <button id="manage-images-btn" class="button is-small is-info" style="display: none;" onclick="gotoManageImages()">管理图片</button>
   </div>
 
   <!-- 汉堡按钮（移动端） -->
@@ -80,11 +85,13 @@
       <button id="mobile-login-btn" style="width: 100%; margin: 0.5rem 0;" onclick="gotoLogin()">登录</button>
       <button id="mobile-logout-btn" style="width: 100%; margin: 0.5rem 0;" onclick="handleLogout()">登出</button>
       <button id="mobile-manage-accounts-btn" style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageAccounts()">管理账户</button>
+      <button id="mobile-manage-images-btn" style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageImages()">管理图片</button>
     </div>
 
     <div class="mobile-sidebar-item" onclick="switchTheme()">[切换主题]</div>
 
     <div class="mobile-sidebar-item" onclick="navigateTo('anouncement.html')">公告</div>
+    <div class="mobile-sidebar-item" onclick="navigateTo('project.html')">项目</div>
     <div class="mobile-sidebar-item" onclick="navigateTo('document.html')">文档</div>
     <div class="mobile-sidebar-item" onclick="navigateTo('development.html')">开发</div>
     <div class="mobile-sidebar-item" onclick="navigateTo('serve.html')">服务</div>

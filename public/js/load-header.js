@@ -1,4 +1,5 @@
 // ../js/load-header.js
+// 动态加载 header.html 并初始化交互功能
 
 window.loadHeaderPromise = (async () => {
   try {
@@ -15,6 +16,7 @@ window.loadHeaderPromise = (async () => {
       headerElement.style.transition = 'opacity 0.5s ease-in-out';
       document.body.prepend(headerElement);
 
+      // 动画显示
       setTimeout(() => {
         headerElement.style.opacity = '1';
       }, 100);
@@ -24,38 +26,71 @@ window.loadHeaderPromise = (async () => {
 
     const currentPage = window.location.href;
 
+    // ========== 状态统一控制函数 ==========
+    function updateAuthUI(isLoggedIn, user = null) {
+      const show = (el, mode = 'block') => el && (el.style.display = mode);
+      const hide = (el) => el && (el.style.display = 'none');
+
+      if (isLoggedIn && user) {
+        // 已登录状态
+        show(document.getElementById('user-info'), 'flex');
+        show(document.getElementById('mobile-user-info'), 'block');
+
+        hide(document.getElementById('login-btn'));
+        hide(document.getElementById('mobile-login-btn'));
+
+        show(document.getElementById('logout-btn'), 'inline-block');
+        show(document.getElementById('mobile-logout-btn'), 'block');
+
+        // 显示用户名和角色
+        document.getElementById('username').textContent = user.username;
+        document.getElementById('role').textContent = user.role === 'admin' ? '管理员' : '社员';
+        document.getElementById('role').className = `role-tag ${user.role}`;
+
+        document.getElementById('mobile-username').textContent = user.username;
+        document.getElementById('mobile-role').textContent = user.role === 'admin' ? '管理员' : '社员';
+        document.getElementById('mobile-role').className = `role-tag ${user.role}`;
+
+        // 管理账户：仅管理员
+        const isAdmin = user.role === 'admin';
+        show(document.getElementById('manage-accounts-btn'), isAdmin ? 'inline-block' : 'none');
+        show(document.getElementById('mobile-manage-accounts-btn'), isAdmin ? 'block' : 'none');
+
+        // 管理图片：社员和管理员
+        const isUserOrAdmin = user.role === 'user' || isAdmin;
+        show(document.getElementById('manage-images-btn'), isUserOrAdmin ? 'inline-block' : 'none');
+        show(document.getElementById('mobile-manage-images-btn'), isUserOrAdmin ? 'block' : 'none');
+
+      } else {
+        // 未登录状态
+        hide(document.getElementById('user-info'));
+        hide(document.getElementById('mobile-user-info'));
+
+        show(document.getElementById('login-btn'), 'inline-block');
+        show(document.getElementById('mobile-login-btn'), 'block');
+
+        hide(document.getElementById('logout-btn'));
+        hide(document.getElementById('mobile-logout-btn'));
+        hide(document.getElementById('manage-accounts-btn'));
+        hide(document.getElementById('mobile-manage-accounts-btn'));
+        hide(document.getElementById('manage-images-btn'));
+        hide(document.getElementById('mobile-manage-images-btn'));
+      }
+    }
+
     // ========== 获取用户信息 ==========
     async function loadUserInfo() {
       try {
         const res = await fetch('/api/account', { credentials: 'include' });
         if (res.ok) {
           const user = await res.json();
-          document.getElementById('username').textContent = user.username;
-          document.getElementById('role').textContent = user.role === 'admin' ? '管理员' : '社员';
-          document.getElementById('role').className = `role-tag ${user.role}`;
-
-          document.getElementById('mobile-username').textContent = user.username;
-          document.getElementById('mobile-role').textContent = user.role === 'admin' ? '管理员' : '社员';
-          document.getElementById('mobile-role').className = `role-tag ${user.role}`;
-
-          document.getElementById('user-info').style.display = 'flex';
-          document.getElementById('mobile-user-info').style.display = 'block';
-          document.getElementById('login-btn').style.display = 'none';
-          document.getElementById('mobile-login-btn').style.display = 'none';
-          document.getElementById('logout-btn').style.display = 'inline-block';
-          document.getElementById('mobile-logout-btn').style.display = 'block';
-
-          const show = user.role === 'admin' ? 'inline-block' : 'none';
-          document.getElementById('manage-accounts-btn').style.display = show;
-          document.getElementById('mobile-manage-accounts-btn').style.display = show;
+          updateAuthUI(true, user);
         } else {
-          document.getElementById('login-btn').style.display = 'inline-block';
-          document.getElementById('mobile-login-btn').style.display = 'block';
-          document.getElementById('logout-btn').style.display = 'none';
-          document.getElementById('mobile-logout-btn').style.display = 'none';
+          updateAuthUI(false);
         }
       } catch (err) {
-        console.error('获取用户信息失败', err);
+        console.error('获取用户信息失败:', err);
+        updateAuthUI(false);
       }
     }
 
@@ -79,10 +114,19 @@ window.loadHeaderPromise = (async () => {
       window.location.href = '/html/manage-accounts.html';
     };
 
+    // ========== 跳转管理图片 ==========
+    window.gotoManageImages = function () {
+      window.location.href = '/html/manage-images.html';
+    };
+
     // ========== 移动端导航 ==========
     window.navigateTo = function (url) {
-      document.getElementById('mobileSidebar').classList.remove('active');
-      document.getElementById('hamburger').classList.remove('active');
+      const mobileSidebar = document.getElementById('mobileSidebar');
+      const hamburger = document.getElementById('hamburger');
+      if (mobileSidebar && hamburger) {
+        mobileSidebar.classList.remove('active');
+        hamburger.classList.remove('active');
+      }
       window.location.href = url;
     };
 
@@ -91,19 +135,19 @@ window.loadHeaderPromise = (async () => {
     const mobileSidebar = document.getElementById('mobileSidebar');
 
     if (hamburger && mobileSidebar) {
-      // 汉堡按钮切换
+      // 汉堡按钮点击
       hamburger.addEventListener('click', (e) => {
         e.stopPropagation();
         hamburger.classList.toggle('active');
         mobileSidebar.classList.toggle('active');
       });
 
-      // 点击侧边栏内部不关闭
+      // 阻止侧边栏点击关闭
       mobileSidebar.addEventListener('click', (e) => {
         e.stopPropagation();
       });
 
-      // 点击外部关闭
+      // 点击页面其他区域关闭
       document.addEventListener('click', () => {
         if (mobileSidebar.classList.contains('active')) {
           hamburger.classList.remove('active');
@@ -112,45 +156,35 @@ window.loadHeaderPromise = (async () => {
       });
     }
 
-    // ========== 修复：更多下拉菜单 ==========
+    // ========== 移动端下拉菜单（更多） ==========
     function initMobileDropdowns() {
-      // 等待 DOM 稳定
       setTimeout(() => {
         const items = document.querySelectorAll('[data-mobile-dropdown]');
-        console.log('找到 data-mobile-dropdown 元素:', items.length); // 调试
-
         items.forEach(item => {
           item.addEventListener('click', function (e) {
-            e.stopPropagation(); // 阻止关闭侧边栏
+            e.stopPropagation();
 
             const submenuName = this.dataset.mobileDropdown;
             const submenu = document.querySelector(`[data-submenu="${submenuName}"]`);
+            if (!submenu) return;
 
-            if (!submenu) {
-              console.warn(`未找到 submenu: ${submenuName}`);
-              return;
-            }
-
-            // 切换显示
             const isActive = submenu.classList.toggle('active');
-
-            // 更新箭头
-            const span = this.querySelector('span');
-            if (span) {
-              span.textContent = isActive ? '▲' : '▼';
+            const arrowSpan = this.querySelector('span[data-arrow]');
+            if (arrowSpan) {
+              arrowSpan.textContent = isActive ? '▲' : '▼';
             }
           });
         });
-      }, 100); // 确保 DOM 已插入
+      }, 100);
     }
 
-    // 绑定按钮
+    // ========== 绑定按钮事件 ==========
     document.getElementById('login-btn')?.addEventListener('click', gotoLogin);
     document.getElementById('mobile-login-btn')?.addEventListener('click', gotoLogin);
 
     // ========== 初始化 ==========
     loadUserInfo();
-    initMobileDropdowns(); // ✅ 修复后调用
+    initMobileDropdowns();
 
   } catch (err) {
     console.error('❌ 加载 header 出错:', err);

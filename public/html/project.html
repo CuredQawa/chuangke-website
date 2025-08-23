@@ -1,10 +1,10 @@
-<!-- document.html -->
+<!-- html/project.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>文档-创客社</title>
+  <title>项目-创客社</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/font/iconfont.css">
   <link rel="stylesheet" href="../css/index.css">
@@ -19,28 +19,28 @@
   <!-- 导航栏 -->
   <script src="../js/load-header.js"></script>
 
-  <!-- 管理文档按钮 -->
-  <button id="manage-docs-btn" class="button is-success is-medium is-fixed-bottom-right is-perple"
-    style="display: none;" onclick="gotoManageDocs()">
+  <!-- 管理项目按钮 -->
+  <button id="manage-projects-btn" class="button is-success is-medium is-fixed-bottom-right is-perple"
+    style="display: none;" onclick="gotoManageProjects()">
     <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
   </button>
 
   <br>
 
   <section class="container">
-    <h1 class="title has-text-centered">📘 文档中心</h1>
+    <h1 class="title has-text-centered">🚀 项目中心</h1>
     <div class="columns">
       <div class="column is-one-third menu-column">
         <aside class="menu">
-          <p class="menu-label">文档列表</p>
-          <ul class="menu-list" id="doc-menu">
+          <p class="menu-label">项目列表</p>
+          <ul class="menu-list" id="project-menu">
             <li><a>加载中...</a></li>
           </ul>
         </aside>
       </div>
       <div class="column">
         <div id="content">
-          <p>请选择左侧文档以查看内容。</p>
+          <p>请选择左侧项目以查看内容。</p>
         </div>
       </div>
     </div>
@@ -49,21 +49,21 @@
   <br><br><br><br>
 
   <script>
-    let docs = [];
-    let currentDoc = null;
+    let projects = [];
+    let currentProject = null;
 
     function extractTitle(mdText) {
       const match = mdText.trim().match(/^#\s+(.+)$/m);
-      return match ? match[1].trim() : '未命名文档';
+      return match ? match[1].trim() : '未命名项目';
     }
 
-    async function loadDocument(id, index) {
-      const menuItems = document.querySelectorAll('#doc-menu a');
+    async function loadProject(id, index) {
+      const menuItems = document.querySelectorAll('#project-menu a');
       menuItems.forEach(item => item.classList.remove('is-active'));
       if (menuItems[index]) menuItems[index].classList.add('is-active');
 
       try {
-        const res = await fetch(`/api/doc/${id}`);
+        const res = await fetch(`/api/project/${id}`);
         const data = await res.json();
         document.getElementById('content').innerHTML = `
           <h2 class="title">${data.title}</h2>
@@ -73,8 +73,8 @@
           <p class="administrator">By&nbsp;&nbsp;<a class="strong" href="mailto:${data.author.email}" title="给${data.author.graduation_year}届的 ${data.author?.username || '未知用户'} 发邮件">${data.author?.username || '未知用户'}</a></p>
           <p class="date">${new Date(data.datetime).toLocaleString()}</p>
         `;
-        history.pushState(null, '', `?doc=${id}`);
-        currentDoc = id;
+        history.pushState(null, '', `?project=${id}`);
+        currentProject = id;
       } catch (err) {
         document.getElementById('content').innerHTML = `
           <div class="notification is-danger">加载失败：${err.message}</div>
@@ -82,36 +82,36 @@
       }
     }
 
-    async function fetchDocsList() {
+    async function fetchProjectsList() {
       try {
-        const res = await fetch('/api/docs');
-        docs = await res.json();
-        if (docs.length === 0) {
-          document.getElementById('doc-menu').innerHTML = '<li><a>暂无文档</a></li>';
+        const res = await fetch('/api/projects');
+        projects = await res.json();
+        if (projects.length === 0) {
+          document.getElementById('project-menu').innerHTML = '<li><a>暂无项目</a></li>';
           return;
         }
-        const menuEl = document.getElementById('doc-menu');
+        const menuEl = document.getElementById('project-menu');
         menuEl.innerHTML = '';
-        docs.forEach((doc, index) => {
+        projects.forEach((project, index) => {
           const a = document.createElement('a');
           a.href = '#';
-          a.textContent = doc.title;
+          a.textContent = project.title;
           a.addEventListener('click', (e) => {
             e.preventDefault();
-            loadDocument(doc.id, index);
+            loadProject(project.id, index);
           });
           const li = document.createElement('li');
           li.appendChild(a);
           menuEl.appendChild(li);
         });
         const urlParams = new URLSearchParams(window.location.search);
-        const docId = urlParams.get('doc');
-        const index = docs.findIndex(d => d.id == docId);
+        const projectId = urlParams.get('project');
+        const index = projects.findIndex(p => p.id == projectId);
         const loadIndex = index >= 0 ? index : 0;
-        loadDocument(docs[loadIndex].id, loadIndex);
+        loadProject(projects[loadIndex].id, loadIndex);
       } catch (err) {
-        console.error('加载文档列表失败', err);
-        document.getElementById('doc-menu').innerHTML = '<li><a>加载失败</a></li>';
+        console.error('加载项目列表失败', err);
+        document.getElementById('project-menu').innerHTML = '<li><a>加载失败</a></li>';
       }
     }
 
@@ -119,26 +119,26 @@
       try {
         const res = await fetch('/api/account', { credentials: 'include' });
         if (res.ok) {
-          document.getElementById('manage-docs-btn').style.display = 'inline-block';
+          document.getElementById('manage-projects-btn').style.display = 'inline-block';
         }
       } catch (err) {
         console.error('检查登录状态失败', err);
       }
     }
 
-    function gotoManageDocs() {
-      window.location.href = '/html/manage-docs.html';
+    function gotoManageProjects() {
+      window.location.href = '/html/manage-projects.html';
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
       await checkLogin();
-      fetchDocsList();
+      fetchProjectsList();
       window.addEventListener('popstate', () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const docId = urlParams.get('doc');
-        const index = docs.findIndex(d => d.id == docId);
-        if (index >= 0 && docId !== currentDoc) {
-          loadDocument(docId, index);
+        const projectId = urlParams.get('project');
+        const index = projects.findIndex(p => p.id == projectId);
+        if (index >= 0 && projectId !== currentProject) {
+          loadProject(projectId, index);
         }
       });
     });

@@ -1,10 +1,10 @@
-<!-- html/manage-docs.html -->
+<!-- html/manage-projects.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>管理文档 - 湛江一中创客社</title>
+  <title>管理项目 - 湛江一中创客社</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/font/iconfont.css">
   <link rel="stylesheet" href="../css/index.css">
@@ -15,17 +15,17 @@
     .container {
       padding: 2rem;
     }
-    .doc-item {
+    .project-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem;
       border-bottom: 1px solid #eee;
     }
-    .doc-info {
+    .project-info {
       flex: 1;
     }
-    .doc-actions {
+    .project-actions {
       display: flex;
       gap: 0.5rem;
     }
@@ -43,10 +43,10 @@
   <script src="../js/load-header.js"></script>
 
   <section class="container">
-    <h1 class="title">管理文档</h1>
-    <p class="subtitle">创建、编辑、删除你的文档</p>
-    <button class="button is-success mb-4" onclick="createNewDoc()">➕ 新建文档</button>
-    <div id="docs-list">
+    <h1 class="title">管理项目</h1>
+    <p class="subtitle">创建、编辑、删除你的项目</p>
+    <button class="button is-success mb-4" onclick="createNewProject()">➕ 新建项目</button>
+    <div id="projects-list">
       <p>加载中...</p>
     </div>
   </section>
@@ -81,67 +81,67 @@
       }
     }
 
-    async function loadDocs() {
+    async function loadProjects() {
       if (!currentUser) return;
       try {
-        const docsRes = await fetch('/api/docs');
-        if (!docsRes.ok) throw new Error('获取文档列表失败');
-        const docs = await docsRes.json();
-        const container = document.getElementById('docs-list');
+        const res = await fetch('/api/projects');
+        if (!res.ok) throw new Error('获取项目列表失败');
+        const projects = await res.json();
+        const container = document.getElementById('projects-list');
         container.innerHTML = '';
-        if (docs.length === 0) {
-          container.innerHTML = '<p>暂无文档</p>';
+        if (projects.length === 0) {
+          container.innerHTML = '<p>暂无项目</p>';
           return;
         }
-        docs.forEach(doc => {
-          const isOwner = Number(doc.author_id) === Number(currentUser.id);
+        projects.forEach(project => {
+          const isOwner = Number(project.author_id) === Number(currentUser.id);
           const canEdit = isOwner || currentUser.role === 'admin';
-          const titleEscaped = escapeHtml(doc.title);
-          const authorName = escapeHtml(doc.author?.username || '未知用户');
-          const authorEmail = doc.author.email;
-          const authorGraduationYear = doc.author.graduation_year;
+          const titleEscaped = escapeHtml(project.title);
+          const authorName = escapeHtml(project.author?.username || '未知用户');
+          const authorEmail = project.author.email;
+          const authorGraduationYear = project.author.graduation_year;
           const div = document.createElement('div');
-          div.className = 'doc-item';
+          div.className = 'project-item';
           div.innerHTML = `
-            <div class="doc-info">
+            <div class="project-info">
               <strong>${titleEscaped}</strong>
               <br/>
               <small>By&nbsp;&nbsp;<a class="strong" href="mailto:${authorEmail}" title="给${authorGraduationYear}届的 ${authorName} 发邮件">${authorName}</a></small>
             </div>
-            <div class="doc-actions">
+            <div class="project-actions">
               <button class="button is-small is-warning ${canEdit ? '' : 'is-static'}" 
                       ${canEdit ? '' : 'disabled'} 
-                      onclick="editDoc(${doc.id})">编辑</button>
+                      onclick="editProject(${project.id})">编辑</button>
               <button class="button is-small is-danger ${canEdit ? '' : 'is-static'}" 
                       ${canEdit ? '' : 'disabled'} 
-                      onclick="deleteDoc(${doc.id}, '${titleEscaped}')">删除</button>
+                      onclick="deleteProject(${project.id}, '${titleEscaped}')">删除</button>
             </div>
           `;
           container.appendChild(div);
         });
       } catch (err) {
-        document.getElementById('docs-list').innerHTML = `<p>加载失败：${escapeHtml(err.message)}</p>`;
+        document.getElementById('projects-list').innerHTML = `<p>加载失败：${escapeHtml(err.message)}</p>`;
       }
     }
 
-    function createNewDoc() {
-      window.location.href = '/html/edit-doc.html?new=1';
+    function createNewProject() {
+      window.location.href = '/html/edit-project.html?new=1';
     }
 
-    function editDoc(id) {
-      window.location.href = `/html/edit-doc.html?id=${id}`;
+    function editProject(id) {
+      window.location.href = `/html/edit-project.html?id=${id}`;
     }
 
-    async function deleteDoc(id, title) {
-      if (!confirm(`确定要删除文档《${title}》吗？`)) return;
+    async function deleteProject(id, title) {
+      if (!confirm(`确定要删除项目《${title}》吗？`)) return;
       try {
-        const res = await fetch(`/api/doc/${id}`, {
+        const res = await fetch(`/api/project/${id}`, {
           method: 'DELETE',
           credentials: 'include'
         });
         if (res.ok) {
           alert('删除成功');
-          loadDocs();
+          loadProjects();
         } else {
           const data = await res.json();
           alert(data.message || '删除失败');
@@ -154,7 +154,7 @@
     (async () => {
       const isLoggedIn = await checkLogin();
       if (isLoggedIn) {
-        await loadDocs();
+        await loadProjects();
       }
     })();
   </script>
