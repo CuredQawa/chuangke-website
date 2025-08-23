@@ -27,3 +27,18 @@
     font-weight: 700;
     margin: auto;
 }
+
+/* 按钮样式 */
+.is-fixed-bottom-right {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+.is-perple{
+    background-color: rgb(166, 84, 241);
+    color: black;
+}
+.icon-xitongguanli{
+    color: aliceblue;
+}

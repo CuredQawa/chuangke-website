@@ -26,7 +26,7 @@
       padding: 1.5rem;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background: var(--card-bg, #f9f9f9);
+      background: var(--card-bg);
     }
 
     .image-list {
@@ -40,14 +40,14 @@
       border-radius: 8px;
       border-left: 4px solid #a654f1;
       margin-bottom: 0.8rem;
-      background: var(--item-bg, #f9f9f9);
+      background: var(--item-bg);
       transition: all 0.2s ease;
     }
 
     .image-item:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background: var(--hover-bg, #eee);
+      background: var(--hover-bg);
     }
 
     .image-header {
@@ -144,9 +144,9 @@
             <label class="file-label">
               <input class="file-input" type="file" name="image" accept="image/*" required>
               <span class="file-cta">
-                <span class="file-icon">
+                <!-- <span class="file-icon">
                   <i class="iconfont icon-image"></i>
-                </span>
+                </span> -->
                 <span class="file-label">选择图片文件</span>
               </span>
             </label>

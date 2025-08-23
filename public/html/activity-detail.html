@@ -1,0 +1,74 @@
+<!-- html/activity-detail.html -->
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>活动详情 - 湛江一中创客社</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="../css/font/iconfont.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/document.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <script src="../js/theme-change.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
+  <style>
+    .container {
+      padding: 2rem;
+    }
+    .back-link {
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <script src="../js/load-header.js"></script>
+
+  <section class="container">
+    <a href="/html/activity.html" class="back-link">&larr; 返回活动首页</a>
+    <div id="content">
+      <p>加载中...</p>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <script src="../js/load-footer.js"></script>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    async function loadActivity() {
+      if (!id) {
+        document.getElementById('content').innerHTML = '<div class="notification is-danger">无效的活动ID</div>';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/activity/${id}`);
+        if (!res.ok) throw new Error('活动不存在');
+
+        const data = await res.json();
+        document.getElementById('content').innerHTML = `
+          <h1 class="title">${data.title}</h1>
+          <hr/>
+          <div class="content">${marked.parse(data.content)}</div>
+          <hr/>
+          <p class="administrator">By&nbsp;&nbsp;<a class="strong" href="mailto:${data.author.email}">${data.author.username}</a></p>
+          <p class="date">${new Date(data.datetime).toLocaleString()}</p>
+        `;
+      } catch (err) {
+        document.getElementById('content').innerHTML = `
+          <div class="notification is-danger">加载失败：${err.message}</div>
+        `;
+      }
+    }
+
+    loadActivity();
+  </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!-- html/edit-activity.html -->
+<!DOCTYPE html>
+<html lang="zh" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编辑活动 - 湛江一中创客社</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="../css/font/iconfont.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <script src="../js/theme-change.js"></script>
+  <style>
+    .container {
+      padding: 2rem;
+    }
+    .editor-container {
+      display: flex;
+      gap: 2rem;
+      height: calc(100vh - 120px);
+    }
+    .editor-left,
+    .editor-right {
+      flex: 1;
+      padding: 1rem;
+    }
+    #content-input {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      resize: none;
+    }
+    #preview {
+      height: 100%;
+      overflow-y: auto;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .field {
+      margin-bottom: 1rem;
+    }
+    .mt-4 {
+      padding: 1rem;
+      display: flex;
+      justify-content: end;
+      gap: 1rem;
+    }
+    [data-theme=light],
+    .theme-light {
+      #content-input {
+        background: #eee;
+      }
+      #preview {
+        background: #eee;
+      }
+    }
+    [data-theme=dark],
+    .theme-dark {
+      #content-input {
+        color: #eee;
+        background: #3a3a3a;
+      }
+      #preview {
+        background: #3a3a3a;
+      }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <script src="../js/load-header.js"></script>
+
+  <div class="container">
+    <h1 class="title" id="page-title">新建活动</h1>
+    <form id="activity-form">
+      <div class="field">
+        <label class="label">活动标题</label>
+        <div class="control">
+          <input class="input" type="text" id="title-input" required>
+        </div>
+      </div>
+      <div class="editor-container">
+        <div class="editor-left">
+          <label class="label">Markdown 原文</label>
+          <textarea id="content-input" placeholder="输入 Markdown 内容..."></textarea>
+        </div>
+        <div class="editor-right">
+          <label class="label">预览</label>
+          <div id="preview"></div>
+        </div>
+      </div>
+      <div class="field mt-4">
+        <button type="submit" class="button is-success">提交</button>
+        <a href="/html/manage-activities.html" class="button is-light">取消</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- 页脚 -->
+  <script src="../js/load-footer.js"></script>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const activityId = urlParams.get('id');
+    const isNew = urlParams.get('new');
+    const form = document.getElementById('activity-form');
+    const titleInput = document.getElementById('title-input');
+    const contentInput = document.getElementById('content-input');
+    const preview = document.getElementById('preview');
+    const pageTitle = document.getElementById('page-title');
+
+    // 实时预览 + 提取头图
+    function updatePreview() {
+      const content = contentInput.value;
+      preview.innerHTML = marked.parse(content);
+
+      // 提取第一张图片 URL
+      const imgMatch = content.match(/!\[.*?\]\((.*?)\)/);
+      const cover_image_url = imgMatch ? imgMatch[1].trim() : null;
+      window.currentCoverImageUrl = cover_image_url;
+    }
+
+    contentInput.addEventListener('input', updatePreview);
+
+    // 提交活动
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = titleInput.value.trim();
+      const content = contentInput.value;
+
+      if (!title) {
+        alert('请输入标题');
+        return;
+      }
+
+      if (!content.trim()) {
+        alert('内容不能为空');
+        return;
+      }
+
+      // 提取第一张图片作为 cover_image_url
+      const imgMatch = content.match(/!\[.*?\]\((.*?)\)/);
+      const cover_image_url = imgMatch ? imgMatch[1].trim() : null;
+
+      const data = {
+        title,
+        content,
+        cover_image_url  // ✅ 提交头图 URL
+      };
+
+      let url, method;
+      if (isNew) {
+        url = '/api/activity';           // POST /api/activity
+        method = 'POST';
+      } else {
+        url = `/api/activity/${activityId}`;  // PUT /api/activity/:id
+        method = 'PUT';
+      }
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+          credentials: 'include'
+        });
+
+        if (res.ok) {
+          alert(isNew ? '活动创建成功' : '活动更新成功');
+          window.location.href = '/html/manage-activities.html';
+        } else {
+          const err = await res.json();
+          alert('❌ ' + (err.message || '操作失败'));
+        }
+      } catch (err) {
+        alert('❌ 网络错误，提交失败：' + err.message);
+      }
+    });
+
+    // 加载活动（编辑模式）
+    async function loadActivity() {
+      if (!activityId) return;
+      try {
+        const res = await fetch(`/api/activity/${activityId}`);
+        const data = await res.json();
+        titleInput.value = data.title;
+        contentInput.value = data.content;
+        updatePreview(); // 触发预览和头图提取
+        pageTitle.textContent = `编辑活动：${data.title}`;
+      } catch (err) {
+        alert('加载活动失败');
+        window.location.href = '/html/manage-activities.html';
+      }
+    }
+
+    // 初始化
+    (async () => {
+      if (activityId) {
+        await loadActivity();
+      } else if (isNew) {
+        contentInput.value = '# 新活动\n请输入内容...';
+        updatePreview();
+      } else {
+        window.location.href = '/html/manage-activities.html';
+      }
+    })();
+  </script>
+
+</body>
+</html>
