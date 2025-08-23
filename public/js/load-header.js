@@ -22,16 +22,12 @@ window.loadHeaderPromise = (async () => {
       console.error('⚠️ header.html 中应包含 <header> 根标签');
     }
 
-    // ========== 新增：初始化导航逻辑 ==========
     const currentPage = window.location.href;
 
-    // 获取用户信息
+    // ========== 获取用户信息 ==========
     async function loadUserInfo() {
       try {
-        const res = await fetch('/api/account', {
-          credentials: 'include'
-        });
-
+        const res = await fetch('/api/account', { credentials: 'include' });
         if (res.ok) {
           const user = await res.json();
           document.getElementById('username').textContent = user.username;
@@ -48,14 +44,10 @@ window.loadHeaderPromise = (async () => {
           document.getElementById('mobile-login-btn').style.display = 'none';
           document.getElementById('logout-btn').style.display = 'inline-block';
           document.getElementById('mobile-logout-btn').style.display = 'block';
-          
-          // 显示管理账户按钮（仅管理员）
-          if (user.role === 'admin') {
-            document.getElementById('manage-accounts-btn').style.display = 'inline-block';
-          } else {
-            document.getElementById('manage-accounts-btn').style.display = 'none';
-          }
 
+          const show = user.role === 'admin' ? 'inline-block' : 'none';
+          document.getElementById('manage-accounts-btn').style.display = show;
+          document.getElementById('mobile-manage-accounts-btn').style.display = show;
         } else {
           document.getElementById('login-btn').style.display = 'inline-block';
           document.getElementById('mobile-login-btn').style.display = 'block';
@@ -67,7 +59,7 @@ window.loadHeaderPromise = (async () => {
       }
     }
 
-    // 登出
+    // ========== 登出 ==========
     window.handleLogout = async function () {
       await fetch('/api/logout', {
         method: 'GET',
@@ -76,52 +68,89 @@ window.loadHeaderPromise = (async () => {
       location.reload();
     };
 
-    // 跳转登录
+    // ========== 跳转登录 ==========
     window.gotoLogin = function () {
       const returnTo = encodeURIComponent(currentPage);
       window.location.href = `/html/login.html?returnTo=${returnTo}`;
     };
 
-    // 跳转管理账号
+    // ========== 跳转管理账户 ==========
     window.gotoManageAccounts = function () {
       window.location.href = '/html/manage-accounts.html';
     };
 
-    // 移动端导航
+    // ========== 移动端导航 ==========
     window.navigateTo = function (url) {
       document.getElementById('mobileSidebar').classList.remove('active');
       document.getElementById('hamburger').classList.remove('active');
       window.location.href = url;
     };
 
-    // 汉堡菜单
+    // ========== 汉堡菜单逻辑 ==========
     const hamburger = document.getElementById('hamburger');
     const mobileSidebar = document.getElementById('mobileSidebar');
+
     if (hamburger && mobileSidebar) {
-      hamburger.addEventListener('click', () => {
+      // 汉堡按钮切换
+      hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
         hamburger.classList.toggle('active');
         mobileSidebar.classList.toggle('active');
       });
+
+      // 点击侧边栏内部不关闭
+      mobileSidebar.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      // 点击外部关闭
+      document.addEventListener('click', () => {
+        if (mobileSidebar.classList.contains('active')) {
+          hamburger.classList.remove('active');
+          mobileSidebar.classList.remove('active');
+        }
+      });
     }
 
-    // 更多菜单切换
-    document.querySelectorAll('[data-mobile-dropdown]').forEach(item => {
-      item.addEventListener('click', () => {
-        const submenu = document.querySelector(`[data-submenu="${item.dataset.mobileDropdown}"]`);
-        submenu.classList.toggle('active');
-        const span = item.querySelector('span');
-        span.textContent = submenu.classList.contains('active') ? '▲' : '▼';
-      });
-    });
+    // ========== 修复：更多下拉菜单 ==========
+    function initMobileDropdowns() {
+      // 等待 DOM 稳定
+      setTimeout(() => {
+        const items = document.querySelectorAll('[data-mobile-dropdown]');
+        console.log('找到 data-mobile-dropdown 元素:', items.length); // 调试
 
-    // 绑定登录按钮
+        items.forEach(item => {
+          item.addEventListener('click', function (e) {
+            e.stopPropagation(); // 阻止关闭侧边栏
+
+            const submenuName = this.dataset.mobileDropdown;
+            const submenu = document.querySelector(`[data-submenu="${submenuName}"]`);
+
+            if (!submenu) {
+              console.warn(`未找到 submenu: ${submenuName}`);
+              return;
+            }
+
+            // 切换显示
+            const isActive = submenu.classList.toggle('active');
+
+            // 更新箭头
+            const span = this.querySelector('span');
+            if (span) {
+              span.textContent = isActive ? '▲' : '▼';
+            }
+          });
+        });
+      }, 100); // 确保 DOM 已插入
+    }
+
+    // 绑定按钮
     document.getElementById('login-btn')?.addEventListener('click', gotoLogin);
     document.getElementById('mobile-login-btn')?.addEventListener('click', gotoLogin);
 
-    // 加载用户信息
+    // ========== 初始化 ==========
     loadUserInfo();
-
-    
+    initMobileDropdowns(); // ✅ 修复后调用
 
   } catch (err) {
     console.error('❌ 加载 header 出错:', err);

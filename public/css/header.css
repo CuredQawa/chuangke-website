@@ -1,6 +1,6 @@
 /* header的样式 */
 .header {
-    /* position: relative; */
+    position: relative; /* 让汉堡绝对定位 */
     display: flex;
     justify-content: space-between;
     height: 15vh;
@@ -11,17 +11,6 @@
     border-bottom: 4px solid rgb(166, 84, 241);
     z-index: 20;
 }
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    flex: 1;
-}
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
 
 /* -----------------------左侧部分------------------------ */
 
@@ -29,26 +18,29 @@
 .icon-rocket {
     font-size: 40px;
     color: rgb(166, 84, 241);
-    /* 主图标火箭logo的类名 */
 }
+
 .s1 {
     font-size: 40px;
     font-weight: 700;
     margin: 0 5px;
-    /* s1是主图标“湛江一中创客社”的类名 */
 }
 
 /* ----------header左侧区域B部分:导航栏---------- */
-.navbar-menu {
+.navbar-desktop {
     margin-left: 10px;
-    /* 把导航项和图标分开30px */
 }
 
-/* header a {height: 8vh;} */
+.navbar-menu {
+    margin-left: 10px;
+}
 
-.main-icon-a {min-width: 330px;overflow: hidden;}
+.main-icon-a {
+    min-width: 330px;
+    overflow: hidden;
+}
 
-/* 导航项目样式,即 item 的样式 */
+/* 导航项目样式 */
 .navbar-item {
     border-radius: 20px;
 }
@@ -57,176 +49,106 @@
     transform: scale(1.1);
 }
 
-.icon-gonggao09 {
-    color: rgb(185, 185, 185);
-}
+.icon-gonggao09 { color: rgb(185, 185, 185); }
+.a-anounce:hover { background-color: rgba(185, 185, 185, 0.2); }
 
-.a-anounce:hover {
-    background-color: rgba(185, 185, 185, 0.2);
-}
+.icon-a-lujing37238 { color: rgb(88, 169, 240); }
+.a-rule:hover { background-color: rgb(88, 169, 240, 0.2); }
 
-.icon-a-lujing37238 {
-    color: rgb(88, 169, 240);
-}
+.icon-terminal-box-fill { color: rgb(252, 144, 144); }
+.a-kaifa:hover { background-color: rgb(252, 144, 144, 0.2); }
 
-.a-rule:hover {
-    background-color: rgb(88, 169, 240, 0.2);
-}
+.icon-renminbi1 { color: rgb(85, 241, 202); }
+.a-serve:hover { background-color: rgb(85, 241, 202, 0.2); }
 
-.icon-xunzhang {
-    color: rgb(223, 226, 58);
-}
+.icon-huodong { color: rgb(240, 137, 40); }
+.a-activity:hover { background-color: rgb(240, 137, 40, 0.2); }
 
-.a-prize:hover {
-    background-color: rgb(223, 226, 58, 0.2);
-}
-
-.icon-terminal-box-fill {
-    color: rgb(252, 144, 144);
-}
-
-.a-kaifa:hover {
-    background-color: rgb(252, 144, 144, 0.2);
-}
-
-.icon-renminbi1 {
-    color: rgb(85, 241, 202);
-}
-
-.a-serve:hover {
-    background-color: rgb(85, 241, 202, 0.2);
-}
-
-.icon-huodong {
-    color: rgb(240, 137, 40);
-}
-
-.a-activity:hover {
-    background-color: rgb(240, 137, 40, 0.2);
-}
-
-.icon-name {
-    font-weight: 700;
-}
-
-.navbar-link {
-    border-radius: 20px;
-}
-
+.icon-name { font-weight: 700; }
+.navbar-link { border-radius: 20px; }
 
 /* -----------------------右侧部分------------------------ */
 
-/* ----------header右侧区域A部分:主题切换---------- */
-/* 为整个页面添加主题切换过渡动画 */
-* {
-    transition: all 0.3s ease !important;
-}
-/* 主题和语言切换按钮的样式 */
+/* 主题切换按钮 */
 .theme-switch {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     border: none;
 }
+
 .icon-ai250 {
     font-size: xx-large;
     font-weight: 500;
-    /* 小太阳图标的样式 */
-}
-.icon-yueliang {
-    font-size: x-large;
-    font-weight: 500;
-    /* 月亮图标的样式 */
 }
 
-/* .lang-switch {
-    width: 40px;
-    height: 40px;
-    border: none;
-    没实现的语言切换选项
-} */
-
-/* 汉堡的样式 */
-/* .burgerdiv {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    text-align: center;
-}
-
-.burgerbutton {
-    width: 90%;
-    border-radius: 15px;
-}
-
-#burgerfloat {
-    margin-left: auto;
-} */
-
-
-/* 登陆按钮 */
-#login-btn{
+/* 登录按钮 */
+#login-btn {
     height: 6vh;
     border-radius: 3vh;
     font-size: medium;
     border: none;
 }
-  
 
-  
-  /* ========== 用户信息样式 ========== */
-  .user-info {
+/* 用户信息样式 */
+.user-info {
     display: flex;
     align-items: center;
     gap: 8px;
     font-weight: 500;
-  }
-  
-  .role-tag {
+}
+
+.role-tag {
     padding: 2px 8px;
     border-radius: 12px;
     font-size: 0.75em;
     font-weight: bold;
-  }
-  
-  .role-tag.user { background: #4CAF50; color: white; }
-  .role-tag.admin { background: #F44336; color: white; }
-  
-  /* ========== 汉堡菜单 ========== */
-  .hamburger {
+}
+
+.role-tag.user { background: #4CAF50; color: white; }
+.role-tag.admin { background: #F44336; color: white; }
+
+/* ========== 汉堡菜单 ========== */
+.hamburger {
     display: none;
     flex-direction: column;
     gap: 5px;
     width: 30px;
     height: 21px;
     cursor: pointer;
-  }
-  
-  .hamburger span {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+}
+
+.hamburger span {
     display: block;
     height: 3px;
-    background: #111;
+    background: rgb(166, 84, 241);
+    /* 汉堡线颜色 */
     border-radius: 3px;
     transition: all 0.3s ease;
-  }
-  
-  .hamburger.active span:nth-child(1) {
+}
+
+.hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 7px);
-  }
-  .hamburger.active span:nth-child(2) {
+}
+.hamburger.active span:nth-child(2) {
     opacity: 0;
-  }
-  .hamburger.active span:nth-child(3) {
+}
+.hamburger.active span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -7px);
-  }
-  
-  /* ========== 移动端侧边栏 ========== */
-  .mobile-sidebar {
+}
+
+/* ========== 移动端侧边栏 ========== */
+.mobile-sidebar {
     position: fixed;
     top: 0;
     right: 0;
     width: 300px;
     height: 100vh;
-    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(24px);
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
@@ -234,157 +156,139 @@
     z-index: 1100;
     padding: 3.5rem 1.5rem 2rem;
     overflow-y: auto;
-  }
-  
-  .mobile-sidebar.active {
+    display: none;
+}
+
+.mobile-sidebar.active {
     transform: translateX(0);
-  }
-  
-  .mobile-sidebar-item {
+    display: block;
+}
+
+.mobile-sidebar-item {
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
     font-weight: 500;
-    color: #111;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .mobile-sidebar-item:hover {
-    background: #f3f4f6;
-  }
-  
-  .mobile-sidebar-submenu {
+}
+
+
+.mobile-sidebar-submenu {
     margin-top: 0.5rem;
     padding: 1rem;
-    background: #f9fafb;
     border-radius: 0.5rem;
     display: none;
-  }
-  
-  .mobile-sidebar-submenu a {
+}
+.mobile-sidebar-submenu.active {
+    display: block; /* 激活时显示 */
+}
+
+.mobile-sidebar-submenu a {
     display: block;
     padding: 0.5rem 0;
-    color: #555;
     font-size: 0.9rem;
-  }
-  
-  .mobile-user-section {
+}
+
+.mobile-user-section {
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid #eee;
-  }
-  
-  /* ========== 响应式：移动端显示汉堡菜单 ========== */
-  @media (max-width: 768px) {
-    .hamburger {
+}
+
+/* ========== 响应式控制 ========== */
+
+/* 桌面端：1330px 及以上 */
+@media (min-width: 1330px) {
+    .header-left {
       display: flex;
+      align-items: center;
+      margin-left: 30px;
     }
-    .header-left, .header-right {
+    .header-right {
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
-    /* 隐藏桌面导航栏以避免冲突 */
-    .navbar-menu {
+    .navbar-desktop {
+      display: block !important;
+    }
+    .hamburger {
+      display: none !important;
+    }
+    .mobile-sidebar {
+      display: none !important;
+    }
+  }
+  
+  /* 移动端：1329px 及以下 */
+  @media (max-width: 1329px) {
+    /* 隐藏桌面导航和右侧信息 */
+    .header-left,
+    .header-right {
+      display: none !important;
+    }
+    .navbar-desktop {
+      display: none !important;
+    }
+  
+    /* 显示汉堡按钮 */
+    .hamburger {
+      display: flex !important;
+    }
+  
+    /* 侧边栏默认隐藏，激活时显示 */
+    .mobile-sidebar {
       display: none;
+    }
+    .mobile-sidebar.active {
+      display: block;
+    }
+  
+    /* Logo 始终可见，向左靠 */
+    .main-icon-a {
+      margin-right: auto;
+      z-index: 10;
     }
   }
 
-
-
-
-
-
-  
 /* 深浅转换 */
 [data-theme=light],
 .theme-light {
-    .icon-name {
-        color: #202020;
-    }
-
-    .s1 {
-        color: #202020;
-    }
-
-    .is-risecolor {
-        background-color: #f5f5f5;
-    }
-
-    .theme-switch {
-        background-color: #f5f5f5;
-    }
-
-    .theme-switch:hover {
-        background-color: #7c7c7c46;
-    }
-
-    .navbar {
-        background-color: transparent;
-    }
-
-    .navbar-item {
-        background-color: transparent;
-    }
-
-    .footerlink-button {
-        background-color: rgb(191, 124, 253);
-    }
-
-    .ga {
-        color: #6e6e6e;
-        font-weight: 500;
-    }
-
-    .ga:hover {
-        color: rgb(144, 35, 247);
-        font-weight: 700;
-    }
-
+    .icon-name { color: #202020; }
+    .s1 { color: #202020; }
+    .is-risecolor { background-color: #f5f5f5; }
+    .theme-switch { background-color: #f5f5f5; }
+    .theme-switch:hover { background-color: #7c7c7c46; }
+    .navbar { background-color: transparent; }
+    .navbar-item { background-color: transparent; }
+    .footerlink-button { background-color: rgb(191, 124, 253); }
+    .ga { color: #6e6e6e; font-weight: 500; }
+    .ga:hover { color: rgb(144, 35, 247); font-weight: 700; }
+    .mobile-sidebar{background: rgba(255, 255, 255, 0.95);}
+    .mobile-sidebar-item{color: #202020;}
+    .mobile-sidebar-submenu{background: rgba(255, 255, 255, 0.95);}
+    .mobile-sidebar-submenu a {color: #202020;}
+    .mobile-sidebar-item:hover {background: #1f1f1f25;}
 }
 
 /* 深色模式 */
 [data-theme=dark],
 .theme-dark {
-    .icon-name {
-        color: aliceblue;
-    }
-
-    .s1 {
-        color: aliceblue;
-    }
-
-    .is-risecolor {
-        background-color: #202020;
-    }
-
-    .theme-switch {
-        background-color: #202020;
-    }
-
-    .theme-switch:hover {
-        background-color: #7c7c7c46;
-    }
-
-    .navbar {
-        background-color: transparent;
-    }
-
-    .navbar-item {
-        background-color: transparent;
-    }
-
-    .footerlink-button {
-        background-color: rgb(166, 84, 241);
-    }
-
-    .ga {
-        color: #aaaaaa;
-        font-weight: 500;
-    }
-
-    .ga:hover {
-        color: rgb(166, 84, 241);
-        font-weight: 700;
-    }
+    .icon-name { color: aliceblue; }
+    .s1 { color: aliceblue; }
+    .is-risecolor { background-color: #202020; }
+    .theme-switch { background-color: #202020; }
+    .theme-switch:hover { background-color: #7c7c7c46; }
+    .navbar { background-color: transparent; }
+    .navbar-item { background-color: transparent; }
+    .footerlink-button { background-color: rgb(166, 84, 241); }
+    .ga { color: #aaaaaa; font-weight: 500; }
+    .ga:hover { color: rgb(166, 84, 241); font-weight: 700; }
+    .mobile-sidebar{background: rgba(51, 51, 51, 0.95);}
+    .mobile-sidebar-item{color: #eee;}
+    .mobile-sidebar-submenu{background: rgba(51, 51, 51, 0.95);}
+    .mobile-sidebar-submenu a {color: #eee;}
+    .mobile-sidebar-item:hover {background: #f3f4f63f;}
 }
