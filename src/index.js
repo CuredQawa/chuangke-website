@@ -1,3 +1,8 @@
+/**
+ * 应用程序入口文件
+ * 设置Express服务器并启动监听
+ */
+
 import express from 'express';
 import router from './router.js'
 import dbMiddleware from './middleware/database.js';
@@ -13,6 +18,9 @@ app.use(express.static("public"));
 app.use(cookieParser());
 app.use("/", router);
 
+/**
+ * 启动服务器并监听指定端口
+ */
 app.listen(RUNNING_PORT, () => {
     console.log(`Running on localhost:${RUNNING_PORT}`);
 })

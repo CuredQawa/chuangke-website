@@ -25,8 +25,10 @@ CREATE TABLE public.docs (
 	id serial4 NOT NULL,
 	title text NOT NULL,
 	"content" text NOT NULL,
-	"datetime" timestamp NOT NULL,
+	datetime timestamp NOT NULL,
 	author_id int4 NOT NULL,
+	category varchar(50) DEFAULT 'doc'::character varying NOT NULL,
+	cover_image_filename varchar NULL,
 	CONSTRAINT docs_pk PRIMARY KEY (id)
 );
 
@@ -44,4 +46,19 @@ CREATE TABLE public.accounts (
 	email varchar NOT NULL,
 	"role" varchar NOT NULL, -- 角色（用于权限控制）
 	CONSTRAINT accounts_pk PRIMARY KEY (id)
+);
+
+-- public.images definition
+
+-- Drop table
+
+-- DROP TABLE public.images;
+
+CREATE TABLE public.images (
+	id int4 DEFAULT nextval('files_id_seq'::regclass) NOT NULL,
+	filename varchar NOT NULL,
+	description varchar NOT NULL,
+	author_id int4 NOT NULL,
+	CONSTRAINT files_pk PRIMARY KEY (id),
+	CONSTRAINT files_unique UNIQUE (filename)
 );
