@@ -25,5 +25,4 @@ app.listen(RUNNING_PORT, () => {
     console.log(`Running on localhost:${RUNNING_PORT}`);
 })
 
-// TODO Projects & Activities & 编辑账户 页面 
-// TODO 注释 & API 文档
+// TODO 编辑账户页面
