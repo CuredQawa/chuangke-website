@@ -19,7 +19,7 @@ const router = express.Router();
 
 // 返回首页 HTML 文件
 router.get('/', (_, res) => {
-    res.redirect(301, '/html/home.html')
+    res.redirect(301, '/html/index.html')
 });
 
 // --------------------

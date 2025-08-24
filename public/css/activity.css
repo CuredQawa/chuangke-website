@@ -1,4 +1,4 @@
-.container-activity{
+.container-activity {
     /* background-color: aqua; */
     padding: 5vh 10%;
     display: flex;
@@ -6,7 +6,8 @@
     align-items: center;
     justify-content: center;
 }
-.activity-item{
+
+.activity-item {
     border-radius: 2em;
     /* background-color: rgb(78, 78, 78); */
     border: 4px solid rgb(166, 84, 241);
@@ -18,10 +19,12 @@
     flex-direction: column;
     align-items: center;
 }
-.activity-item:hover{
+
+.activity-item:hover {
     transform: scale(1.02);
 }
-.a-p{
+
+.a-p {
     color: rgb(166, 84, 241);
     font-size: x-large;
     font-weight: 700;
@@ -35,10 +38,12 @@
     right: 30px;
     z-index: 1000;
 }
-.is-perple{
+
+.is-purple {
     background-color: rgb(166, 84, 241);
     color: black;
 }
-.icon-xitongguanli{
+
+.icon-xitongguanli {
     color: aliceblue;
 }

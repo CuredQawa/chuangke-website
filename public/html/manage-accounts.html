@@ -91,7 +91,7 @@
     .modal-card-head {
       box-shadow: none;
     }
-    
+
     /* 模态框动画 */
     .modal {
       display: flex !important;
@@ -99,21 +99,21 @@
       visibility: hidden;
       transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    
+
     .modal.is-active {
       opacity: 1;
       visibility: visible;
     }
-    
+
     .modal-card {
       transform: scale(0.9);
       transition: transform 0.3s ease;
     }
-    
+
     .modal.is-active .modal-card {
       transform: scale(1);
     }
-    
+
     /* 增加按钮间距 */
     .modal-card-foot .button:not(:last-child) {
       margin-right: 0.5em;
@@ -374,19 +374,19 @@
       const password = document.getElementById('edit-password').value;
       const updatePassword = document.getElementById('edit-password-update').checked;
       const role = document.querySelector('input[name="edit-role"]:checked').value;
-      
-      const updateData = { 
-        username, 
-        email, 
-        graduation_year, 
-        role 
+
+      const updateData = {
+        username,
+        email,
+        graduation_year,
+        role
       };
-      
+
       // 只有当选中更新密码且密码不为空时才更新密码
       if (updatePassword && password && password.trim() !== '') {
         updateData.password = password;
       }
-      
+
       const saveRes = await fetch(`/api/account/${id}`, {
         method: 'PUT',
         headers: {
@@ -410,12 +410,12 @@
     function closeEditModal() {
       const modal = document.getElementById('editAccountModal');
       modal.classList.remove('is-active');
-      
+
       // 立即清除密码字段和复选框状态
       document.getElementById('edit-password').value = '';
       document.getElementById('edit-password-update').checked = false;
       document.getElementById('edit-password-field').style.display = 'none';
-      
+
       // 延迟清理表单，等待动画结束
       setTimeout(() => {
         if (!modal.classList.contains('is-active')) {
@@ -451,7 +451,7 @@
     });
 
     // 绑定密码更新复选框事件
-    document.getElementById('edit-password-update').addEventListener('change', function() {
+    document.getElementById('edit-password-update').addEventListener('change', function () {
       const passwordField = document.getElementById('edit-password-field');
       if (this.checked) {
         passwordField.style.display = 'block';

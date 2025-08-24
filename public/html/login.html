@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/font/iconfont.css">
   <link rel="stylesheet" href="../css/index.css">
+  <link rel="icon" type="image/png" href="../images/logo-alpha.png">
   <style>
     .login-container {
       min-height: 100vh;
@@ -31,13 +32,13 @@
       color: #a654f1;
     }
 
-    .title{
-        color: #333;
-        font-weight: 700;
+    .title {
+      color: #333;
+      font-weight: 700;
     }
 
-    .label{
-        color: #333;
+    .label {
+      color: #333;
     }
 
     .field {
@@ -100,7 +101,7 @@
 
       if (res.ok) {
         const urlParams = new URLSearchParams(window.location.search);
-        const returnTo = urlParams.get('returnTo') || '../home.html';
+        const returnTo = urlParams.get('returnTo') || '../index.html';
         window.location.href = decodeURIComponent(returnTo);
       } else {
         const data = await res.json();

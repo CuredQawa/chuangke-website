@@ -1,6 +1,7 @@
 <!-- html/activity.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,12 +30,17 @@
       gap: 2vw;
       overflow-x: auto;
       scroll-behavior: smooth;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE/Edge */
-      scroll-snap-type: x mandatory; /* 吸附对齐 */
+      scrollbar-width: none;
+      /* Firefox */
+      -ms-overflow-style: none;
+      /* IE/Edge */
+      scroll-snap-type: x mandatory;
+      /* 吸附对齐 */
     }
+
     .container-activity::-webkit-scrollbar {
-      display: none; /* Chrome/Safari */
+      display: none;
+      /* Chrome/Safari */
     }
 
     /* 活动卡片 */
@@ -50,16 +56,20 @@
       flex-direction: column;
       align-items: center;
       transition: transform 0.3s ease;
-      scroll-snap-align: start; /* 滚动吸附 */
+      scroll-snap-align: start;
+      /* 滚动吸附 */
     }
+
     .activity-item:hover {
       transform: scale(1.05);
     }
+
     .activity-item img {
       width: 100%;
       height: 70%;
       object-fit: cover;
     }
+
     .a-p {
       color: rgb(166, 84, 241);
       font-size: x-large;
@@ -87,25 +97,29 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
     }
+
     .scroll-btn:hover {
       background-color: #a654f1;
       transform: translateY(-50%) scale(1.1);
     }
+
     #scroll-left {
       left: 10px;
     }
+
     #scroll-right {
       right: 10px;
     }
   </style>
 </head>
+
 <body>
 
   <!-- 导航栏 -->
   <script src="../js/load-header.js"></script>
 
   <!-- 管理活动按钮 -->
-  <button id="manage-activities-btn" class="button is-success is-medium is-fixed-bottom-right is-perple"
+  <button id="manage-activities-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
     style="display: none;" onclick="gotoManageActivities()">
     <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
   </button>
@@ -166,7 +180,7 @@
           div.className = 'activity-item';
 
           const img = document.createElement('img');
-          img.src = activity.cover_image_url || '../images/default-activity.jpg';
+          img.src = activity.cover_image_url || '../images/placeholder.png';
           img.alt = activity.title;
           img.loading = 'lazy';
 
@@ -249,4 +263,5 @@
   <!-- 页脚 -->
   <script src="../js/load-footer.js"></script>
 </body>
+
 </html>

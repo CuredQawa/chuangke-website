@@ -1,10 +1,11 @@
-<!-- header.html -->
 <header class="header is-risecolor" style="transition: all 0.3s ease;">
 
   <!-- 主图标（始终显示） -->
-  <a class="main-icon-a" href="home.html">
-    <span class="iconfont icon-rocket"></span>
-    <span class="s1">湛江一中创客社</span>
+  <a class="main-icon-a" href="index.html">
+    <div class="logo-container">
+      <img src="../images/logo-alpha.png" alt="创客社Logo" class="header-logo">
+      <span class="s1">湛江一中创客社</span>
+    </div>
   </a>
 
   <!-- 左侧：桌面导航（仅桌面显示） -->
@@ -42,7 +43,7 @@
               <a class="navbar-item" href="about.html">关于</a>
               <a class="navbar-item" href="rules.html">规章制度</a>
               <a class="navbar-item" href="join.html">加入我们</a>
-              <hr class="navbar-divider">
+              <hr class="navbar-divider" />
               <a class="navbar-item" href="contact.html">联系我们</a>
             </div>
           </div>
@@ -58,14 +59,17 @@
     </button>
 
     <div id="user-info" class="user-info" style="display: none;">
-      <span id="username"></span>
+      <strong id="username"></strong>
       <span id="role" class="role-tag"></span>
     </div>
 
     <button id="login-btn" class="button is-small" style="display: none;">登录</button>
-    <button id="logout-btn" class="button is-small is-danger" style="display: none;" onclick="handleLogout()">登出</button>
-    <button id="manage-accounts-btn" class="button is-small is-warning" style="display: none;" onclick="gotoManageAccounts()">管理账户</button>
-    <button id="manage-images-btn" class="button is-small is-info" style="display: none;" onclick="gotoManageImages()">管理图片</button>
+    <button id="logout-btn" class="button is-small is-danger" style="display: none;"
+      onclick="handleLogout()">登出</button>
+    <button id="manage-accounts-btn" class="button is-small is-warning" style="display: none;"
+      onclick="gotoManageAccounts()">管理账户</button>
+    <button id="manage-images-btn" class="button is-small is-info" style="display: none;"
+      onclick="gotoManageImages()">管理图片</button>
   </div>
 
   <!-- 汉堡按钮（移动端） -->
@@ -78,24 +82,34 @@
   <!-- 移动端侧边栏 -->
   <div class="mobile-sidebar" id="mobileSidebar">
     <div id="mobile-user-section" style="margin-top: 1rem; padding: 0.5rem 0;">
-      <div id="mobile-user-info" style="display: none;">
-        <p style="text-align: center;"><strong>用户：</strong><span id="mobile-username"></span></p>
-        <p style="text-align: center;"><strong>身份：</strong><span id="mobile-role" class="role-tag"></span></p>
+      <div id="mobile-user-info" style="display: none; margin-bottom: 1rem;">
+        <p style="display: flex; justify-content: center; align-items: center; margin: 0;">
+          <span id="mobile-username" style="font-weight: bold;"></span>
+          <span style="margin-left: 8px;" id="mobile-role" class="role-tag"></span>
+        </p>
       </div>
-      <button id="mobile-login-btn" style="width: 100%; margin: 0.5rem 0;" onclick="gotoLogin()">登录</button>
-      <button id="mobile-logout-btn" style="width: 100%; margin: 0.5rem 0;" onclick="handleLogout()">登出</button>
-      <button id="mobile-manage-accounts-btn" style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageAccounts()">管理账户</button>
-      <button id="mobile-manage-images-btn" style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageImages()">管理图片</button>
+      <button id="mobile-login-btn" class="mobile-sidebar-item button" style="width: 100%; margin: 0.5rem 0;"
+        onclick="gotoLogin()">登录</button>
+      <button id="mobile-logout-btn" class="mobile-sidebar-item button is-danger" style="width: 100%; margin: 0.5rem 0;"
+        onclick="handleLogout()">登出</button>
+      <button id="mobile-manage-accounts-btn" class="mobile-sidebar-item button is-warning"
+        style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageAccounts()">管理账户</button>
+      <button id="mobile-manage-images-btn" class="mobile-sidebar-item button is-info"
+        style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageImages()">管理图片</button>
     </div>
 
-    <div class="mobile-sidebar-item" onclick="switchTheme()">[切换主题]</div>
+    <!-- 将切换主题改为按钮样式 -->
+    <button class="mobile-sidebar-item button theme-switch" onclick="switchTheme()"
+      style="width: 100%; margin: 0.5rem 0;">
+      切换主题
+    </button>
 
-    <div class="mobile-sidebar-item" onclick="navigateTo('anouncement.html')">公告</div>
-    <div class="mobile-sidebar-item" onclick="navigateTo('project.html')">项目</div>
-    <div class="mobile-sidebar-item" onclick="navigateTo('document.html')">文档</div>
-    <div class="mobile-sidebar-item" onclick="navigateTo('development.html')">开发</div>
-    <div class="mobile-sidebar-item" onclick="navigateTo('serve.html')">服务</div>
-    <div class="mobile-sidebar-item" onclick="navigateTo('activity.html')">活动</div>
+    <a class="mobile-sidebar-item" href="anouncement.html">公告</a>
+    <a class="mobile-sidebar-item" href="project.html">项目</a>
+    <a class="mobile-sidebar-item" href="document.html">文档</a>
+    <a class="mobile-sidebar-item" href="development.html">开发</a>
+    <a class="mobile-sidebar-item" href="serve.html">服务</a>
+    <a class="mobile-sidebar-item" href="activity.html">活动</a>
     <div class="mobile-sidebar-item" data-mobile-dropdown="more">更多 ▼</div>
     <div class="mobile-sidebar-submenu" data-submenu="more">
       <a href="about.html">关于</a>
@@ -103,7 +117,7 @@
       <a href="join.html">加入我们</a>
       <a href="contact.html">联系我们</a>
     </div>
-    
+
   </div>
 
 </header>

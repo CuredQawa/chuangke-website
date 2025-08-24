@@ -1,6 +1,7 @@
 <!-- html/edit-project.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,16 +16,19 @@
     .container {
       padding: 2rem;
     }
+
     .editor-container {
       display: flex;
       gap: 2rem;
       height: calc(100vh - 120px);
     }
+
     .editor-left,
     .editor-right {
       flex: 1;
       padding: 1rem;
     }
+
     #content-input {
       width: 100%;
       height: 100%;
@@ -34,36 +38,43 @@
       font-family: 'Courier New', monospace;
       resize: none;
     }
+
     #preview {
       height: 100%;
       overflow-y: auto;
       padding: 1rem;
       border-radius: 8px;
     }
+
     .field {
       margin-bottom: 1rem;
     }
+
     .mt-4 {
       padding: 1rem;
       display: flex;
       justify-content: end;
       gap: 1rem;
     }
+
     [data-theme=light],
     .theme-light {
       #content-input {
         background: #eee;
       }
+
       #preview {
         background: #eee;
       }
     }
+
     [data-theme=dark],
     .theme-dark {
       #content-input {
         color: #eee;
         background: #3a3a3a;
       }
+
       #preview {
         background: #3a3a3a;
       }
@@ -71,6 +82,7 @@
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
 </head>
+
 <body>
   <!-- 导航栏 -->
   <script src="../js/load-header.js"></script>
@@ -214,4 +226,5 @@
     })();
   </script>
 </body>
+
 </html>

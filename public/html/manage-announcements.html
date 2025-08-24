@@ -119,6 +119,8 @@
       // 倒序：最新在前 .reverse()已删去
       announcements.forEach(async (item) => {
         const authorName = item.author?.username || '未知用户';
+        const authorEmail = item.author?.email;
+        const authorGraduationYear = item.author?.graduation_year;
 
         const div = document.createElement('div');
         div.className = 'announcement-card';
@@ -127,7 +129,7 @@
             <div class="column">
               <p><strong>${item.title}</strong></p>
               <p class="contentp">${item.content.replace(/\n/g, '<br>')}</p>
-              <p class="administrator">By ${authorName}</p>
+              <p class="administrator">By&nbsp;&nbsp;<a class="strong" href="mailto:${authorEmail}" title="给${authorGraduationYear}届的 ${authorName} 发邮件">${authorName}</a></p>
               <p class="date">${new Date(item.datetime).toLocaleString()}</p>
             </div>
             <div class="column is-narrow">

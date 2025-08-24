@@ -14,6 +14,14 @@
     font-weight: 700;
 }
 
+.is-title {
+    background-color: #1212129c;
+}
+
+.is-subtitle {
+    background-color: #1212129c;
+}
+
 .slide-up {
     opacity: 0;
     transform: translateY(20px);
@@ -221,7 +229,7 @@
 }
 
 
-.is-perple {
+.is-purple {
     background-color: rgb(166, 84, 241);
 }
 
@@ -258,9 +266,26 @@
     min-height: 100vh;
 }
 
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+    .bold-title {
+        font-size: 2.5rem;
+    }
+    
+    .slide-up {
+        font-size: 1.2rem;
+    }
+}
 
-
-
+@media screen and (max-width: 480px) {
+    .bold-title {
+        font-size: 2rem;
+    }
+    
+    .slide-up {
+        font-size: 1rem;
+    }
+}
 
 /* 深浅转换（以下） */
 
@@ -304,5 +329,10 @@
 
     #parallax2 {
         background-image: url(../images/home-use/bg-stars.jpg);
+    }
+    
+    .is-title,
+    .is-subtitle {
+        background-color: transparent;
     }
 }
