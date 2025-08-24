@@ -55,7 +55,7 @@ CREATE TABLE public.accounts (
 -- DROP TABLE public.images;
 
 CREATE TABLE public.images (
-	id int4 DEFAULT nextval('files_id_seq'::regclass) NOT NULL,
+	id serial4 NOT NULL,
 	filename varchar NOT NULL,
 	description varchar NOT NULL,
 	author_id int4 NOT NULL,

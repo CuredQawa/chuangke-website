@@ -99,6 +99,7 @@
         --hover-bg: #f0f0f0;
         --text-light: #555;
       }
+
       body {
         background: #f5f5f5;
       }
@@ -112,10 +113,12 @@
         --hover-bg: #404040;
         --text-light: #aaa;
       }
+
       body {
         background: #1a1a1a;
         color: #eee;
       }
+
       .image-desc {
         color: #aaa;
       }
@@ -158,8 +161,7 @@
         <div class="field">
           <label class="label">图片描述</label>
           <div class="control">
-            <input class="input" type="text" id="image-description"
-                   placeholder="例如：创客社2024年春季招新活动现场" required>
+            <input class="input" type="text" id="image-description" placeholder="例如：创客社2024年春季招新活动现场" required>
           </div>
           <p class="help">描述将用于说明图片内容，上传后不可修改</p>
         </div>
@@ -268,14 +270,12 @@
           const item = document.createElement('div');
           item.className = 'image-item';
 
-          // 文件名（可点击预览）
-          const nameEl = document.createElement('span');
+          // 文件链接
+          const nameEl = document.createElement('a');
           nameEl.className = 'image-name';
           nameEl.textContent = img.fileName;
-          nameEl.onclick = () => {
-            // ✅ 修复：路径为 /images/uploads/...（不带 /public）
-            window.open(`/images/uploads/${encodeURIComponent(img.fileName)}`, '_blank');
-          };
+          nameEl.href = `/images/uploads/${encodeURIComponent(img.fileName)}`;
+          nameEl.target = '_blank';
 
           // 描述
           const descEl = document.createElement('p');
@@ -288,7 +288,7 @@
           header.appendChild(nameEl);
 
           // 删除按钮（仅自己或管理员）
-          if (userRole === 'admin' || Number(img.authorId) === userId) {
+          if (userRole === 'admin' || Number(img.author_id) === userId) {
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'button is-small is-danger delete-btn';
             deleteBtn.textContent = '删除';

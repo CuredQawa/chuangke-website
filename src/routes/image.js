@@ -114,7 +114,7 @@ export const getAllImages = async (req, res) => {
             id: row.id,
             fileName: row.filename,
             description: row.description,
-            authorId: row.author_id,
+            author_id: row.author_id
         }));
 
         res.json(images);

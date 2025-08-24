@@ -77,7 +77,7 @@ export const newProject = async (req, res) => {
 
     const datetime = new Date();
     const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_url) VALUES ($1, $2, $3, $4, $5, $6)';
-    
+
     try {
         await req.db.query(query, [title, content, datetime, authorID, "project", cover_image_url]);
         res.json({ message: "项目发布成功" });
@@ -114,7 +114,6 @@ export const editProject = async (req, res) => {
     }
 
     const query = 'UPDATE docs SET title = $1, content = $2, cover_image_url = $3 WHERE id = $4 AND category = $5';
-    
     try {
         await req.db.query(query, [title, content, cover_image_url, projectID, "project"]);
         res.json({ message: "项目修改成功" });
@@ -150,7 +149,7 @@ export const deleteProject = async (req, res) => {
     }
 
     const query = 'DELETE FROM docs WHERE id = $1 AND category = $2';
-    
+
     try {
         await req.db.query(query, [projectID, "project"]);
         res.json({ message: "项目删除成功" });
