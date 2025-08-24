@@ -14,8 +14,6 @@ import bcrypt from 'bcrypt';
 export const login = async (req, res) => {
     const { email, password } = req.body;
 
-    // console.log(`用户 ${email} 请求登录`);
-
     if (!email || !password) {
         return res.status(400).json({ message: '邮箱和密码是必需的' });
     }
@@ -41,7 +39,6 @@ export const login = async (req, res) => {
                 // 设置 cookie
                 setTokenCookie(res, token);
 
-                // console.log(`用户 ${email} 登录成功`);
                 return res.json({
                     message: '登录成功',
                 });

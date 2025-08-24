@@ -1,13 +1,15 @@
-.btitle{
+.btitle {
     font-size: 40px;
 }
-.servescontent{
+
+.servescontent {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-.serveproject{
+
+.serveproject {
     width: 70%;
     margin-top: 5vh;
     /* display: flex;
@@ -15,30 +17,32 @@
     align-items: center;
     flex-direction: column; */
 }
-.para{
+
+.para {
     font-size: x-large;
 }
-.introduce{
+
+.introduce {
     margin-top: -25px;
 }
-.image-container{
+
+.image-container {
     width: auto;
     /* height: 25vh; */
     /* border-radius: 40px; */
     /* overflow: hidden; */
 }
-.image-showed{
+
+.image-showed {
     height: 25vh;
     /* border-radius: 15%; */
 }
 
-.cont-2{
+.cont-2 {
     margin-top: 5vh;
 }
 
-
-
-.joke{
+.joke {
     color: rgb(165, 165, 165);
-    text-decoration: line-through 4px rgb(166, 84, 241) solid ;
+    text-decoration: line-through 4px rgb(166, 84, 241) solid;
 }

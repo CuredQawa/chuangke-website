@@ -49,8 +49,6 @@ export const register = async (req, res) => {
             [username, hashedPassword, graduation_year, email, role]
         );
 
-        // console.log(`用户 ${username} 被添加，所使用的邮箱为 ${email}（${graduation_year}届）`);
-
         return res.status(201).json({
             message: '注册成功',
         });

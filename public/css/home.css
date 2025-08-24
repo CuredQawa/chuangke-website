@@ -6,7 +6,6 @@
     border-radius: 0;
 }
 
-
 /* 全局 */
 .bold-title {
     font-size: 4rem;
@@ -271,7 +270,7 @@
     .bold-title {
         font-size: 2.5rem;
     }
-    
+
     .slide-up {
         font-size: 1.2rem;
     }
@@ -281,7 +280,7 @@
     .bold-title {
         font-size: 2rem;
     }
-    
+
     .slide-up {
         font-size: 1rem;
     }
@@ -330,7 +329,7 @@
     #parallax2 {
         background-image: url(../images/home-use/bg-stars.jpg);
     }
-    
+
     .is-title,
     .is-subtitle {
         background-color: transparent;

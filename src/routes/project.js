@@ -108,7 +108,6 @@ export const editProject = async (req, res) => {
 
     const project = projectResult.rows[0];
 
-    // 权限判断正确：管理员 or 自己
     if (userRole !== 'admin' && project.author_id !== userID) {
         return res.status(403).json({ message: "权限不足，无法编辑此项目" });
     }
@@ -143,7 +142,6 @@ export const deleteProject = async (req, res) => {
 
     const project = projectResult.rows[0];
 
-    // 权限判断正确
     if (userRole !== 'admin' && project.author_id !== userID) {
         return res.status(403).json({ message: "权限不足，无法删除此项目" });
     }

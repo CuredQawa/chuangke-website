@@ -1,17 +1,21 @@
-.btitle{
+.btitle {
     font-size: 40px;
 }
-.bcontainner{
+
+.bcontainner {
     min-height: 20vh;
     margin-bottom: 10vh;
     padding: 20px 20%;
 }
-.ccontainner{
+
+.ccontainner {
     padding: 20px 20%;
 }
+
 li {
     margin: 25px 0;
 }
-.poster{
+
+.poster {
     width: 60vw;
 }

@@ -10,22 +10,22 @@
 export const RUNNING_PORT = 3000;
 
 /**
- * bcrypt加密的盐轮数
+ * bcrypt 加密的盐轮数
  * @type {number}
  */
 export const BCRYPT_SALT_ROUNDS = 12;
 
 /**
- * Cookie最大存活时间（毫秒）
+ * Cookie 最大存活时间（毫秒）
  * @type {number}
  */
-export const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000; // 24小时
+export const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7天
 
 /**
- * JWT令牌最大存活时间
+ * JWT 令牌最大存活时间
  * @type {string}
  */
-export const JWT_MAX_AGE = "24h";
+export const JWT_MAX_AGE = "7d";
 
 /**
  * 图片上传目录
