@@ -1,11 +1,10 @@
 <!-- html/edit-activity.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>编辑活动 - 湛江一中创客社</title>
+  <title>编辑活动 - 创客社</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/font/iconfont.css">
   <link rel="stylesheet" href="../css/index.css">
@@ -16,19 +15,16 @@
     .container {
       padding: 2rem;
     }
-
     .editor-container {
       display: flex;
       gap: 2rem;
       height: calc(100vh - 120px);
     }
-
     .editor-left,
     .editor-right {
       flex: 1;
       padding: 1rem;
     }
-
     #content-input {
       width: 100%;
       height: 100%;
@@ -37,19 +33,16 @@
       border-radius: 8px;
       font-family: 'Courier New', monospace;
       resize: none;
+      background: var(--preview-bg);
+      color: var(--content-color);
     }
-
     #preview {
       height: 100%;
       overflow-y: auto;
       padding: 1rem;
       border-radius: 8px;
+      background: var(--preview-bg);
     }
-
-    .field {
-      margin-bottom: 1rem;
-    }
-
     .mt-4 {
       padding: 1rem;
       display: flex;
@@ -57,32 +50,108 @@
       gap: 1rem;
     }
 
+    /* ========== 新增：Markdown 预览样式 ========== */
+    .markdown-content h1, .markdown-content h2, .markdown-content h3,
+    .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      color: #333;
+      font-weight: 600;
+    }
+    .markdown-content h1 { font-size: 2em; }
+    .markdown-content h2 { font-size: 1.75em; }
+    .markdown-content h3 { font-size: 1.5em; }
+    .markdown-content h4 { font-size: 1.25em; }
+    .markdown-content h5 { font-size: 1.1em; }
+    .markdown-content h6 { font-size: 1em; color: #666; }
+
+    .markdown-content p {
+      margin: 0.8em 0;
+      line-height: 1.6;
+    }
+
+    .markdown-content ul, .markdown-content ol {
+      margin: 0.8em 0;
+      padding-left: 2em;
+    }
+
+    .markdown-content blockquote {
+      margin: 1em 0;
+      padding: 0.5em 1em;
+      border-left: 4px solid #a654f1;
+      background: #f0f0f0;
+      color: #555;
+    }
+
+    .markdown-content code {
+      padding: 0.2em 0.4em;
+      background: #eee;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    .markdown-content pre {
+      margin: 1em 0;
+      padding: 1rem;
+      background: #3a3a3a;
+      color: #eee;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    .markdown-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 1em 0;
+    }
+
+    .markdown-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+    }
+
+    .markdown-content th, .markdown-content td {
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
     [data-theme=light],
     .theme-light {
-      #content-input {
-        background: #eee;
-      }
-
-      #preview {
-        background: #eee;
+      :root {
+        --content-color: #555;
+        --preview-bg: #f9f9f9;
       }
     }
 
     [data-theme=dark],
     .theme-dark {
-      #content-input {
-        color: #eee;
-        background: #3a3a3a;
+      :root {
+        --content-color: #eee;
+        --preview-bg: #2a2a2a;
       }
-
-      #preview {
+      .markdown-content h1, .markdown-content h2, .markdown-content h3,
+      .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+        color: #eee;
+      }
+      .markdown-content p, .markdown-content li, .markdown-content blockquote {
+        color: #ddd;
+      }
+      .markdown-content blockquote {
         background: #3a3a3a;
+        border-left-color: #a654f1;
+      }
+      .markdown-content code {
+        background: #4a4a4a;
+        color: #fff;
       }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
 </head>
-
 <body>
 
   <!-- 导航栏 -->
@@ -105,7 +174,7 @@
         </div>
         <div class="editor-right">
           <label class="label">预览</label>
-          <div id="preview"></div>
+          <div id="preview" class="markdown-content"></div>
         </div>
       </div>
       <div class="field mt-4">
@@ -165,15 +234,15 @@
       const data = {
         title,
         content,
-        cover_image_url  // ✅ 提交头图 URL
+        cover_image_url
       };
 
       let url, method;
       if (isNew) {
-        url = '/api/activity';           // POST /api/activity
+        url = '/api/activity';
         method = 'POST';
       } else {
-        url = `/api/activity/${activityId}`;  // PUT /api/activity/:id
+        url = `/api/activity/${activityId}`;
         method = 'PUT';
       }
 
@@ -220,14 +289,12 @@
       if (activityId) {
         await loadActivity();
       } else if (isNew) {
-        contentInput.value = '# 新活动\n请输入内容...';
+        contentInput.value = '# 新活动\n\n请输入内容...';
         updatePreview();
       } else {
         window.location.href = '/html/manage-activities.html';
       }
     })();
   </script>
-
 </body>
-
 </html>
