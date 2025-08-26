@@ -46,19 +46,27 @@ window.loadHeaderPromise = (async () => {
 
     // ========== 状态统一控制函数 ==========
     function updateAuthUI(isLoggedIn, user = null) {
-      const show = (el, mode = 'block') => el && (el.style.display = mode);
-      const hide = (el) => el && (el.style.display = 'none');
+      const toggleElement = (el, condition, mode = 'block') => {
+        if (!el) return;
+        if (condition) {
+          el.style.display = mode;
+          el.classList.add('active');
+        } else {
+          el.style.display = 'none';
+          el.classList.remove('active');
+        }
+      };
 
       if (isLoggedIn && user) {
         // 已登录状态
-        show(document.getElementById('user-info'), 'flex');
-        show(document.getElementById('mobile-user-info'), 'block');
+        toggleElement(document.getElementById('user-info'), true, 'flex');
+        toggleElement(document.getElementById('mobile-user-info'), true, 'block');
 
-        hide(document.getElementById('login-btn'));
-        hide(document.getElementById('mobile-login-btn'));
+        toggleElement(document.getElementById('login-btn'), false);
+        toggleElement(document.getElementById('mobile-login-btn'), false);
 
-        show(document.getElementById('logout-btn'), 'inline-block');
-        show(document.getElementById('mobile-logout-btn'), 'block');
+        toggleElement(document.getElementById('logout-btn'), true, 'inline-block');
+        toggleElement(document.getElementById('mobile-logout-btn'), true, 'block');
 
         // 显示用户名和角色
         document.getElementById('username').textContent = user.username;
@@ -71,28 +79,28 @@ window.loadHeaderPromise = (async () => {
 
         // 管理账户：仅管理员
         const isAdmin = user.role === 'admin';
-        show(document.getElementById('manage-accounts-btn'), isAdmin ? 'inline-block' : 'none');
-        show(document.getElementById('mobile-manage-accounts-btn'), isAdmin ? 'block' : 'none');
+        toggleElement(document.getElementById('manage-accounts-btn'), isAdmin, 'inline-block');
+        toggleElement(document.getElementById('mobile-manage-accounts-btn'), isAdmin, 'block');
 
         // 管理图片：社员和管理员
         const isUserOrAdmin = user.role === 'user' || isAdmin;
-        show(document.getElementById('manage-images-btn'), isUserOrAdmin ? 'inline-block' : 'none');
-        show(document.getElementById('mobile-manage-images-btn'), isUserOrAdmin ? 'block' : 'none');
+        toggleElement(document.getElementById('manage-images-btn'), isUserOrAdmin, 'inline-block');
+        toggleElement(document.getElementById('mobile-manage-images-btn'), isUserOrAdmin, 'block');
 
       } else {
         // 未登录状态
-        hide(document.getElementById('user-info'));
-        hide(document.getElementById('mobile-user-info'));
+        toggleElement(document.getElementById('user-info'), false);
+        toggleElement(document.getElementById('mobile-user-info'), false);
 
-        show(document.getElementById('login-btn'), 'inline-block');
-        show(document.getElementById('mobile-login-btn'), 'block');
+        toggleElement(document.getElementById('login-btn'), true, 'inline-block');
+        toggleElement(document.getElementById('mobile-login-btn'), true, 'block');
 
-        hide(document.getElementById('logout-btn'));
-        hide(document.getElementById('mobile-logout-btn'));
-        hide(document.getElementById('manage-accounts-btn'));
-        hide(document.getElementById('mobile-manage-accounts-btn'));
-        hide(document.getElementById('manage-images-btn'));
-        hide(document.getElementById('mobile-manage-images-btn'));
+        toggleElement(document.getElementById('logout-btn'), false);
+        toggleElement(document.getElementById('mobile-logout-btn'), false);
+        toggleElement(document.getElementById('manage-accounts-btn'), false);
+        toggleElement(document.getElementById('mobile-manage-accounts-btn'), false);
+        toggleElement(document.getElementById('manage-images-btn'), false);
+        toggleElement(document.getElementById('mobile-manage-images-btn'), false);
       }
     }
 
@@ -125,16 +133,6 @@ window.loadHeaderPromise = (async () => {
         credentials: 'include'
       });
       location.reload();
-    };
-
-    // ========== 跳转管理账户 ==========
-    window.gotoManageAccounts = function () {
-      window.location.href = '/html/manage-accounts.html';
-    };
-
-    // ========== 跳转管理图片 ==========
-    window.gotoManageImages = function () {
-      window.location.href = '/html/manage-images.html';
     };
 
     // ========== 移动端导航 ==========

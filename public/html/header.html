@@ -66,10 +66,11 @@
     <button id="login-btn" class="button is-small" style="display: none;">登录</button>
     <button id="logout-btn" class="button is-small is-danger" style="display: none;"
       onclick="handleLogout()">登出</button>
-    <button id="manage-accounts-btn" class="button is-small is-warning" style="display: none;"
-      onclick="gotoManageAccounts()">管理账户</button>
-    <button id="manage-images-btn" class="button is-small is-info" style="display: none;"
-      onclick="gotoManageImages()">管理图片</button>
+    <!-- 将按钮改为链接 -->
+    <a id="manage-accounts-btn" class="button is-small is-warning" style="display: none;"
+      href="/html/manage-accounts.html">管理账户</a>
+    <a id="manage-images-btn" class="button is-small is-info" style="display: none;"
+      href="/html/manage-images.html">管理图片</a>
   </div>
 
   <!-- 汉堡按钮（移动端） -->
@@ -92,10 +93,11 @@
         onclick="gotoLogin()">登录</button>
       <button id="mobile-logout-btn" class="mobile-sidebar-item button is-danger" style="width: 100%; margin: 0.5rem 0;"
         onclick="handleLogout()">登出</button>
-      <button id="mobile-manage-accounts-btn" class="mobile-sidebar-item button is-warning"
-        style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageAccounts()">管理账户</button>
-      <button id="mobile-manage-images-btn" class="mobile-sidebar-item button is-info"
-        style="width: 100%; margin: 0.5rem 0; display: none;" onclick="gotoManageImages()">管理图片</button>
+      <!-- 将按钮改为链接 -->
+      <a id="mobile-manage-accounts-btn" class="mobile-sidebar-item button is-warning"
+        style="width: 100%; margin: 0.5rem 0; display: none;" href="/html/manage-accounts.html">管理账户</a>
+      <a id="mobile-manage-images-btn" class="mobile-sidebar-item button is-info"
+        style="width: 100%; margin: 0.5rem 0; display: none;" href="/html/manage-images.html">管理图片</a>
       <button class="mobile-sidebar-item button theme-switch-mobile" onclick="switchTheme()"
         style="width: 100%; margin: 0.5rem 0;">
         切换主题
