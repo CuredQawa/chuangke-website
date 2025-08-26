@@ -1,12 +1,6 @@
 CREATE DATABASE chuangke;
 
--- public.announcements definition
-
--- Drop table
-
--- DROP TABLE public.announcements;
-
-CREATE TABLE public.announcements (
+CREATE TABLE announcements (
 	id serial4 NOT NULL,
 	title text NOT NULL,
 	"content" text NOT NULL,
@@ -15,13 +9,7 @@ CREATE TABLE public.announcements (
 	CONSTRAINT announcements_pk PRIMARY KEY (id)
 );
 
--- public.docs definition
-
--- Drop table
-
--- DROP TABLE public.docs;
-
-CREATE TABLE public.docs (
+CREATE TABLE docs (
 	id serial4 NOT NULL,
 	title text NOT NULL,
 	"content" text NOT NULL,
@@ -32,13 +20,7 @@ CREATE TABLE public.docs (
 	CONSTRAINT docs_pk PRIMARY KEY (id)
 );
 
--- public.accounts definition
-
--- Drop table
-
--- DROP TABLE public.accounts;
-
-CREATE TABLE public.accounts (
+CREATE TABLE accounts (
 	id serial4 NOT NULL,
 	username varchar NOT NULL,
 	"password" text NOT NULL, -- bcrypt 加密
@@ -48,13 +30,7 @@ CREATE TABLE public.accounts (
 	CONSTRAINT accounts_pk PRIMARY KEY (id)
 );
 
--- public.images definition
-
--- Drop table
-
--- DROP TABLE public.images;
-
-CREATE TABLE public.images (
+CREATE TABLE images (
 	id serial4 NOT NULL,
 	filename varchar NOT NULL,
 	description varchar NOT NULL,

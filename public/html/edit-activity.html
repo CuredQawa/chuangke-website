@@ -1,6 +1,6 @@
-<!-- html/edit-activity.html -->
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,16 +15,19 @@
     .container {
       padding: 2rem;
     }
+
     .editor-container {
       display: flex;
       gap: 2rem;
       height: calc(100vh - 120px);
     }
+
     .editor-left,
     .editor-right {
       flex: 1;
       padding: 1rem;
     }
+
     #content-input {
       width: 100%;
       height: 100%;
@@ -36,6 +39,7 @@
       background: var(--preview-bg);
       color: var(--content-color);
     }
+
     #preview {
       height: 100%;
       overflow-y: auto;
@@ -43,6 +47,7 @@
       border-radius: 8px;
       background: var(--preview-bg);
     }
+
     .mt-4 {
       padding: 1rem;
       display: flex;
@@ -51,26 +56,50 @@
     }
 
     /* ========== 新增：Markdown 预览样式 ========== */
-    .markdown-content h1, .markdown-content h2, .markdown-content h3,
-    .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+    .markdown-content h1,
+    .markdown-content h2,
+    .markdown-content h3,
+    .markdown-content h4,
+    .markdown-content h5,
+    .markdown-content h6 {
       margin-top: 1.5em;
       margin-bottom: 0.5em;
       color: #333;
       font-weight: 600;
     }
-    .markdown-content h1 { font-size: 2em; }
-    .markdown-content h2 { font-size: 1.75em; }
-    .markdown-content h3 { font-size: 1.5em; }
-    .markdown-content h4 { font-size: 1.25em; }
-    .markdown-content h5 { font-size: 1.1em; }
-    .markdown-content h6 { font-size: 1em; color: #666; }
+
+    .markdown-content h1 {
+      font-size: 2em;
+    }
+
+    .markdown-content h2 {
+      font-size: 1.75em;
+    }
+
+    .markdown-content h3 {
+      font-size: 1.5em;
+    }
+
+    .markdown-content h4 {
+      font-size: 1.25em;
+    }
+
+    .markdown-content h5 {
+      font-size: 1.1em;
+    }
+
+    .markdown-content h6 {
+      font-size: 1em;
+      color: #666;
+    }
 
     .markdown-content p {
       margin: 0.8em 0;
       line-height: 1.6;
     }
 
-    .markdown-content ul, .markdown-content ol {
+    .markdown-content ul,
+    .markdown-content ol {
       margin: 0.8em 0;
       padding-left: 2em;
     }
@@ -113,7 +142,8 @@
       margin: 1em 0;
     }
 
-    .markdown-content th, .markdown-content td {
+    .markdown-content th,
+    .markdown-content td {
       padding: 0.5em;
       border: 1px solid #ccc;
       text-align: left;
@@ -133,17 +163,27 @@
         --content-color: #eee;
         --preview-bg: #2a2a2a;
       }
-      .markdown-content h1, .markdown-content h2, .markdown-content h3,
-      .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+
+      .markdown-content h1,
+      .markdown-content h2,
+      .markdown-content h3,
+      .markdown-content h4,
+      .markdown-content h5,
+      .markdown-content h6 {
         color: #eee;
       }
-      .markdown-content p, .markdown-content li, .markdown-content blockquote {
+
+      .markdown-content p,
+      .markdown-content li,
+      .markdown-content blockquote {
         color: #ddd;
       }
+
       .markdown-content blockquote {
         background: #3a3a3a;
         border-left-color: #a654f1;
       }
+
       .markdown-content code {
         background: #4a4a4a;
         color: #fff;
@@ -152,6 +192,7 @@
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
 </head>
+
 <body>
 
   <!-- 导航栏 -->
@@ -297,4 +338,5 @@
     })();
   </script>
 </body>
+
 </html>
