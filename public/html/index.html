@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh" data-theme="dark">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,6 +15,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
+
 <body>
 
   <!-- 导航栏 -->
@@ -32,7 +34,7 @@
       </div>
     </section>
 
-     <!-- ==================== 第二屏：社团简介（修复响应式）==================== -->
+    <!-- ==================== 第二屏：社团简介（修复响应式）==================== -->
     <section class="section is-risecolor" style="min-height: 600px; padding: 5rem 0;">
       <div class="container section-2">
         <div class="columns is-vcentered is-flex-contain">
@@ -62,9 +64,10 @@
           <!-- 右侧图片（移动端在下） -->
           <div class="column has-text-centered">
             <figure class="image rounded-lg shadow-xl"
-                    style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=entropy&q=80"
-                  alt="学生编程场景" style="width: 100%; height: auto; display: block;">
+              style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=entropy&q=80"
+                alt="学生编程场景" style="width: 100%; height: auto; display: block;">
             </figure>
           </div>
 
@@ -137,7 +140,7 @@
 
       // 英雄标题动画
       gsap.from(".bold-title", { opacity: 0, y: 30, duration: 1.2, ease: "power2.out" });
-      gsap.from(".slide-up", { opacity: 0, y: 20, duration: 1, delay: 0.4, ease: "power2.out" });   
+      gsap.from(".slide-up", { opacity: 0, y: 20, duration: 1, delay: 0.4, ease: "power2.out" });
 
       // 照片墙逐个淡入放大
       const photos = document.querySelectorAll('.photo-item');
@@ -178,12 +181,11 @@
         const shuffled = projects.sort(() => 0.5 - Math.random()).slice(0, 6);
 
         shuffled.forEach(project => {
-          const defaultImg = '../images/default-project.jpg'; // 可选：默认图
+          const defaultImg = '../images/placeholder.png';
           const imgUrl = project.cover_image_url || defaultImg;
 
           const div = document.createElement('div');
           div.className = 'column is-4-desktop is-6-tablet is-12-mobile project-item';
-          // 在 loadProjects() 函数中
           div.innerHTML = `
             <a href="/html/project.html?project=${project.id}" target="_blank">
               <div class="card hover-lift">
@@ -251,4 +253,5 @@
   <script src="../js/load-footer.js"></script>
 
 </body>
+
 </html>
