@@ -286,15 +286,15 @@
 [data-theme=light],
 .theme-light {
     .section-4 {
-        background-image: url('../images/home-use/lab-view.jpg');
+        background-image: url('../images/home-use/lab-view.webp');
     }
 
     #parallax1 {
-        background-image: url(../images/home-use/bg-coding-light.png);
+        background-image: url(../images/home-use/bg-coding-light.webp);
     }
 
     #parallax2 {
-        background-image: url(../images/home-use/snowmoutain.jpg);
+        background-image: url(../images/home-use/snowmoutain.webp);
     }
 
     .is-title {
@@ -313,15 +313,15 @@
 [data-theme=dark],
 .theme-dark {
     .section-4 {
-        background-image: url('../images/home-use/lab-view.jpg');
+        background-image: url('../images/home-use/lab-view.webp');
     }
 
     #parallax1 {
-        background-image: url(../images/home-use/bg-code-grid.jpg);
+        background-image: url(../images/home-use/bg-code-grid.webp);
     }
 
     #parallax2 {
-        background-image: url(../images/home-use/bg-stars.jpg);
+        background-image: url(../images/home-use/bg-stars.webp);
     }
 
     .is-title,

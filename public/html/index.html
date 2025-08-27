@@ -181,7 +181,7 @@
         const shuffled = projects.sort(() => 0.5 - Math.random()).slice(0, 6);
 
         shuffled.forEach(project => {
-          const defaultImg = '../images/placeholder.png';
+          const defaultImg = '../images/placeholder.webp';
           const imgUrl = project.cover_image_url || defaultImg;
 
           const div = document.createElement('div');

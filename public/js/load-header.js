@@ -6,8 +6,8 @@ window.loadHeaderPromise = (async () => {
     // 添加网站图标 (favicon)
     const favicon = document.createElement('link');
     favicon.rel = 'icon';
-    favicon.type = 'image/png';
-    favicon.href = '../images/logo-alpha.png';
+    favicon.type = 'image/webp';
+    favicon.href = '../images/logo-alpha.webp';
     document.head.appendChild(favicon);
 
     // 添加网站描述和关键字
