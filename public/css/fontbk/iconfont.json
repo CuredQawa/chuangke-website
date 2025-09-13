@@ -6,55 +6,6 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "1296",
-      "name": "向上",
-      "font_class": "xiangshang",
-      "unicode": "e600",
-      "unicode_decimal": 58880
-    },
-    {
-      "icon_id": "1115048",
-      "name": "箭头",
-      "font_class": "jiantou",
-      "unicode": "e622",
-      "unicode_decimal": 58914
-    },
-    {
-      "icon_id": "1115052",
-      "name": "箭头3",
-      "font_class": "jiantou3",
-      "unicode": "e624",
-      "unicode_decimal": 58916
-    },
-    {
-      "icon_id": "8341761",
-      "name": "箭头3_上",
-      "font_class": "jiantou_shang",
-      "unicode": "e634",
-      "unicode_decimal": 58932
-    },
-    {
-      "icon_id": "8341762",
-      "name": "箭头3_右",
-      "font_class": "jiantou_you",
-      "unicode": "e635",
-      "unicode_decimal": 58933
-    },
-    {
-      "icon_id": "8341763",
-      "name": "箭头3_下",
-      "font_class": "jiantou_xia",
-      "unicode": "e636",
-      "unicode_decimal": 58934
-    },
-    {
-      "icon_id": "8341764",
-      "name": "箭头3_左",
-      "font_class": "jiantou_zuo",
-      "unicode": "e637",
-      "unicode_decimal": 58935
-    },
-    {
       "icon_id": "10268538",
       "name": "活动",
       "font_class": "huodong",
