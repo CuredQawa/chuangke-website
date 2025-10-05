@@ -22,8 +22,8 @@
   <script src="../js/load-header.js"></script>
 
   <!-- 管理文档按钮 -->
-  <a href="/html/manage-docs.html" id="manage-docs-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
-    style="display: none;">
+  <a href="/html/manage-docs.html" id="manage-docs-btn"
+    class="button is-success is-medium is-fixed-bottom-right is-purple" style="display: none;">
     <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
   </a>
 
@@ -35,31 +35,34 @@
 
   <!-- 平滑滚动脚本 -->
   <script>
-    var toTop = document.querySelector("#toTop");
-    window.addEventListener("scroll", function() {
-    var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
-    if (distanceY > 50) {
-    toTop.style.display = "block";
-    } else {
-    toTop.style.display = "none";
-    }
-    });
-    
-    toTop.addEventListener("click", function() {
-    var timer = setInterval(function() {
-    var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
-    if (distanceY == 0) {
-    clearInterval(timer);
-    return;
-    }
+    function scrollToTop() {
+      var timer = setInterval(function () {
+        var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+        if (distanceY == 0) {
+          clearInterval(timer);
+          return;
+        }
 
-    // 调整上划速度（speed）两个一起改
-    var speed = Math.ceil(distanceY / 10);
-    document.documentElement.scrollTop = distanceY - speed;
-    }, 10);
-    });
+        // 调整上划速度（speed）两个一起改
+        var speed = Math.ceil(distanceY / 10);
+        document.documentElement.scrollTop = distanceY - speed;
+      }, 10);
+    }
   </script>
-  
+  <script>
+    var toTop = document.querySelector("#toTop");
+    window.addEventListener("scroll", function () {
+      var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+      if (distanceY > 50) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    });
+
+    toTop.addEventListener("click", scrollToTop);
+  </script>
+
   <br>
 
   <section class="container">
@@ -111,11 +114,21 @@
         history.pushState(null, '', `?doc=${id}`);
         currentDoc = id;
 
-        hljs.highlightAll();
-        window.addCopyButtons();
-        
+        // 初始化代码高亮和复制按钮
+        if (typeof window.initCodeHighlighting === 'function') {
+          window.initCodeHighlighting();
+        } else {
+          // 如果 initCodeHighlighting 函数尚未定义，等待其定义后再调用
+          const checkInit = setInterval(() => {
+            if (typeof window.initCodeHighlighting === 'function') {
+              clearInterval(checkInit);
+              window.initCodeHighlighting();
+            }
+          }, 100);
+        }
+
         // 滚动到页面顶部
-        window.scrollTo(0, 0);
+        scrollToTop();
       } catch (err) {
         document.getElementById('content').innerHTML = `
           <div class="notification is-danger">加载失败：${err.message}</div>
@@ -166,8 +179,6 @@
         console.error('检查登录状态失败', err);
       }
     }
-
-    // 移除了gotoManageDocs函数，因为现在使用的是链接而不是按钮
 
     document.addEventListener('DOMContentLoaded', async () => {
       await checkLogin();

@@ -116,7 +116,7 @@
     .markdown-content code {
       padding: 0.2em 0.4em;
       border-radius: 3px;
-      font-family: 'Courier New', monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 0.9em;
     }
 
@@ -321,11 +321,25 @@
         contentInput.value = data.content;
         updatePreview(); // 触发预览和头图提取
         pageTitle.textContent = `编辑项目：${data.title}`;
-
-        hljs.highlightAll();
       } catch (err) {
         alert('加载项目失败');
         window.location.href = '/html/manage-projects.html';
+      }
+    }
+
+    // 初始化编辑器
+    function initEditor() {
+      // 初始化代码高亮和复制按钮
+      if (typeof window.initCodeHighlighting === 'function') {
+        window.initCodeHighlighting();
+      } else {
+        // 如果 initCodeHighlighting 函数尚未定义，等待其定义后再调用
+        const checkInit = setInterval(() => {
+          if (typeof window.initCodeHighlighting === 'function') {
+            clearInterval(checkInit);
+            window.initCodeHighlighting();
+          }
+        }, 100);
       }
     }
 
@@ -339,8 +353,19 @@
       } else {
         window.location.href = '/html/manage-projects.html';
       }
+
+      // DOM 和所有资源加载完成后初始化编辑器
+      window.addEventListener('DOMContentLoaded', initEditor);
     })();
   </script>
 </body>
+```
 
-</html>
+现在我们还需要将 `hljs.highlightAll();` 从 `loadProject()` 函数中删除，因为它现在由 `initEditor` 统一管理。
+
+edit-project.html
+```html
+<<<<<<< SEARCH titleInput.value=data.title; contentInput.value=data.content; updatePreview(); // 触发预览和头图提取
+  pageTitle.textContent=`编辑项目：${data.title}`; hljs.highlightAll(); } catch (err) { titleInput.value=data.title;
+  contentInput.value=data.content; updatePreview(); // 触发预览和头图提取 pageTitle.textContent=`编辑项目：${data.title}`; } catch
+  (err) { </html>

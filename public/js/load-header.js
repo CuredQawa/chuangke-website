@@ -5,18 +5,58 @@ function loadHighlightJS() {
   // 创建 highlight.js 脚本
   const hljsScript = document.createElement('script');
   hljsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js';
-  // hljsScript.onload = function () {
-  //   if (typeof hljs !== 'undefined') {
-  //     hljs.highlightAll();
-  //   }
-  // };
   document.head.appendChild(hljsScript);
   window.addCopyButtons = addCopyButtons;
+  
+  // 返回 Promise 以便可以等待脚本加载完成
+  return new Promise((resolve) => {
+    hljsScript.onload = function () {
+      resolve();
+    };
+  });
 }
+
+// 添加 Fira Code 字体
+function loadFiraCodeFont() {
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css';
+  fontLink.integrity = 'sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==';
+  fontLink.crossOrigin = 'anonymous';
+  fontLink.referrerPolicy = 'no-referrer';
+  document.head.appendChild(fontLink);
+}
+
+// 初始化代码高亮和复制按钮
+function initCodeHighlighting() {
+  // 确保 hljs 已加载完成
+  if (typeof window.hljs === 'undefined') {
+    // 如果 hljs 未定义，等待一段时间后重试
+    setTimeout(initCodeHighlighting, 100);
+    return;
+  }
+  
+  // 执行代码高亮
+  window.hljs.highlightAll();
+  
+  // 添加复制按钮
+  window.addCopyButtons();
+}
+
+// 将函数添加到window对象，使其在其他页面中可用
+window.initCodeHighlighting = initCodeHighlighting;
+
 // 为代码块添加复制按钮
 function addCopyButtons() {
   // 等待 DOM 更新后执行
   setTimeout(() => {
+    // 确保 hljs 已加载完成
+    if (typeof window.hljs === 'undefined') {
+      // 如果 hljs 未定义，等待一段时间后重试
+      setTimeout(addCopyButtons, 100);
+      return;
+    }
+    
     document.querySelectorAll('pre code').forEach((block) => {
       // 检查是否已经添加过复制按钮
       const pre = block.parentElement;
@@ -71,7 +111,10 @@ window.loadHeaderPromise = (async () => {
     document.head.appendChild(keywords);
 
     // 加载 highlight.js
-    loadHighlightJS();
+    await loadHighlightJS();
+
+    // 加载 Fira Code 字体
+    loadFiraCodeFont();
 
     const response = await fetch('header.html');
     if (!response.ok) throw new Error(`加载失败: ${response.status} ${response.statusText}`);
@@ -90,6 +133,9 @@ window.loadHeaderPromise = (async () => {
       setTimeout(() => {
         headerElement.style.opacity = '1';
       }, 100);
+
+      // header 加载完成后初始化代码高亮和复制按钮
+      initCodeHighlighting();
     } else {
       console.error('⚠️ header.html 中应包含 <header> 根根标签');
     }

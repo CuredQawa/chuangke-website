@@ -116,7 +116,7 @@
     .markdown-content code {
       padding: 0.2em 0.4em;
       border-radius: 3px;
-      font-family: 'Courier New', monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 0.9em;
     }
 
@@ -309,6 +309,27 @@
       } catch (err) {
         alert('❌ 网络错误，提交失败：' + err.message);
       }
+    });
+
+    // 初始化编辑器
+    function initEditor() {
+      // 初始化代码高亮和复制按钮
+      if (typeof window.initCodeHighlighting === 'function') {
+        window.initCodeHighlighting();
+      } else {
+        // 如果 initCodeHighlighting 函数尚未定义，等待其定义后再调用
+        const checkInit = setInterval(() => {
+          if (typeof window.initCodeHighlighting === 'function') {
+            clearInterval(checkInit);
+            window.initCodeHighlighting();
+          }
+        }, 100);
+      }
+    }
+
+    // 页面加载完成后初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      initEditor();
     });
 
     // 加载活动（编辑模式）

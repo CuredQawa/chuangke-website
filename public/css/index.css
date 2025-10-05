@@ -57,6 +57,11 @@ section {
     position: relative;
 }
 
+pre code {
+    font-family: 'Fira Code', monospace;
+    font-size: 110%;
+}
+
 /* 块引用样式 */
 .content blockquote {
     border-left: 4px solid #a654f1;

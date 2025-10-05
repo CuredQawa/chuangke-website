@@ -30,6 +30,54 @@
   <!-- 导航栏 -->
   <script src="../js/load-header.js"></script>
 
+  <!-- 上滑浏览按钮 -->
+  <button id="toTop" class="button is-success is-medium 
+    is-fixed-bottom-right-for-new-slide-button is-purple" style="display: none;">
+    <span class="icon"><i class="iconfont icon-xiangshang"></i></span>
+  </button>
+
+  <!-- 平滑滚动脚本 -->
+  <script>
+    function scrollToTop() {
+      var timer = setInterval(function () {
+        var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+        if (distanceY == 0) {
+          clearInterval(timer);
+          return;
+        }
+
+        // 调整上划速度（speed）两个一起改
+        var speed = Math.ceil(distanceY / 10);
+        document.documentElement.scrollTop = distanceY - speed;
+      }, 10);
+    }
+  </script>
+  <script>
+    var toTop = document.querySelector("#toTop");
+    window.addEventListener("scroll", function () {
+      var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+      if (distanceY > 50) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    });
+
+    toTop.addEventListener("click", function () {
+      var timer = setInterval(function () {
+        var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+        if (distanceY == 0) {
+          clearInterval(timer);
+          return;
+        }
+
+        // 调整上划速度（speed）两个一起改
+        var speed = Math.ceil(distanceY / 10);
+        document.documentElement.scrollTop = distanceY - speed;
+      }, 10);
+    });
+  </script>
+
   <section class="container">
     <a href="/html/activity.html" class="back-link">&larr; 返回活动首页</a>
     <div id="content">
@@ -64,9 +112,18 @@
           <p class="date">${new Date(data.datetime).toLocaleString()}</p>
         `;
 
-        hljs.highlightAll();
-        // 添加复制按钮
-        window.addCopyButtons();
+        // 初始化代码高亮和复制按钮
+        if (typeof window.initCodeHighlighting === 'function') {
+          window.initCodeHighlighting();
+        } else {
+          // 如果 initCodeHighlighting 函数尚未定义，等待其定义后再调用
+          const checkInit = setInterval(() => {
+            if (typeof window.initCodeHighlighting === 'function') {
+              clearInterval(checkInit);
+              window.initCodeHighlighting();
+            }
+          }, 100);
+        }
       } catch (err) {
         document.getElementById('content').innerHTML = `
           <div class="notification is-danger">加载失败：${err.message}</div>

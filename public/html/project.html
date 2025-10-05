@@ -11,9 +11,11 @@
   <link rel="stylesheet" href="../css/document.css">
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
   <script src="../js/theme-change.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 
 <body>
@@ -21,8 +23,8 @@
   <script src="../js/load-header.js"></script>
 
   <!-- 管理项目按钮 -->
-  <a href="/html/manage-projects.html" id="manage-projects-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
-    style="display: none;">
+  <a href="/html/manage-projects.html" id="manage-projects-btn"
+    class="button is-success is-medium is-fixed-bottom-right is-purple" style="display: none;">
     <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
   </a>
 
@@ -34,31 +36,46 @@
 
   <!-- 平滑滚动脚本 -->
   <script>
-    var toTop = document.querySelector("#toTop");
-    window.addEventListener("scroll", function() {
-    var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
-    if (distanceY > 50) {
-    toTop.style.display = "block";
-    } else {
-    toTop.style.display = "none";
-    }
-    });
-    
-    toTop.addEventListener("click", function() {
-    var timer = setInterval(function() {
-    var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
-    if (distanceY == 0) {
-    clearInterval(timer);
-    return;
-    }
+    function scrollToTop() {
+      var timer = setInterval(function () {
+        var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+        if (distanceY == 0) {
+          clearInterval(timer);
+          return;
+        }
 
-    // 调整上划速度（speed）两个一起改
-    var speed = Math.ceil(distanceY / 10);
-    document.documentElement.scrollTop = distanceY - speed;
-    }, 10);
+        // 调整上划速度（speed）两个一起改
+        var speed = Math.ceil(distanceY / 10);
+        document.documentElement.scrollTop = distanceY - speed;
+      }, 10);
+    }
+  </script>
+  <script>
+    var toTop = document.querySelector("#toTop");
+    window.addEventListener("scroll", function () {
+      var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+      if (distanceY > 50) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    });
+
+    toTop.addEventListener("click", function () {
+      var timer = setInterval(function () {
+        var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+        if (distanceY == 0) {
+          clearInterval(timer);
+          return;
+        }
+
+        // 调整上划速度（speed）两个一起改
+        var speed = Math.ceil(distanceY / 10);
+        document.documentElement.scrollTop = distanceY - speed;
+      }, 10);
     });
   </script>
-    
+
   <br>
 
   <section class="container">
@@ -110,12 +127,21 @@
         history.pushState(null, '', `?project=${id}`);
         currentProject = id;
 
-        hljs.highlightAll();
-        // 添加复制按钮
-        window.addCopyButtons();
-        
+        // 初始化代码高亮和复制按钮
+        if (typeof window.initCodeHighlighting === 'function') {
+          window.initCodeHighlighting();
+        } else {
+          // 如果 initCodeHighlighting 函数尚未定义，等待其定义后再调用
+          const checkInit = setInterval(() => {
+            if (typeof window.initCodeHighlighting === 'function') {
+              clearInterval(checkInit);
+              window.initCodeHighlighting();
+            }
+          }, 100);
+        }
+
         // 滚动到页面顶部
-        window.scrollTo(0, 0);
+        scrollToTop();
       } catch (err) {
         document.getElementById('content').innerHTML = `
           <div class="notification is-danger">加载失败：${err.message}</div>
