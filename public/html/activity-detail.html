@@ -63,6 +63,10 @@
           <p class="administrator">By&nbsp;&nbsp;<a class="strong" href="mailto:${data.author.email}">${data.author.username}</a></p>
           <p class="date">${new Date(data.datetime).toLocaleString()}</p>
         `;
+
+        hljs.highlightAll();
+        // 添加复制按钮
+        window.addCopyButtons();
       } catch (err) {
         document.getElementById('content').innerHTML = `
           <div class="notification is-danger">加载失败：${err.message}</div>

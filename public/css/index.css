@@ -50,71 +50,46 @@ section {
     /* will-change: transform; */
 }
 
-
-/* .navbar-item {
-    border-radius: 20px;
+/* 代码块样式 */
+.content pre {
+    padding: 0;
+    border-radius: .5em;
+    position: relative;
 }
 
-.navbar-item:hover {
-    transform: scale(1.1);
+/* 块引用样式 */
+.content blockquote {
+    border-left: 4px solid #a654f1;
 }
 
-.icon-gonggao09 {
-    color: rgb(185, 185, 185);
+/* 复制按钮样式优化 */
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #fff;
+    padding: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 10;
+    transition: all 0.3s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    box-shadow: none;
 }
 
-.a-anounce:hover {
-    background-color: rgba(185, 185, 185, 0.2);
+.copy-button:hover {
+    transform: scale(1.05);
 }
 
-.icon-a-lujing37238 {
-    color: rgb(88, 169, 240);
+.copy-button:active {
+    transform: scale(1);
 }
-
-.a-rule:hover {
-    background-color: rgb(88, 169, 240, 0.2);
-}
-
-.icon-xunzhang {
-    color: rgb(223, 226, 58);
-}
-
-.a-prize:hover {
-    background-color: rgb(223, 226, 58, 0.2);
-}
-
-.icon-terminal-box-fill {
-    color: rgb(252, 144, 144);
-}
-
-.a-kaifa:hover {
-    background-color: rgb(252, 144, 144, 0.2);
-}
-
-.icon-renminbi1 {
-    color: rgb(85, 241, 202);
-}
-
-.a-serve:hover {
-    background-color: rgb(85, 241, 202, 0.2);
-}
-
-.icon-huodong {
-    color: rgb(240, 137, 40);
-}
-
-.a-activity:hover {
-    background-color: rgb(240, 137, 40, 0.2);
-}
-
-.icon-name {
-    font-weight: 700;
-}
-
-.navbar-link {
-    border-radius: 20px;
-} */
-
 
 /* 字体样式 */
 .btitle {

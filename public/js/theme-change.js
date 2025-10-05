@@ -8,11 +8,15 @@ function applyTheme(theme) {
         if (themeSwitch) {
             themeSwitch.setAttribute('class', 'iconfont icon-yueliang');
         }
+        // 应用 hljs 的白天模式样式
+        applyHljsTheme('light');
     } else {
         element.setAttribute('data-theme', 'dark');
         if (themeSwitch) {
             themeSwitch.setAttribute('class', 'iconfont icon-ai250');
         }
+        // 应用 hljs 的夜间模式样式
+        applyHljsTheme('dark');
     }
 }
 
@@ -23,6 +27,21 @@ function getCurrentTheme() {
 
     // 如果有存储值就用存储值，否则默认是系统主题
     return sessionStorage.getItem('theme') || systemTheme;
+}
+
+// 应用 hljs 主题
+function applyHljsTheme(theme) {
+    let hljsCSS = document.createElement('link');
+    hljsCSS.id = 'hljs-css';
+    hljsCSS.rel = 'stylesheet';
+    document.head.appendChild(hljsCSS);
+
+    // 根据主题设置不同的 CSS
+    if (theme === 'light') {
+        hljsCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/edge-light.min.css';
+    } else {
+        hljsCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/edge-dark.min.css';
+    }
 }
 
 // 确保DOM加载完成后应用主题
@@ -60,11 +79,13 @@ function switchTheme() {
             themeSwitch.setAttribute('class', 'iconfont icon-yueliang');
         }
         sessionStorage.setItem('theme', 'light'); // 存入 light
+        applyHljsTheme('light');
     } else {
         documentElement.setAttribute('data-theme', 'dark');
         if (themeSwitch) {
             themeSwitch.setAttribute('class', 'iconfont icon-ai250');
         }
         sessionStorage.setItem('theme', 'dark'); // 存入 dark
+        applyHljsTheme('dark');
     }
 }

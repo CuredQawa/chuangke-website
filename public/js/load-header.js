@@ -1,5 +1,54 @@
-// ../js/load-header.js
-// 动态加载 header.html 并初始化交互功能
+// 动态加载 header.html 与代码高亮，并初始化交互功能
+
+// 动态加载 highlight.js
+function loadHighlightJS() {
+  // 创建 highlight.js 脚本
+  const hljsScript = document.createElement('script');
+  hljsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js';
+  // hljsScript.onload = function () {
+  //   if (typeof hljs !== 'undefined') {
+  //     hljs.highlightAll();
+  //   }
+  // };
+  document.head.appendChild(hljsScript);
+  window.addCopyButtons = addCopyButtons;
+}
+// 为代码块添加复制按钮
+function addCopyButtons() {
+  // 等待 DOM 更新后执行
+  setTimeout(() => {
+    document.querySelectorAll('pre code').forEach((block) => {
+      // 检查是否已经添加过复制按钮
+      const pre = block.parentElement;
+      if (!pre.querySelector('.copy-button')) {
+        const button = document.createElement('button');
+        button.className = 'copy-button';
+        button.title = "复制代码";
+        button.innerHTML = '<i class="iconfont icon-a-lujing37238"></i>';
+
+        button.addEventListener('click', () => {
+          const text = block.textContent;
+          navigator.clipboard.writeText(text).then(() => {
+            button.innerHTML = '✅'; // 复制成功后显示✅
+            button.title = "已复制";
+            button.classList.add('copied');
+            setTimeout(() => {
+              button.innerHTML = '<i class="iconfont icon-a-lujing37238"></i>'; // 恢复原始图标
+              button.classList.remove('copied');
+              button.title = "复制代码";
+            }, 2000);
+          }).catch(err => {
+            console.error('复制失败:', err);
+            alert('复制失败，请手动选择复制');
+          });
+        });
+
+        pre.style.position = 'relative';
+        pre.appendChild(button);
+      }
+    });
+  }, 100);
+}
 
 window.loadHeaderPromise = (async () => {
   try {
@@ -18,8 +67,11 @@ window.loadHeaderPromise = (async () => {
 
     const keywords = document.createElement('meta');
     keywords.name = 'keywords';
-    keywords.content = '创客社,湛江一中,社团活动,技术分享,编程,硬件，建模,3D打印,激光切割,社团项目';
+    keywords.content = '创客社,湛江一中,社团活动,技术分享,编程,硬件,建模,3D打印,激光切割,社团项目';
     document.head.appendChild(keywords);
+
+    // 加载 highlight.js
+    loadHighlightJS();
 
     const response = await fetch('header.html');
     if (!response.ok) throw new Error(`加载失败: ${response.status} ${response.statusText}`);
@@ -39,7 +91,7 @@ window.loadHeaderPromise = (async () => {
         headerElement.style.opacity = '1';
       }, 100);
     } else {
-      console.error('⚠️ header.html 中应包含 <header> 根标签');
+      console.error('⚠️ header.html 中应包含 <header> 根根标签');
     }
 
     const currentPage = window.location.href;

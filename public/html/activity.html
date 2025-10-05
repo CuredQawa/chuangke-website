@@ -122,10 +122,10 @@
   <script src="../js/load-header.js"></script>
 
   <!-- 管理活动按钮 -->
-  <button id="manage-activities-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
-    style="display: none;" onclick="gotoManageActivities()">
+  <a href="/html/manage-activities.html" id="manage-activities-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
+    style="display: none;">
     <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
-  </button>
+  </a>
 
   <section class="section">
     <div class="activity-container-wrapper">
@@ -201,11 +201,6 @@
         console.error('加载活动失败', err);
         document.getElementById('activities-container').innerHTML = '<p class="has-text-danger">加载失败</p>';
       }
-    }
-
-    // 跳转管理页
-    function gotoManageActivities() {
-      window.location.href = '/html/manage-activities.html';
     }
 
     // 滚动控制

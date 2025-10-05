@@ -70,6 +70,7 @@
 
     .markdown-content h1 {
       font-size: 2em;
+      margin-top: 0;
     }
 
     .markdown-content h2 {
@@ -114,7 +115,6 @@
 
     .markdown-content code {
       padding: 0.2em 0.4em;
-      background: #eee;
       border-radius: 3px;
       font-family: 'Courier New', monospace;
       font-size: 0.9em;
@@ -122,7 +122,7 @@
 
     .markdown-content pre {
       margin: 1em 0;
-      padding: 1rem;
+      padding: 0;
       background: #3a3a3a;
       color: #eee;
       border-radius: 6px;
@@ -183,11 +183,6 @@
         background: #3a3a3a;
         border-left-color: #a654f1;
       }
-
-      .markdown-content code {
-        background: #4a4a4a;
-        color: #fff;
-      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
@@ -247,6 +242,13 @@
       const imgMatch = content.match(/!\[.*?\]\((.*?)\)/);
       const cover_image_url = imgMatch ? imgMatch[1].trim() : null;
       window.currentCoverImageUrl = cover_image_url;
+
+      // 添加代码高亮
+      if (typeof hljs !== 'undefined') {
+        preview.querySelectorAll('pre code').forEach((block) => {
+          hljs.highlightElement(block);
+        });
+      }
     }
 
     contentInput.addEventListener('input', updatePreview);
@@ -319,6 +321,8 @@
         contentInput.value = data.content;
         updatePreview(); // 触发预览和头图提取
         pageTitle.textContent = `编辑活动：${data.title}`;
+
+        hljs.highlightAll();
       } catch (err) {
         alert('加载活动失败');
         window.location.href = '/html/manage-activities.html';

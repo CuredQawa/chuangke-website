@@ -21,10 +21,10 @@
   <script src="../js/load-header.js"></script>
 
   <!-- 管理项目按钮 -->
-  <button id="manage-projects-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
-    style="display: none;" onclick="gotoManageProjects()">
+  <a href="/html/manage-projects.html" id="manage-projects-btn" class="button is-success is-medium is-fixed-bottom-right is-purple"
+    style="display: none;">
     <span class="icon"><i class="iconfont icon-xitongguanli"></i></span>
-  </button>
+  </a>
 
   <!-- 上滑浏览按钮 -->
   <button id="toTop" class="button is-success is-medium 
@@ -109,6 +109,13 @@
         `;
         history.pushState(null, '', `?project=${id}`);
         currentProject = id;
+
+        hljs.highlightAll();
+        // 添加复制按钮
+        window.addCopyButtons();
+        
+        // 滚动到页面顶部
+        window.scrollTo(0, 0);
       } catch (err) {
         document.getElementById('content').innerHTML = `
           <div class="notification is-danger">加载失败：${err.message}</div>
@@ -149,6 +156,7 @@
       }
     }
 
+    // 检查用户登录状态，如果已登录则显示管理项目按钮
     async function checkLogin() {
       try {
         const res = await fetch('/api/account', { credentials: 'include' });
@@ -158,10 +166,6 @@
       } catch (err) {
         console.error('检查登录状态失败', err);
       }
-    }
-
-    function gotoManageProjects() {
-      window.location.href = '/html/manage-projects.html';
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
