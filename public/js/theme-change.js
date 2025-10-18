@@ -38,9 +38,9 @@ function applyHljsTheme(theme) {
 
     // 根据主题设置不同的 CSS
     if (theme === 'light') {
-        hljsCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/edge-light.min.css';
+        hljsCSS.href = 'https://s4.zstatic.net/ajax/libs/highlight.js/11.11.1/styles/base16/edge-light.min.css';
     } else {
-        hljsCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/edge-dark.min.css';
+        hljsCSS.href = 'https://s4.zstatic.net/ajax/libs/highlight.js/11.11.1/styles/base16/edge-dark.min.css';
     }
 }
 

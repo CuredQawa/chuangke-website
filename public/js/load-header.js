@@ -4,10 +4,10 @@
 function loadHighlightJS() {
   // 创建 highlight.js 脚本
   const hljsScript = document.createElement('script');
-  hljsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js';
+  hljsScript.src = 'https://s4.zstatic.net/ajax/libs/highlight.js/11.11.1/highlight.min.js';
   document.head.appendChild(hljsScript);
   window.addCopyButtons = addCopyButtons;
-  
+
   // 返回 Promise 以便可以等待脚本加载完成
   return new Promise((resolve) => {
     hljsScript.onload = function () {
@@ -20,7 +20,7 @@ function loadHighlightJS() {
 function loadFiraCodeFont() {
   const fontLink = document.createElement('link');
   fontLink.rel = 'stylesheet';
-  fontLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css';
+  fontLink.href = 'https://s4.zstatic.net/ajax/libs/firacode/6.2.0/fira_code.min.css';
   fontLink.integrity = 'sha512-MbysAYimH1hH2xYzkkMHB6MqxBqfP0megxsCLknbYqHVwXTCg9IqHbk+ZP/vnhO8UEW6PaXAkKe2vQ+SWACxxA==';
   fontLink.crossOrigin = 'anonymous';
   fontLink.referrerPolicy = 'no-referrer';
@@ -35,10 +35,10 @@ function initCodeHighlighting() {
     setTimeout(initCodeHighlighting, 100);
     return;
   }
-  
+
   // 执行代码高亮
   window.hljs.highlightAll();
-  
+
   // 添加复制按钮
   window.addCopyButtons();
 }
@@ -56,7 +56,7 @@ function addCopyButtons() {
       setTimeout(addCopyButtons, 100);
       return;
     }
-    
+
     document.querySelectorAll('pre code').forEach((block) => {
       // 检查是否已经添加过复制按钮
       const pre = block.parentElement;

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>公告栏-创客社</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/bulma/1.0.4/css/bulma.min.css">
   <link rel="stylesheet" href="../css/font/iconfont.css">
   <link rel="stylesheet" href="../css/index.css">
   <link rel="stylesheet" href="../css/announcement.css">
@@ -28,30 +28,30 @@
   <!-- 平滑滚动脚本 -->
   <script>
     var toTop = document.querySelector("#toTop");
-    window.addEventListener("scroll", function() {
-    var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
-    if (distanceY > 50) {
-    toTop.style.display = "block";
-    } else {
-    toTop.style.display = "none";
-    }
+    window.addEventListener("scroll", function () {
+      var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+      if (distanceY > 50) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
     });
-    
-    toTop.addEventListener("click", function() {
-    var timer = setInterval(function() {
-    var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
-    if (distanceY == 0) {
-    clearInterval(timer);
-    return;
-    }
 
-    // 调整上划速度（speed）两个一起改
-    var speed = Math.ceil(distanceY / 10);
-    document.documentElement.scrollTop = distanceY - speed;
-    }, 10);
+    toTop.addEventListener("click", function () {
+      var timer = setInterval(function () {
+        var distanceY = document.documentElement.scrollTop || document.body.scrollTop;
+        if (distanceY == 0) {
+          clearInterval(timer);
+          return;
+        }
+
+        // 调整上划速度（speed）两个一起改
+        var speed = Math.ceil(distanceY / 10);
+        document.documentElement.scrollTop = distanceY - speed;
+      }, 10);
     });
   </script>
-  
+
 
 
   <!-- 管理员专用：发布公告按钮 -->

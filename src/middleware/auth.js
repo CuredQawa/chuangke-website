@@ -42,7 +42,7 @@ const auth = (req, res, requiredRole, next) => {
 
             const user = result.rows[0];
 
-            // 管理员需要特殊角色，普通用户只要账户存在即可
+            // 管理员需要特殊角色，社员只要账户存在即可
             if (requiredRole === 'admin' && user.role !== 'admin') {
                 return res.status(403).json({ message: '需要管理员权限' });
             }

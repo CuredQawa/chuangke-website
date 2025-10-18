@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>管理图片 - 创客社</title>
   <!-- Bulma CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/bulma/1.0.4/css/bulma.min.css" />
   <!-- 图标字体 -->
   <link rel="stylesheet" href="../css/font/iconfont.css" />
   <!-- 自定义样式 -->
@@ -252,6 +252,7 @@
     <!-- 图片列表 -->
     <div class="image-list">
       <h2 class="title is-4">图片列表</h2>
+      <p class="subtitle">注意：图片路径不要加域名（示例：![](/images/uploads/xxx.jpg)）</p>
       <div id="images-container">
         <p class="has-text-grey">正在加载图片...</p>
       </div>
@@ -350,10 +351,10 @@
     function showUploadStatus(message, statusType) {
       const statusElement = document.getElementById('uploadStatus');
       const statusText = document.getElementById('uploadStatusText');
-      
+
       statusText.textContent = message;
       statusElement.className = 'upload-status show';
-      
+
       // 根据状态类型添加相应的类
       if (statusType === 'uploading') {
         statusElement.classList.add('uploading');
@@ -424,7 +425,7 @@
         // 恢复上传按钮
         uploadButton.disabled = false;
         uploadButton.textContent = '上传图片';
-        
+
         // 3秒后自动隐藏错误状态信息
         if (document.getElementById('uploadStatus').classList.contains('error')) {
           setTimeout(() => {

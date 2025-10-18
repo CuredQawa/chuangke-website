@@ -62,6 +62,12 @@ pre code {
     font-size: 110%;
 }
 
+/* 增加透明度，避免选中后背景颜色覆盖代码 */
+.hljs::selection,
+.hljs ::selection {
+    background-color: rgba(166, 84, 241, 0.45) !important;
+}
+
 /* 块引用样式 */
 .content blockquote {
     border-left: 4px solid #a654f1;
