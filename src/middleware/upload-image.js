@@ -5,19 +5,26 @@
 
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { IMAGE_UPLOAD_DIR, MAX_IMAGE_SIZE } from '../constants.js';
+
+// 确保上传目录存在
+const uploadDir = path.join(process.cwd(), IMAGE_UPLOAD_DIR);
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // 配置磁盘存储
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(process.cwd(), IMAGE_UPLOAD_DIR));
+        cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
-        // 生成文件名: 上传时间+用户名
+        // 生成文件名: 上传时间+原文件名
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const username = req.user.username;
+        const originalName = path.parse(file.originalname).name;
         const fileExtension = path.extname(file.originalname);
-        const fileName = `${timestamp}-${username}${fileExtension}`;
+        const fileName = `${timestamp}-${originalName}${fileExtension}`;
         cb(null, fileName);
     }
 });
@@ -79,7 +86,5 @@ const uploadImageMiddleware = (req, res, next) => {
         next();
     });
 };
-
-export default upload;
 
 export { uploadImageMiddleware };

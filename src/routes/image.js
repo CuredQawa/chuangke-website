@@ -123,3 +123,47 @@ export const getAllImages = async (req, res) => {
         res.status(500).json({ message: "服务器内部错误" });
     }
 };
+
+/**
+ * 编辑图片描述
+ * @param {Object} req - 请求对象
+ * @param {Object} res - 响应对象
+ */
+export const editImageDescription = async (req, res) => {
+    const imageId = req.params.id;
+    const { description } = req.body;
+    const userId = req.user.id;
+    const userRole = req.user.role;
+
+    // 检查描述是否为空
+    if (!description || typeof description !== 'string' || description.trim() === '') {
+        return res.status(400).json({ message: '描述不能为空' });
+    }
+
+    try {
+        // 查询图片信息
+        const selectQuery = 'SELECT author_id FROM images WHERE id = $1';
+        const result = await req.db.query(selectQuery, [imageId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: '图片不存在' });
+        }
+
+        const image = result.rows[0];
+        const authorId = image.author_id;
+
+        // 用户可以编辑自己的图片，管理员可以编辑所有图片
+        if (userRole !== 'admin' && authorId !== userId) {
+            return res.status(403).json({ message: '权限不足，无法编辑此图片' });
+        }
+
+        // 更新数据库中的描述
+        const updateQuery = 'UPDATE images SET description = $1 WHERE id = $2';
+        await req.db.query(updateQuery, [description.trim(), imageId]);
+
+        res.json({ message: '图片描述更新成功' });
+    } catch (err) {
+        console.error("数据库错误:", err);
+        res.status(500).json({ message: "服务器内部错误" });
+    }
+};

@@ -80,6 +80,70 @@
       margin-top: 0.25rem;
     }
 
+    .image-item .field.is-grouped {
+      margin-bottom: 0;
+    }
+
+    /* 模态框样式 - 与账户编辑保持一致 */
+    .modal-card {
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .modal-card-body {
+      padding: 2rem;
+    }
+
+    /* 移除模态框头部阴影 */
+    .modal-card-head {
+      box-shadow: none;
+    }
+
+    /* 模态框动画 */
+    .modal {
+      display: flex !important;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .modal.is-active .modal-card {
+      transform: scale(1);
+    }
+
+    /* 增加按钮间距 */
+    .modal-card-foot .button:not(:last-child) {
+      margin-right: 0.5em;
+    }
+
+    .input {
+      border: 2px solid rgb(166, 84, 241);
+    }
+
+    [data-theme=light],
+    .theme-light {
+      .input {
+        background-color: #eee;
+      }
+    }
+
+    [data-theme=dark],
+    .theme-dark {
+      .input {
+        background-color: #303030;
+      }
+    }
+
     /* 文件上传美化 */
     .file {
       margin-bottom: 0.75rem;
@@ -232,7 +296,6 @@
           <div class="control">
             <input class="input" type="text" id="image-description" placeholder="例如：创客社2024年春季招新活动现场" required>
           </div>
-          <p class="help">描述将用于说明图片内容，上传后不可修改</p>
         </div>
 
         <!-- 上传状态显示 -->
@@ -252,12 +315,44 @@
     <!-- 图片列表 -->
     <div class="image-list">
       <h2 class="title is-4">图片列表</h2>
-      <p class="subtitle">注意：图片路径不要加域名（示例：![](/images/uploads/xxx.jpg)）</p>
       <div id="images-container">
         <p class="has-text-grey">正在加载图片...</p>
       </div>
     </div>
   </section>
+
+  <!-- 编辑图片描述模态框 -->
+  <div class="modal" id="editImageModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">编辑图片描述</p>
+        <button class="delete" aria-label="close" id="closeEditModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <form id="editImageForm">
+          <input type="hidden" id="edit-image-id">
+          <div class="field">
+            <label class="label">图片名称</label>
+            <div class="control">
+              <input class="input" type="text" id="edit-image-name" disabled>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">图片描述</label>
+            <div class="control">
+              <input class="input" type="text" id="edit-image-description" required>
+            </div>
+          </div>
+        </form>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="saveImageBtn">保存</button>
+        <button class="button" id="cancelEditBtn">取消</button>
+      </footer>
+    </div>
+  </div>
 
   <!-- 页脚 -->
   <script src="../js/load-footer.js"></script>
@@ -523,6 +618,236 @@
         alert('❌ 请求失败：' + err.message);
       }
     }
+
+    // 复制 Markdown 链接
+    function copyMarkdownLink(fileName, description) {
+      const markdownLink = `![${description}](/images/uploads/${fileName})`;
+
+      // 使用现代的 Clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(markdownLink).then(() => {
+          // 临时更改按钮文本提示
+          alert('✅ Markdown 已复制到剪贴板');
+        }).catch(err => {
+          console.error('复制失败:', err);
+          fallbackCopyTextToClipboard(markdownLink);
+        });
+      } else {
+        // 降级方案
+        fallbackCopyTextToClipboard(markdownLink);
+      }
+    }
+
+    // 降级复制方案
+    function fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          alert('✅ Markdown 链接已复制到剪贴板');
+        } else {
+          alert('❌ 复制失败，请手动复制');
+          prompt('Markdown 链接:', text);
+        }
+      } catch (err) {
+        console.error('复制失败:', err);
+        alert('❌ 复制失败，请手动复制');
+        prompt('Markdown 链接:', text);
+      }
+
+      document.body.removeChild(textArea);
+    }
+
+    // 编辑图片描述
+    async function editImageDescription(id, fileName, currentDescription) {
+      // 填充表单
+      document.getElementById('edit-image-id').value = id;
+      document.getElementById('edit-image-name').value = fileName;
+      document.getElementById('edit-image-description').value = currentDescription;
+
+      // 显示模态框
+      document.getElementById('editImageModal').classList.add('is-active');
+    }
+
+    // 保存编辑后的图片描述
+    async function saveImageDescription() {
+      const id = document.getElementById('edit-image-id').value;
+      const description = document.getElementById('edit-image-description').value.trim();
+
+      if (!description) {
+        alert('描述不能为空');
+        return;
+      }
+
+      const saveRes = await fetch(`/api/image/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ description }),
+        credentials: 'include'
+      });
+
+      if (saveRes.ok) {
+        alert('更新成功');
+        closeEditImageModal();
+        loadImages(); // 重新加载图片列表
+      } else {
+        const err = await saveRes.json();
+        alert(err.message || '更新失败');
+      }
+    }
+
+    // 关闭编辑模态框
+    function closeEditImageModal() {
+      const modal = document.getElementById('editImageModal');
+      modal.classList.remove('is-active');
+
+      // 清理表单
+      setTimeout(() => {
+        if (!modal.classList.contains('is-active')) {
+          document.getElementById('edit-image-id').value = '';
+          document.getElementById('edit-image-name').value = '';
+          document.getElementById('edit-image-description').value = '';
+        }
+      }, 300);
+    }
+
+    // 为图片项添加编辑按钮
+    function updateImageListWithEdit(images, userId, userRole) {
+      const container = document.getElementById('images-container');
+      container.innerHTML = '';
+
+      if (images.length === 0) {
+        container.innerHTML = '<p class="has-text-grey">暂无图片</p>';
+        return;
+      }
+
+      images.forEach(img => {
+        const item = document.createElement('div');
+        item.className = 'image-item';
+
+        // 文件链接
+        const nameEl = document.createElement('a');
+        nameEl.className = 'image-name';
+        nameEl.textContent = img.fileName;
+        nameEl.href = `/images/uploads/${encodeURIComponent(img.fileName)}`;
+        nameEl.target = '_blank';
+
+        // 描述
+        const descEl = document.createElement('p');
+        descEl.className = 'image-desc';
+        descEl.textContent = img.description;
+
+        // 头部容器：文件名 + 操作按钮
+        const header = document.createElement('div');
+        header.className = 'image-header';
+        header.appendChild(nameEl);
+
+        // 操作按钮容器
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'field is-grouped';
+
+        // 复制 Markdown 按钮（所有用户都可以使用）
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'button is-small is-success delete-btn';
+        copyBtn.textContent = '复制 Markdown';
+        copyBtn.onclick = (e) => {
+          e.stopPropagation();
+          copyMarkdownLink(img.fileName, img.description);
+        };
+
+        buttonContainer.appendChild(copyBtn);
+
+        // 编辑按钮（仅自己或管理员）
+        if (userRole === 'admin' || Number(img.author_id) === userId) {
+          const editBtn = document.createElement('button');
+          editBtn.className = 'button is-small is-warning delete-btn';
+          editBtn.textContent = '编辑';
+          editBtn.onclick = (e) => {
+            e.stopPropagation();
+            editImageDescription(img.id, img.fileName, img.description);
+          };
+
+          buttonContainer.appendChild(editBtn);
+
+          // 删除按钮（仅自己或管理员）
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'button is-small is-danger delete-btn';
+          deleteBtn.textContent = '删除';
+          deleteBtn.onclick = (e) => {
+            e.stopPropagation();
+            deleteImage(img.id, img.fileName);
+          };
+
+          buttonContainer.appendChild(deleteBtn);
+        }
+
+        header.appendChild(buttonContainer);
+
+        // 组装
+        item.appendChild(header);
+        item.appendChild(descEl);
+        container.appendChild(item);
+      });
+    }
+
+    // 修改加载图片的函数以使用更新的列表
+    async function loadImages() {
+      const user = await checkAuth();
+      if (!user) return;
+
+      const container = document.getElementById('images-container');
+      container.innerHTML = '<p class="has-text-grey">加载中...</p>';
+
+      try {
+        const res = await fetch('/api/images');
+        if (!res.ok) throw new Error('网络错误');
+
+        const images = await res.json();
+        container.innerHTML = '';
+
+        if (images.length === 0) {
+          container.innerHTML = '<p class="has-text-grey">暂无图片</p>';
+          return;
+        }
+
+        const userId = Number(user.id);
+        const userRole = user.role;
+
+        updateImageListWithEdit(images, userId, userRole);
+      } catch (err) {
+        container.innerHTML = '<p class="has-text-danger">加载失败，请刷新重试</p>';
+        console.error('加载图片失败:', err);
+      }
+    }
+
+    // 绑定编辑模态框事件
+    document.getElementById('closeEditModal').addEventListener('click', closeEditImageModal);
+    document.getElementById('cancelEditBtn').addEventListener('click', closeEditImageModal);
+    document.getElementById('saveImageBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      saveImageDescription();
+    });
+
+    // 点击模态框背景关闭模态框
+    document.querySelector('#editImageModal .modal-background').addEventListener('click', closeEditImageModal);
+
+    // 按ESC键关闭模态框
+    document.addEventListener('keydown', function (e) {
+      const modal = document.getElementById('editImageModal');
+      if (e.key === 'Escape' && modal.classList.contains('is-active')) {
+        closeEditImageModal();
+      }
+    });
 
     // 初始化
     (async () => {

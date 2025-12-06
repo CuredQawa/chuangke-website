@@ -73,6 +73,10 @@ body {
         flex-direction: column;
     }
 
+    .container {
+        padding: 0 1rem; /* 添加容器边距 */
+    }
+
     .menu-column {
         width: 100%;
         margin-bottom: 1rem;
@@ -80,5 +84,14 @@ body {
         top: auto;
         max-height: none;
         overflow-y: visible;
+        padding: 0 1rem; /* 为菜单列添加边距 */
+    }
+
+    .menu {
+        padding: 0; /* 确保菜单本身没有额外边距 */
+    }
+
+    #content {
+        padding: 1rem; /* 移动端内容区域的边距 */
     }
 }

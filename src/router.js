@@ -13,7 +13,7 @@ import { register } from './routes/register.js';
 import { userAuth, adminAuth } from './middleware/auth.js';
 import { uploadImageMiddleware } from './middleware/upload-image.js';
 import { getAccountInfo, getAllAccounts, deleteAccount, editAccount } from './routes/account.js';
-import { uploadImage, deleteImage, getAllImages } from './routes/image.js';
+import { uploadImage, deleteImage, getAllImages, editImageDescription } from './routes/image.js';
 
 const router = express.Router();
 
@@ -94,6 +94,9 @@ router.post('/api/image', userAuth, uploadImageMiddleware, uploadImage);
 
 // 删除图片
 router.delete('/api/image/:id', userAuth, deleteImage);
+
+// 编辑图片描述
+router.put('/api/image/:id', userAuth, editImageDescription);
 
 // 获取所有图片
 router.get('/api/images', getAllImages);
