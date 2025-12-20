@@ -620,26 +620,36 @@
     }
 
     // 复制 Markdown 链接
-    function copyMarkdownLink(fileName, description) {
+    function copyMarkdownLink(fileName, description, buttonElement) {
       const markdownLink = `![${description}](/images/uploads/${fileName})`;
+      const originalText = buttonElement.textContent;
+
+      // 临时更改按钮文本提示
+      buttonElement.textContent = '✅ 已复制';
+      buttonElement.classList.add('is-info');
+      buttonElement.classList.remove('is-success');
 
       // 使用现代的 Clipboard API
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(markdownLink).then(() => {
-          // 临时更改按钮文本提示
-          alert('✅ Markdown 已复制到剪贴板');
+          // 1秒后恢复原始按钮文本
+          setTimeout(() => {
+            buttonElement.textContent = originalText;
+            buttonElement.classList.remove('is-info');
+            buttonElement.classList.add('is-success');
+          }, 1000);
         }).catch(err => {
           console.error('复制失败:', err);
-          fallbackCopyTextToClipboard(markdownLink);
+          fallbackCopyTextToClipboard(markdownLink, buttonElement, originalText);
         });
       } else {
         // 降级方案
-        fallbackCopyTextToClipboard(markdownLink);
+        fallbackCopyTextToClipboard(markdownLink, buttonElement, originalText);
       }
     }
 
     // 降级复制方案
-    function fallbackCopyTextToClipboard(text) {
+    function fallbackCopyTextToClipboard(text, buttonElement, originalText) {
       const textArea = document.createElement('textarea');
       textArea.value = text;
       textArea.style.position = 'fixed';
@@ -652,14 +662,30 @@
       try {
         const successful = document.execCommand('copy');
         if (successful) {
-          alert('✅ Markdown 链接已复制到剪贴板');
+          // 成功时更新按钮文本
+          buttonElement.textContent = '✅ 已复制';
+          buttonElement.classList.add('is-info');
+          buttonElement.classList.remove('is-success');
+
+          // 1秒后恢复原始按钮文本
+          setTimeout(() => {
+            buttonElement.textContent = originalText;
+            buttonElement.classList.remove('is-info');
+            buttonElement.classList.add('is-success');
+          }, 1000);
         } else {
-          alert('❌ 复制失败，请手动复制');
+          // 复制失败，恢复原始按钮文本
+          buttonElement.textContent = originalText;
+          buttonElement.classList.remove('is-info');
+          buttonElement.classList.add('is-success');
           prompt('Markdown 链接:', text);
         }
       } catch (err) {
         console.error('复制失败:', err);
-        alert('❌ 复制失败，请手动复制');
+        // 复制失败，恢复原始按钮文本
+        buttonElement.textContent = originalText;
+        buttonElement.classList.remove('is-info');
+        buttonElement.classList.add('is-success');
         prompt('Markdown 链接:', text);
       }
 
@@ -762,7 +788,7 @@
         copyBtn.textContent = '复制 Markdown';
         copyBtn.onclick = (e) => {
           e.stopPropagation();
-          copyMarkdownLink(img.fileName, img.description);
+          copyMarkdownLink(img.fileName, img.description, copyBtn);
         };
 
         buttonContainer.appendChild(copyBtn);
