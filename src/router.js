@@ -120,8 +120,8 @@ router.get('/api/accounts', adminAuth, getAllAccounts);
 // 获取当前登录的账户信息
 router.get('/api/account', userAuth, getAccountInfo);
 
-// 编辑账户信息（管理员）
-router.put('/api/account/:id', adminAuth, editAccount);
+// 编辑账户信息（用户可编辑自己的账户）
+router.put('/api/account/:id', userAuth, editAccount);
 
 // 删除账户（管理员）
 router.delete('/api/account/:id', adminAuth, deleteAccount);

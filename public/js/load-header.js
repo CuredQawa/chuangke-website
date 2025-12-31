@@ -175,12 +175,12 @@ window.loadHeaderPromise = (async () => {
         document.getElementById('mobile-role').textContent = user.role === 'admin' ? '管理员' : '社员';
         document.getElementById('mobile-role').className = `role-tag ${user.role}`;
 
-        // 管理账户：仅管理员
-        const isAdmin = user.role === 'admin';
-        toggleElement(document.getElementById('manage-accounts-btn'), isAdmin, 'inline-block');
-        toggleElement(document.getElementById('mobile-manage-accounts-btn'), isAdmin, 'block');
+        // 管理账户：所有登录用户
+        toggleElement(document.getElementById('manage-accounts-btn'), true, 'inline-block');
+        toggleElement(document.getElementById('mobile-manage-accounts-btn'), true, 'block');
 
         // 管理图片：社员和管理员
+        const isAdmin = user.role === 'admin';
         const isUserOrAdmin = user.role === 'user' || isAdmin;
         toggleElement(document.getElementById('manage-images-btn'), isUserOrAdmin, 'inline-block');
         toggleElement(document.getElementById('mobile-manage-images-btn'), isUserOrAdmin, 'block');

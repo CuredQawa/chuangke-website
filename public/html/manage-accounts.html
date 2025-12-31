@@ -126,58 +126,75 @@
   <script src="../js/load-header.js"></script>
 
   <section class="container">
-    <h1 class="title">管理账户</h1>
-    <p class="subtitle">注册、编辑、删除用户</p>
+    <h1 class="title" id="pageTitle">管理账户</h1>
+    <p class="subtitle" id="pageSubtitle">注册、编辑、删除用户</p>
 
-    <!-- 注册新用户表单 -->
-    <div class="account-card A-card">
-      <h2 class="title is-4">注册新用户</h2>
-      <form id="registerForm">
-        <div class="columns">
-          <div class="column">
-            <div class="form-group">
-              <label class="label">用户名</label>
-              <input class="input" type="text" name="username" id="reg-username" required>
-            </div>
-          </div>
-          <div class="column">
-            <div class="form-group">
-              <label class="label">邮箱</label>
-              <input class="input" type="email" name="email" id="reg-email" required>
-            </div>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <div class="form-group">
-              <label class="label">密码</label>
-              <input class="input" type="password" name="password" id="reg-password" required>
-            </div>
-          </div>
-          <div class="column">
-            <div class="form-group">
-              <label class="label">毕业年份</label>
-              <input class="input" type="number" name="graduation_year" id="reg-graduation_year" required>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="label">角色</label>
-          <div class="field">
-            <label class="radio">
-              <input type="radio" name="role" value="user" checked> 社员
-            </label>
-            <label class="radio" style="margin-left: 1rem;">
-              <input type="radio" name="role" value="admin"> 管理员
-            </label>
-          </div>
-        </div>
-        <button type="submit" class="button is-success">注册</button>
-      </form>
+    <!-- 注册新用户按钮 -->
+    <div class="columns is-vcentered mb-3" id="registerButtonContainer">
+      <div class="column is-narrow">
+        <button class="button is-success" id="openRegisterModal">
+          注册新用户
+        </button>
+      </div>
     </div>
 
+    <!-- 直接编辑表单（普通用户） -->
+    <form id="directEditAccountForm" style="display: none;">
+      <input type="hidden" id="direct-account-id">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">用户名</label>
+              <div class="control">
+                <input class="input" type="text" id="direct-username" required>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">毕业年份</label>
+              <div class="control">
+                <input class="input" type="number" id="direct-graduation_year" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">邮箱</label>
+              <div class="control">
+                <input class="input" type="email" id="direct-email" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox" id="direct-password-update">
+              修改密码
+            </label>
+          </div>
+        </div>
+        <div class="field" id="direct-password-field" style="display: none;">
+          <label class="label">新密码</label>
+          <div class="control">
+            <input class="input" type="password" id="direct-password" placeholder="请输入新密码">
+          </div>
+        </div>
+        <div class="field" id="direct-confirm-password-field" style="display: none;">
+          <label class="label">确认新密码</label>
+          <div class="control">
+            <input class="input" type="password" id="direct-confirm-password" placeholder="请再次输入新密码">
+          </div>
+          <p class="help is-danger" id="direct-password-error" style="display: none;">两次输入的密码不一致</p>
+        </div>
+        <button type="submit" class="button is-success">保存</button>
+    </form>
+
     <!-- 用户列表 -->
-    <h2 class="title is-4">用户列表</h2>
+    <h2 class="title is-4 mb-2" id="userListTitle">用户列表</h2>
     <div id="accounts-list">
       <!-- 动态插入 -->
     </div>
@@ -219,7 +236,7 @@
             <div class="control">
               <label class="checkbox">
                 <input type="checkbox" id="edit-password-update">
-                更新密码
+                修改密码
               </label>
             </div>
           </div>
@@ -229,6 +246,14 @@
             <div class="control">
               <input class="input" type="password" id="edit-password" placeholder="请输入新密码">
             </div>
+          </div>
+
+          <div class="field" id="edit-confirm-password-field" style="display: none;">
+            <label class="label">确认新密码</label>
+            <div class="control">
+              <input class="input" type="password" id="edit-confirm-password" placeholder="请再次输入新密码">
+            </div>
+            <p class="help is-danger" id="edit-password-error" style="display: none;">两次输入的密码不一致</p>
           </div>
 
           <div class="field">
@@ -251,9 +276,76 @@
     </div>
   </div>
 
+  <!-- 注册新用户模态框 -->
+  <div class="modal" id="registerModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">注册新用户</p>
+        <button class="delete" aria-label="close" id="closeRegisterModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <form id="registerForm">
+          <div class="field">
+            <label class="label">用户名</label>
+            <div class="control">
+              <input class="input" type="text" name="username" id="reg-username" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">邮箱</label>
+            <div class="control">
+              <input class="input" type="email" name="email" id="reg-email" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">密码</label>
+            <div class="control">
+              <input class="input" type="password" name="password" id="reg-password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">确认密码</label>
+            <div class="control">
+              <input class="input" type="password" name="confirm_password" id="reg-confirm-password" required>
+            </div>
+            <p class="help is-danger" id="password-error" style="display: none;">两次输入的密码不一致</p>
+          </div>
+
+          <div class="field">
+            <label class="label">毕业年份</label>
+            <div class="control">
+              <input class="input" type="number" name="graduation_year" id="reg-graduation_year" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">角色</label>
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="role" value="user" checked> 社员
+              </label>
+              <label class="radio" style="margin-left: 1rem;">
+                <input type="radio" name="role" value="admin"> 管理员
+              </label>
+            </div>
+          </div>
+        </form>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="registerBtn">注册</button>
+        <button class="button" id="cancelRegisterBtn">取消</button>
+      </footer>
+    </div>
+  </div>
+
   <script>
-    // 检查是否登录且为管理员
-    async function checkAdmin() {
+    // 检查是否登录
+    let currentUser = null; // 保存当前用户信息
+    async function checkUser() {
       const res = await fetch('/api/account', {
         credentials: 'include'
       });
@@ -262,55 +354,102 @@
         window.location.href = '/html/login.html?returnTo=' + encodeURIComponent(window.location.href);
         return false;
       }
-      const user = await res.json();
-      if (user.role !== 'admin') {
-        alert('需要管理员权限');
-        window.history.back();
-        return false;
-      }
+      currentUser = await res.json();
       return true;
     }
 
-    // 加载所有用户
+    // 加载用户列表
     let accountsData = []; // 保存账户数据用于编辑
     async function loadAccounts() {
-      const res = await fetch('/api/accounts', {
-        credentials: 'include'
-      });
+      let res;
+      if (currentUser.role === 'admin') {
+        // 管理员加载所有用户
+        res = await fetch('/api/accounts', {
+          credentials: 'include'
+        });
+      } else {
+        // 普通用户只加载自己的信息
+        res = await fetch('/api/account', {
+          credentials: 'include'
+        });
+      }
+
       if (!res.ok) {
-        alert('获取用户列表失败');
+        alert('获取用户信息失败');
         return;
       }
-      accountsData = await res.json();
-      const container = document.getElementById('accounts-list');
-      container.innerHTML = '';
 
-      accountsData.forEach(acc => {
-        const div = document.createElement('div');
-        div.className = 'account-card';
-        div.innerHTML = `
-          <div class="columns is-vcentered">
-            <div class="column">
-              <p><strong>用户名：</strong>${acc.username}</p>
-              <p><strong>邮箱：</strong>${acc.email}</p>
-              <p><strong>毕业年份：</strong>${acc.graduation_year}</p>
-              <p><strong>角色：</strong><span class="role-tag ${acc.role}">${acc.role === 'admin' ? '管理员' : '社员'}</span></p>
+      const data = await res.json();
+      accountsData = Array.isArray(data) ? data : [data];
+
+      if (currentUser.role === 'admin') {
+        // 管理员显示用户列表
+        const container = document.getElementById('accounts-list');
+        container.innerHTML = '';
+
+        accountsData.forEach(acc => {
+          const div = document.createElement('div');
+          div.className = 'account-card';
+          const deleteButton = `<button class="button is-small is-danger" style="margin-left: 0.5rem;" onclick="deleteAccount('${acc.id}', '${acc.username}')">删除</button>`;
+
+          div.innerHTML = `
+            <div class="columns is-vcentered">
+              <div class="column">
+                <p><strong>用户名：</strong>${acc.username}</p>
+                <p><strong>邮箱：</strong>${acc.email}</p>
+                <p><strong>毕业年份：</strong>${acc.graduation_year}</p>
+                <p><strong>角色：</strong><span class="role-tag ${acc.role}">${acc.role === 'admin' ? '管理员' : '社员'}</span></p>
+              </div>
+              <div class="column is-narrow">
+                <button class="button is-small is-warning" onclick="editAccount('${acc.id}')">编辑</button>
+                ${deleteButton}
+              </div>
             </div>
-            <div class="column is-narrow">
-              <button class="button is-small is-warning" onclick="editAccount('${acc.id}')">编辑</button>
-              <button class="button is-small is-danger" style="margin-left: 0.5rem;" onclick="deleteAccount('${acc.id}', '${acc.username}')">删除</button>
-            </div>
-          </div>
-        `;
-        container.appendChild(div);
-      });
+          `;
+          container.appendChild(div);
+        });
+      } else {
+        // 普通用户填充直接编辑表单
+        const acc = accountsData[0];
+        document.getElementById('direct-account-id').value = acc.id;
+        document.getElementById('direct-username').value = acc.username;
+        document.getElementById('direct-email').value = acc.email;
+        document.getElementById('direct-graduation_year').value = acc.graduation_year;
+      }
+    }
+
+    // 打开注册模态框
+    function openRegisterModal() {
+      // 重置表单
+      document.getElementById('registerForm').reset();
+      // 显示模态框
+      document.getElementById('registerModal').classList.add('is-active');
+    }
+
+    // 关闭注册模态框
+    function closeRegisterModal() {
+      const modal = document.getElementById('registerModal');
+      modal.classList.remove('is-active');
+      // 重置表单
+      document.getElementById('registerForm').reset();
+      // 清除密码错误状态
+      document.getElementById('password-error').style.display = 'none';
+      document.getElementById('reg-confirm-password').classList.remove('is-danger');
     }
 
     // 注册新用户
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+    async function registerUser() {
+      const form = document.getElementById('registerForm');
+      const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-confirm-password').value;
 
-      const formData = new FormData(e.target);
+      // 检查密码是否一致
+      if (password !== confirmPassword) {
+        alert('两次输入的密码不一致');
+        return;
+      }
+
+      const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
 
       const res = await fetch('/api/register', {
@@ -324,13 +463,13 @@
 
       if (res.ok) {
         alert('注册成功');
-        e.target.reset();
+        closeRegisterModal();
         loadAccounts();
       } else {
         const err = await res.json();
         alert(err.message || '注册失败');
       }
-    });
+    }
 
     // 编辑用户
     async function editAccount(id) {
@@ -345,7 +484,11 @@
       // 重置表单状态
       document.getElementById('edit-password-update').checked = false;
       document.getElementById('edit-password-field').style.display = 'none';
+      document.getElementById('edit-confirm-password-field').style.display = 'none';
       document.getElementById('edit-password').value = '';
+      document.getElementById('edit-confirm-password').value = '';
+      document.getElementById('edit-password-error').style.display = 'none';
+      document.getElementById('edit-confirm-password').classList.remove('is-danger');
 
       // 填充表单
       document.getElementById('edit-account-id').value = acc.id;
@@ -360,6 +503,14 @@
         document.getElementById('edit-role-user').checked = true;
       }
 
+      // 普通用户不能修改角色
+      const roleField = document.getElementById('edit-role-admin').parentElement.parentElement;
+      if (currentUser.role !== 'admin') {
+        roleField.style.display = 'none';
+      } else {
+        roleField.style.display = 'block';
+      }
+
       // 显示模态框
       document.getElementById('editAccountModal').classList.add('is-active');
     }
@@ -371,17 +522,28 @@
       const email = document.getElementById('edit-email').value;
       const graduation_year = document.getElementById('edit-graduation_year').value;
       const password = document.getElementById('edit-password').value;
+      const confirmPassword = document.getElementById('edit-confirm-password').value;
       const updatePassword = document.getElementById('edit-password-update').checked;
-      const role = document.querySelector('input[name="edit-role"]:checked').value;
+
+      // 检查密码是否一致
+      if (updatePassword && password !== confirmPassword) {
+        alert('两次输入的密码不一致');
+        return;
+      }
 
       const updateData = {
         username,
         email,
-        graduation_year,
-        role
+        graduation_year
       };
 
-      // 只有当选中更新密码且密码不为空时才更新密码
+      // 只有管理员才能修改角色
+      if (currentUser.role === 'admin') {
+        const role = document.querySelector('input[name="edit-role"]:checked').value;
+        updateData.role = role;
+      }
+
+      // 只有当选中修改密码且密码不为空时才修改密码
       if (updatePassword && password && password.trim() !== '') {
         updateData.password = password;
       }
@@ -405,15 +567,23 @@
       }
     }
 
-    // 关闭模态框
+    // 关闭编辑模态框
     function closeEditModal() {
       const modal = document.getElementById('editAccountModal');
       modal.classList.remove('is-active');
 
       // 立即清除密码字段和复选框状态
       document.getElementById('edit-password').value = '';
+      document.getElementById('edit-confirm-password').value = '';
       document.getElementById('edit-password-update').checked = false;
       document.getElementById('edit-password-field').style.display = 'none';
+      document.getElementById('edit-confirm-password-field').style.display = 'none';
+      document.getElementById('edit-password-error').style.display = 'none';
+      document.getElementById('edit-confirm-password').classList.remove('is-danger');
+
+      // 恢复角色字段显示
+      const roleField = document.getElementById('edit-role-admin').parentElement.parentElement;
+      roleField.style.display = 'block';
 
       // 延迟清理表单，等待动画结束
       setTimeout(() => {
@@ -425,6 +595,12 @@
 
     // 删除用户
     async function deleteAccount(id, username) {
+      // 普通用户不能删除账户
+      if (currentUser.role !== 'admin') {
+        alert('需要管理员权限才能删除账户');
+        return;
+      }
+
       if (!confirm(`确定要删除用户 ${username} 吗？`)) return;
 
       const res = await fetch(`/api/account/${id}`, {
@@ -441,7 +617,37 @@
       }
     }
 
-    // 绑定模态框事件
+    // 绑定注册模态框事件
+    document.getElementById('openRegisterModal').addEventListener('click', openRegisterModal);
+    document.getElementById('closeRegisterModal').addEventListener('click', closeRegisterModal);
+    document.getElementById('cancelRegisterBtn').addEventListener('click', closeRegisterModal);
+    document.getElementById('registerBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      registerUser();
+    });
+
+    // 实时检查密码一致性
+    const passwordInput = document.getElementById('reg-password');
+    const confirmPasswordInput = document.getElementById('reg-confirm-password');
+    const passwordError = document.getElementById('password-error');
+
+    function checkPasswordMatch() {
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      if (confirmPassword && password !== confirmPassword) {
+        passwordError.style.display = 'block';
+        confirmPasswordInput.classList.add('is-danger');
+      } else {
+        passwordError.style.display = 'none';
+        confirmPasswordInput.classList.remove('is-danger');
+      }
+    }
+
+    passwordInput.addEventListener('input', checkPasswordMatch);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+    // 绑定编辑模态框事件
     document.getElementById('closeModal').addEventListener('click', closeEditModal);
     document.getElementById('cancelEditBtn').addEventListener('click', closeEditModal);
     document.getElementById('saveAccountBtn').addEventListener('click', function (e) {
@@ -449,32 +655,180 @@
       saveAccount();
     });
 
-    // 绑定密码更新复选框事件
-    document.getElementById('edit-password-update').addEventListener('change', function () {
-      const passwordField = document.getElementById('edit-password-field');
+    // 绑定直接编辑表单事件
+    document.getElementById('direct-password-update').addEventListener('change', function () {
+      const passwordField = document.getElementById('direct-password-field');
+      const confirmPasswordField = document.getElementById('direct-confirm-password-field');
       if (this.checked) {
         passwordField.style.display = 'block';
-        document.getElementById('edit-password').focus();
+        confirmPasswordField.style.display = 'block';
+        document.getElementById('direct-password').focus();
       } else {
         passwordField.style.display = 'none';
-        // 取消勾选时不立即清除密码输入框的内容
+        confirmPasswordField.style.display = 'none';
+        document.getElementById('direct-password').value = '';
+        document.getElementById('direct-confirm-password').value = '';
+        document.getElementById('direct-password-error').style.display = 'none';
+        document.getElementById('direct-confirm-password').classList.remove('is-danger');
       }
     });
 
+    // 直接编辑表单密码实时检查
+    const directPasswordInput = document.getElementById('direct-password');
+    const directConfirmPasswordInput = document.getElementById('direct-confirm-password');
+    const directPasswordError = document.getElementById('direct-password-error');
+
+    function checkDirectPasswordMatch() {
+      const password = directPasswordInput.value;
+      const confirmPassword = directConfirmPasswordInput.value;
+
+      if (confirmPassword && password !== confirmPassword) {
+        directPasswordError.style.display = 'block';
+        directConfirmPasswordInput.classList.add('is-danger');
+      } else {
+        directPasswordError.style.display = 'none';
+        directConfirmPasswordInput.classList.remove('is-danger');
+      }
+    }
+
+    directPasswordInput.addEventListener('input', checkDirectPasswordMatch);
+    directConfirmPasswordInput.addEventListener('input', checkDirectPasswordMatch);
+
+    document.getElementById('directEditAccountForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const password = document.getElementById('direct-password').value;
+      const confirmPassword = document.getElementById('direct-confirm-password').value;
+      const updatePassword = document.getElementById('direct-password-update').checked;
+
+      // 检查密码是否一致
+      if (updatePassword && password !== confirmPassword) {
+        alert('两次输入的密码不一致');
+        return;
+      }
+
+      const id = document.getElementById('direct-account-id').value;
+      const username = document.getElementById('direct-username').value;
+      const email = document.getElementById('direct-email').value;
+      const graduation_year = document.getElementById('direct-graduation_year').value;
+
+      const updateData = {
+        username,
+        email,
+        graduation_year
+      };
+
+      // 只有当选中修改密码且密码不为空时才修改密码
+      if (updatePassword && password && password.trim() !== '') {
+        updateData.password = password;
+      }
+
+      const saveRes = await fetch(`/api/account/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData),
+        credentials: 'include'
+      });
+
+      if (saveRes.ok) {
+        alert('更新成功');
+        // 重置密码字段
+        document.getElementById('direct-password-update').checked = false;
+        document.getElementById('direct-password-field').style.display = 'none';
+        document.getElementById('direct-confirm-password-field').style.display = 'none';
+        document.getElementById('direct-password').value = '';
+        document.getElementById('direct-confirm-password').value = '';
+      } else {
+        const err = await saveRes.json();
+        alert(err.message || '更新失败');
+      }
+    });
+
+    // 绑定密码更新复选框事件
+    document.getElementById('edit-password-update').addEventListener('change', function () {
+      const passwordField = document.getElementById('edit-password-field');
+      const confirmPasswordField = document.getElementById('edit-confirm-password-field');
+      if (this.checked) {
+        passwordField.style.display = 'block';
+        confirmPasswordField.style.display = 'block';
+        document.getElementById('edit-password').focus();
+      } else {
+        passwordField.style.display = 'none';
+        confirmPasswordField.style.display = 'none';
+        // 清除密码字段和错误状态
+        document.getElementById('edit-password').value = '';
+        document.getElementById('edit-confirm-password').value = '';
+        document.getElementById('edit-password-error').style.display = 'none';
+        document.getElementById('edit-confirm-password').classList.remove('is-danger');
+      }
+    });
+
+    // 编辑账户模态框密码实时检查
+    const editPasswordInput = document.getElementById('edit-password');
+    const editConfirmPasswordInput = document.getElementById('edit-confirm-password');
+    const editPasswordError = document.getElementById('edit-password-error');
+
+    function checkEditPasswordMatch() {
+      const password = editPasswordInput.value;
+      const confirmPassword = editConfirmPasswordInput.value;
+
+      if (confirmPassword && password !== confirmPassword) {
+        editPasswordError.style.display = 'block';
+        editConfirmPasswordInput.classList.add('is-danger');
+      } else {
+        editPasswordError.style.display = 'none';
+        editConfirmPasswordInput.classList.remove('is-danger');
+      }
+    }
+
+    editPasswordInput.addEventListener('input', checkEditPasswordMatch);
+    editConfirmPasswordInput.addEventListener('input', checkEditPasswordMatch);
+
     // 点击模态框背景关闭模态框
     document.querySelector('#editAccountModal .modal-background').addEventListener('click', closeEditModal);
+    document.querySelector('#registerModal .modal-background').addEventListener('click', closeRegisterModal);
 
     // 按ESC键关闭模态框
     document.addEventListener('keydown', function (e) {
-      const modal = document.getElementById('editAccountModal');
-      if (e.key === 'Escape' && modal.classList.contains('is-active')) {
-        closeEditModal();
+      const editModal = document.getElementById('editAccountModal');
+      const registerModal = document.getElementById('registerModal');
+      if (e.key === 'Escape') {
+        if (editModal.classList.contains('is-active')) {
+          closeEditModal();
+        } else if (registerModal.classList.contains('is-active')) {
+          closeRegisterModal();
+        }
       }
     });
 
     // 初始化
     (async () => {
-      if (await checkAdmin()) {
+      if (await checkUser()) {
+        // 根据用户权限设置页面标题和按钮
+        if (currentUser.role === 'admin') {
+          document.getElementById('pageTitle').textContent = '管理账户';
+          document.getElementById('pageSubtitle').textContent = '注册、编辑、删除用户';
+          document.getElementById('userListTitle').textContent = '用户列表';
+          document.getElementById('registerButtonContainer').style.display = 'flex';
+          document.getElementById('directEditAccountForm').style.display = 'none';
+          document.getElementById('userListTitle').style.display = 'block';
+          document.getElementById('accounts-list').style.display = 'block';
+        } else {
+          document.getElementById('pageTitle').textContent = '我的账户';
+          document.getElementById('pageSubtitle').textContent = '编辑您的账户信息';
+          document.getElementById('registerButtonContainer').style.display = 'none';
+          document.getElementById('directEditAccountForm').style.display = 'block';
+          document.getElementById('userListTitle').style.display = 'none';
+          document.getElementById('accounts-list').style.display = 'none';
+
+          // 确保密码复选框默认不勾选
+          document.getElementById('direct-password-update').checked = false;
+          document.getElementById('direct-password-field').style.display = 'none';
+          document.getElementById('direct-confirm-password-field').style.display = 'none';
+        }
+
         loadAccounts();
       }
     })();

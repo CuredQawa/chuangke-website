@@ -48,13 +48,21 @@ export const editAccount = async (req, res) => {
     const { username, graduation_year, password, email, role } = req.body;
     const db = req.db;
 
+    // 普通用户只能编辑自己的账户
+    if (req.user.role !== 'admin' && req.user.id !== parseInt(id)) {
+        return res.status(403).json({ message: '无权编辑此账户' });
+    }
+
     try {
         let result;
+        // 普通用户不能修改角色
+        const updateRole = req.user.role === 'admin' && role !== undefined ? role : req.user.role;
+
         if (password && password.trim() !== '') {
             const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
-            result = await db.query('UPDATE accounts SET username = $1, graduation_year = $2, email = $3, role = $4, password = $5 WHERE id = $6', [username, graduation_year, email, role, hashedPassword, id]);
+            result = await db.query('UPDATE accounts SET username = $1, graduation_year = $2, email = $3, role = $4, password = $5 WHERE id = $6', [username, graduation_year, email, updateRole, hashedPassword, id]);
         } else {
-            result = await db.query('UPDATE accounts SET username = $1, graduation_year = $2, email = $3, role = $4 WHERE id = $5', [username, graduation_year, email, role, id]);
+            result = await db.query('UPDATE accounts SET username = $1, graduation_year = $2, email = $3, role = $4 WHERE id = $5', [username, graduation_year, email, updateRole, id]);
         }
 
         if (result.rowCount === 0) {
@@ -74,6 +82,11 @@ export const editAccount = async (req, res) => {
  * @param {Object} res - 响应对象
  */
 export const deleteAccount = async (req, res) => {
+    // 只有管理员才能删除账户
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: '需要管理员权限才能删除账户' });
+    }
+
     const id = req.params.id;
     const query = 'DELETE FROM accounts WHERE id = $1';
 
