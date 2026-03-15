@@ -20,11 +20,11 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
-        // 生成文件名: 上传时间+原文件名
+        // 生成文件名: 上传时间+用户名
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const originalName = path.parse(file.originalname).name;
+        const username = req.user ? req.user.username : 'unknown';
         const fileExtension = path.extname(file.originalname);
-        const fileName = `${timestamp}-${originalName}${fileExtension}`;
+        const fileName = `${timestamp}-${username}${fileExtension}`;
         cb(null, fileName);
     }
 });
