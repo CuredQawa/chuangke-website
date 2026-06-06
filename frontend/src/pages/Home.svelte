@@ -1,0 +1,203 @@
+<script>
+  import { onMount } from 'svelte';
+  import { projects, fetchProjects, projectsLoading } from '../stores/projects.js';
+  import { link } from 'svelte-spa-router';
+  
+  let error = null;
+  let projectsLoaded = false;
+  
+  onMount(async () => {
+    // 加载项目
+    try {
+      await fetchProjects();
+      projectsLoaded = true;
+    } catch (e) {
+      error = e.message;
+    }
+    
+    // 初始化 GSAP ScrollTrigger
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // 英雄标题动画
+      gsap.from(".bold-title", { opacity: 0, y: 30, duration: 1.2, ease: "power2.out" });
+      gsap.from(".slide-up", { opacity: 0, y: 20, duration: 1, delay: 0.4, ease: "power2.out" });
+
+      // 照片墙逐个淡入放大
+      const photos = document.querySelectorAll('.photo-item');
+      photos.forEach((img, i) => {
+        ScrollTrigger.create({
+          trigger: img,
+          start: "top 80%",
+          onEnter: () => {
+            img.classList.add('loaded');
+          },
+          once: true
+        });
+      });
+      
+      // 项目卡片动画
+      setTimeout(() => {
+        const projectItems = document.querySelectorAll('.project-item');
+        projectItems.forEach((item, i) => {
+          gsap.from(item, {
+            scrollTrigger: item,
+            opacity: 0,
+            y: 40,
+            duration: 0.8,
+            delay: i * 0.15,
+            ease: "back.out(1.1)"
+          });
+        });
+      }, 100);
+    }
+  });
+  
+  $: shuffledProjects = $projects
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 6);
+</script>
+
+<main class="homepage">
+
+  <!-- ==================== 第一屏：英雄区域（带视差背景）==================== -->
+  <section class="hero is-fullheight parallax-hero" id="parallax1">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title has-text-white bold-title is-title">湛江一中创客社</h1>
+        <p class="subtitle has-text-white slide-up is-subtitle">用代码创造未来 · 用热爱点燃灵感</p>
+        <br><br><br><br>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 第二屏：社团简介（修复响应式）==================== -->
+  <section class="section is-risecolor" style="min-height: 600px; padding: 5rem 0;">
+    <div class="container section-2">
+      <div class="columns is-vcentered is-flex-contain">
+
+        <!-- 左侧文字（移动端在上） -->
+        <div class="column">
+          <h2 class="title is-2 has-text-weight-bold">
+            我们是谁？
+          </h2>
+          <p class="content is-large">
+            湛江一中创客社成立于2020年(?)，是由一群热爱编程、硬件、人工智能与创意设计的学生和老师组成的技术型社团。
+          </p>
+          <p class="content">
+            我们相信：<strong style="color: rgb(166, 84, 241);font-size: large;">每一个想法都值得被实现</strong>。在这里，没有"不可能"，只有"还没开始"。
+            从第一行 Python 到编撰社团网站，从 Arduino 小车到 AI 图像识别项目，我们一步步把想象变成现实。
+          </p>
+          <div class="tags mt-4">
+            <span class="tag is-success is-large">Python</span>
+            <span class="tag is-success is-large">Web 开发</span>
+            <span class="tag is-info is-large">物联网</span>
+            <span class="tag is-warning is-large">AI & ML</span>
+            <span class="tag is-danger is-large">3D建模和打印</span>
+            <span class="tag is-danger is-large">激光切割</span>
+          </div>
+        </div>
+
+        <!-- 右侧图片（移动端在下） -->
+        <div class="column has-text-centered">
+          <figure class="image rounded-lg shadow-xl"
+            style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <img
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=entropy&q=80"
+              alt="学生编程场景" style="width: 100%; height: auto; display: block;">
+          </figure>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 第三屏：项目作品墙（动态加载）==================== -->
+  <section class="section is-risecolor" id="projects-section">
+    <div class="container">
+      <h2 class="title is-2 has-text-centered mb-6">我们的项目成果</h2>
+      <div class="columns is-multiline is-variable is-4" id="projects-container" style="justify-content: center;">
+        {#if $projectsLoading}
+          <div class="column is-12 has-text-centered">
+            <p class="has-text-grey">加载中......</p>
+          </div>
+        {:else if error}
+          <div class="column is-12 has-text-centered">
+            <p class="has-text-danger">加载项目失败</p>
+          </div>
+        {:else if shuffledProjects.length === 0}
+          <div class="column is-12 has-text-centered">
+            <p class="has-text-grey">啊，这里空空如也</p>
+          </div>
+        {:else}
+          {#each shuffledProjects as project (project.id)}
+            <div class="column is-4-desktop is-6-tablet is-12-mobile project-item">
+              <a href="/projects" use:link>
+                <div class="card hover-lift">
+                  <div class="card-image">
+                    <figure class="image">
+                      <img 
+                        src={project.cover_image_url || '/images/placeholder.webp'} 
+                        alt={project.title}
+                        loading="lazy"
+                        on:error={(e) => e.target.src = '/images/placeholder.webp'}
+                      >
+                    </figure>
+                  </div>
+                  <div class="card-content">
+                    <p class="title is-5">{project.title}</p>
+                    <p class="content">{project.author?.username || '未知作者'}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {/each}
+        {/if}
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 第四屏：视差图层 ==================== -->
+  <section class="parallax-section section-4">
+    <div class="parallax-overlay">
+      <h2 class="has-text-white has-text-centered is-4-h2">
+        在这里，每个点子都有机会发光
+      </h2>
+    </div>
+  </section>
+
+  <!-- ==================== 第五屏：活动剪影 ==================== -->
+  <section class="section section-5">
+    <div class="container">
+      <h2 class="title is-2 has-text-centered">活动剪影 · 记录我们的成长</h2>
+      <div class="photo-wall">
+        <img src="/images/home-use/event1.webp" alt="社团招新" class="photo-item" loading="lazy">
+        <img src="/images/home-use/event2.webp" alt="社团招新" class="photo-item" loading="lazy">
+        <img src="/images/home-use/event3.webp" alt="社团活动" class="photo-item" loading="lazy">
+        <img src="/images/home-use/event4.webp" alt="社团活动" class="photo-item" loading="lazy">
+        <img src="/images/home-use/event5.webp" alt="3D打印" class="photo-item" loading="lazy">
+        <img src="/images/home-use/event6.webp" alt="激光切割" class="photo-item" loading="lazy">
+        <img src="/images/home-use/event7.webp" alt="红五月" class="photo-item" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 第六屏：加入我们 ==================== -->
+  <section class="hero is-medium parallax-hero" id="parallax2">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h2 class="title is-2 has-text-white">想和我们一起改变世界吗？</h2>
+        <p class="subtitle is-4 has-text-light">无论你是编程小白还是技术大神，只要你有热情，我们都欢迎！</p>
+        <div class="buttons is-centered mt-6">
+          <a href="/join" use:link class="button is-success is-large is-rounded hover-pulse is-purple">
+            <span>立即报名加入我们</span>
+          </a>
+          <a href="/serve" use:link class="button is-outlined is-light is-large is-rounded ml-4">
+            我们能提供的服务
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>

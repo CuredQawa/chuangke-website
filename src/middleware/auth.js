@@ -12,6 +12,9 @@ dotenv.config();
 if (!process.env.JWT_SECRET) {
     throw new Error('请设置环境变量 JWT_SECRET');
 }
+if (process.env.JWT_SECRET.length < 32) {
+    throw new Error('JWT_SECRET 长度不足 32 字符，请使用足够强的密钥');
+}
 
 /**
  * 通用认证函数
@@ -93,7 +96,7 @@ export const signToken = (payload) => {
 export const setTokenCookie = (res, token) => {
     res.cookie('token', token, {
         httpOnly: true,
-        // secure: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: COOKIE_MAX_AGE
     });

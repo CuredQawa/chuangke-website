@@ -1,0 +1,49 @@
+.container-activity {
+    /* background-color: aqua; */
+    padding: 5vh 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-item {
+    border-radius: 2em;
+    /* background-color: rgb(78, 78, 78); */
+    border: 4px solid rgb(166, 84, 241);
+    height: 50vh;
+    width: 20vw;
+    margin: 0 1vw;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.activity-item:hover {
+    transform: scale(1.02);
+}
+
+.a-p {
+    color: rgb(166, 84, 241);
+    font-size: x-large;
+    font-weight: 700;
+    margin: auto;
+}
+
+/* 按钮样式 */
+.is-fixed-bottom-right {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.is-purple {
+    background-color: rgb(166, 84, 241);
+    color: black;
+}
+
+.icon-xitongguanli {
+    color: aliceblue;
+}

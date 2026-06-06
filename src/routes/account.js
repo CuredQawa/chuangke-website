@@ -58,6 +58,28 @@ export const editAccount = async (req, res) => {
         // 普通用户不能修改角色
         const updateRole = req.user.role === 'admin' && role !== undefined ? role : req.user.role;
 
+        // 用户名冲突检查
+        if (username) {
+            const usernameCheck = await db.query(
+                'SELECT id FROM accounts WHERE username = $1 AND id != $2',
+                [username, id]
+            );
+            if (usernameCheck.rows.length > 0) {
+                return res.status(409).json({ message: '该用户名已被其他账户使用' });
+            }
+        }
+
+        // 邮箱冲突检查（避免被改成的邮箱已存在）
+        if (email) {
+            const emailCheck = await db.query(
+                'SELECT id FROM accounts WHERE email = $1 AND id != $2',
+                [email, id]
+            );
+            if (emailCheck.rows.length > 0) {
+                return res.status(409).json({ message: '该邮箱已被其他账户使用' });
+            }
+        }
+
         if (password && password.trim() !== '') {
             const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
             result = await db.query('UPDATE accounts SET username = $1, graduation_year = $2, email = $3, role = $4, password = $5 WHERE id = $6', [username, graduation_year, email, updateRole, hashedPassword, id]);
@@ -71,6 +93,10 @@ export const editAccount = async (req, res) => {
 
         res.json({ message: '账户信息已更新' });
     } catch (err) {
+        // 兜底唯一约束冲突（应用层漏检或并发场景）
+        if (err.code === '23505') {
+            return res.status(409).json({ message: '该用户名或邮箱已被其他账户使用' });
+        }
         console.error("数据库错误:", err);
         res.status(500).json({ message: "服务器内部错误" });
     }

@@ -5,7 +5,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { IMAGE_UPLOAD_DIR } from '../constants.js';
+import { IMAGE_UPLOAD_DIR, MAX_DESCRIPTION_LENGTH } from '../constants.js';
 
 // 图片上传目录
 const uploadDir = path.join(process.cwd(), IMAGE_UPLOAD_DIR);
@@ -31,17 +31,30 @@ export const uploadImage = async (req, res) => {
         return res.status(400).json({ message: '缺少描述信息' });
     }
 
+    const description = typeof req.body.info.description === 'string' ? req.body.info.description.trim() : '';
+    if (!description) {
+        const filePath = path.join(uploadDir, req.file.filename);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+        }
+        return res.status(400).json({ message: '描述不能为空' });
+    }
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+        const filePath = path.join(uploadDir, req.file.filename);
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+        }
+        return res.status(400).json({ message: `描述不能超过 ${MAX_DESCRIPTION_LENGTH} 个字符` });
+    }
+
     try {
-        const { info } = req.body;
         const fileName = req.file.filename;
 
         // 把信息存入数据库
-        const query = 'INSERT INTO images (filename, description, author_id) VALUES ($1, $2, $3)';
-        await req.db.query(query, [fileName, info.description, req.user.id]);
+        const query = 'INSERT INTO images (filename, description, author_id) VALUES ($1, $2, $3) RETURNING id, filename, description, author_id';
+        const result = await req.db.query(query, [fileName, description, req.user.id]);
 
-        res.json({
-            fileName,
-        });
+        res.json(result.rows[0]);
     } catch (error) {
         // 如果数据库操作失败，删除已上传的文件
         const filePath = path.join(uploadDir, req.file.filename);
@@ -138,6 +151,9 @@ export const editImageDescription = async (req, res) => {
     // 检查描述是否为空
     if (!description || typeof description !== 'string' || description.trim() === '') {
         return res.status(400).json({ message: '描述不能为空' });
+    }
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+        return res.status(400).json({ message: `描述不能超过 ${MAX_DESCRIPTION_LENGTH} 个字符` });
     }
 
     try {

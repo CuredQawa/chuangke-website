@@ -12,14 +12,16 @@ import { login, logout } from './routes/login.js';
 import { register } from './routes/register.js';
 import { userAuth, adminAuth } from './middleware/auth.js';
 import { uploadImageMiddleware } from './middleware/upload-image.js';
+import { validateId } from './middleware/validate-id.js';
 import { getAccountInfo, getAllAccounts, deleteAccount, editAccount } from './routes/account.js';
 import { uploadImage, deleteImage, getAllImages, editImageDescription } from './routes/image.js';
+import { loginLimiter, registerLimiter, uploadLimiter } from './middleware/rate-limit.js';
 
 const router = express.Router();
 
 // 返回首页 HTML 文件
 router.get('/', (_, res) => {
-    res.redirect(301, '/html/index.html')
+    res.redirect(301, '/index.html')
 });
 
 // --------------------
@@ -31,15 +33,15 @@ router.get('/api/announcements', getAllAnnouncements);
 router.post('/api/announcement', adminAuth, newAnnouncement);
 
 // 编辑公告（管理员）
-router.put('/api/announcement/:id', adminAuth, editAnnouncement);
+router.put('/api/announcement/:id', validateId, adminAuth, editAnnouncement);
 
 // 删除公告（管理员）
-router.delete('/api/announcement/:id', adminAuth, deleteAnnouncement);
+router.delete('/api/announcement/:id', validateId, adminAuth, deleteAnnouncement);
 
 // --------------------
 
 // 获取文档内容
-router.get('/api/doc/:id', getDocById);
+router.get('/api/doc/:id', validateId, getDocById);
 
 // 获取所有文档列表
 router.get('/api/docs', getAllDocs);
@@ -48,15 +50,15 @@ router.get('/api/docs', getAllDocs);
 router.post('/api/doc', userAuth, newDoc);
 
 // 编辑文档
-router.put('/api/doc/:id', userAuth, editDoc);
+router.put('/api/doc/:id', validateId, userAuth, editDoc);
 
 // 删除文档
-router.delete('/api/doc/:id', userAuth, deleteDoc);
+router.delete('/api/doc/:id', validateId, userAuth, deleteDoc);
 
 // --------------------
 
 // 获取项目内容
-router.get('/api/project/:id', getProjectById);
+router.get('/api/project/:id', validateId, getProjectById);
 
 // 获取所有项目列表
 router.get('/api/projects', getAllProjects);
@@ -65,15 +67,15 @@ router.get('/api/projects', getAllProjects);
 router.post('/api/project', userAuth, newProject);
 
 // 编辑项目
-router.put('/api/project/:id', userAuth, editProject);
+router.put('/api/project/:id', validateId, userAuth, editProject);
 
 // 删除项目
-router.delete('/api/project/:id', userAuth, deleteProject);
+router.delete('/api/project/:id', validateId, userAuth, deleteProject);
 
 // --------------------
 
 // 获取活动内容
-router.get('/api/activity/:id', getActivityById);
+router.get('/api/activity/:id', validateId, getActivityById);
 
 // 获取所有活动列表
 router.get('/api/activities', getAllActivities);
@@ -82,21 +84,21 @@ router.get('/api/activities', getAllActivities);
 router.post('/api/activity', userAuth, newActivity);
 
 // 编辑活动
-router.put('/api/activity/:id', userAuth, editActivity);
+router.put('/api/activity/:id', validateId, userAuth, editActivity);
 
 // 删除活动
-router.delete('/api/activity/:id', userAuth, deleteActivity);
+router.delete('/api/activity/:id', validateId, userAuth, deleteActivity);
 
 // --------------------
 
 // 上传图片
-router.post('/api/image', userAuth, uploadImageMiddleware, uploadImage);
+router.post('/api/image', userAuth, uploadLimiter, uploadImageMiddleware, uploadImage);
 
 // 删除图片
-router.delete('/api/image/:id', userAuth, deleteImage);
+router.delete('/api/image/:id', validateId, userAuth, deleteImage);
 
 // 编辑图片描述
-router.put('/api/image/:id', userAuth, editImageDescription);
+router.put('/api/image/:id', validateId, userAuth, editImageDescription);
 
 // 获取所有图片
 router.get('/api/images', getAllImages);
@@ -104,13 +106,13 @@ router.get('/api/images', getAllImages);
 // --------------------
 
 // 登录
-router.post('/api/login', login);
+router.post('/api/login', loginLimiter, login);
 
 // 登出
-router.get('/api/logout', userAuth, logout);
+router.post('/api/logout', userAuth, logout);
 
 // 注册（管理员）
-router.post('/api/register', adminAuth, register);
+router.post('/api/register', adminAuth, registerLimiter, register);
 
 // --------------------
 
@@ -121,9 +123,9 @@ router.get('/api/accounts', adminAuth, getAllAccounts);
 router.get('/api/account', userAuth, getAccountInfo);
 
 // 编辑账户信息（用户可编辑自己的账户）
-router.put('/api/account/:id', userAuth, editAccount);
+router.put('/api/account/:id', validateId, userAuth, editAccount);
 
 // 删除账户（管理员）
-router.delete('/api/account/:id', adminAuth, deleteAccount);
+router.delete('/api/account/:id', validateId, adminAuth, deleteAccount);
 
 export default router;

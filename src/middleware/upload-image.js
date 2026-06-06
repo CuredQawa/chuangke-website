@@ -87,4 +87,22 @@ const uploadImageMiddleware = (req, res, next) => {
     });
 };
 
+/**
+ * 校验 cover_image_url 是否合法
+ * 拒绝 javascript: / vbscript: / data: (非 image) 等危险 URL
+ */
+const SAFE_URL_REGEX = /^(https?:\/\/[^\s]+|\/[^\s]*)$/i;
+
+export const sanitizeCoverImageUrl = (url) => {
+    if (!url) return null;
+    const trimmed = String(url).trim();
+    if (!trimmed) return null;
+    if (/^javascript:/i.test(trimmed)) return null;
+    if (/^vbscript:/i.test(trimmed)) return null;
+    if (/^data:/i.test(trimmed) && !/^data:image\//i.test(trimmed)) return null;
+    if (!SAFE_URL_REGEX.test(trimmed)) return null;
+    if (trimmed.length > 500) return null;
+    return trimmed;
+};
+
 export { uploadImageMiddleware };

@@ -1,0 +1,453 @@
+/* admin.css - 管理页面全局样式 */
+
+/* ========== 通用容器 ========== */
+.admin-container {
+  padding: 2rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 1024px) {
+  .admin-container { max-width: 960px; }
+}
+@media screen and (min-width: 1216px) {
+  .admin-container { max-width: 1152px; }
+}
+@media screen and (min-width: 1408px) {
+  .admin-container { max-width: 1344px; }
+}
+
+/* ========== 统一列表项卡片样式 ========== */
+.admin-container .project-item,
+.admin-container .doc-item,
+.admin-container .image-item,
+.admin-container .announcement-card,
+.admin-container .announcement-card-A {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--brand-primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* 账户卡片：和图片卡片一样的布局 */
+.admin-container .account-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--brand-primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.admin-container .account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-container .account-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-container .account-info p {
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  line-height: 1.6;
+}
+
+.admin-container .account-info p:last-child {
+  margin-bottom: 0;
+}
+
+.admin-container .account-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.admin-container .project-item:hover,
+.admin-container .doc-item:hover,
+.admin-container .image-item:hover,
+.admin-container .account-card:hover,
+.admin-container .announcement-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: var(--bg-hover);
+}
+
+/* 特殊卡片：公告发布表单用底部边框 */
+.admin-container .announcement-card-A {
+  border-left: none;
+  border-bottom: 4px solid var(--warning);
+}
+
+/* 信息区域 */
+.admin-container .project-info,
+.admin-container .doc-info,
+.admin-container .image-header {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 按钮操作区域 */
+.admin-container .project-actions,
+.admin-container .doc-actions,
+.admin-container .image-item .field.is-grouped {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+/* 列表项内文字 */
+.admin-container .project-info strong,
+.admin-container .doc-info strong {
+  color: var(--text-primary);
+  font-size: 1.05em;
+}
+
+.admin-container .project-info small,
+.admin-container .doc-info small {
+  color: var(--text-secondary);
+}
+
+/* 图片项特殊样式 */
+.admin-container .image-item {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.admin-container .image-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.4rem;
+}
+
+.admin-container .image-name {
+  font-weight: 600;
+  color: var(--brand-primary);
+  cursor: pointer;
+  font-size: 1.05em;
+}
+
+.admin-container .image-name:hover {
+  text-decoration: underline;
+}
+
+.admin-container .image-desc {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* 账户信息文字 */
+.admin-container .account-card p {
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+.admin-container .account-card p:last-child {
+  margin-bottom: 0;
+}
+
+.admin-container .account-card .column.is-narrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 公告信息文字 */
+.admin-container .announcement-card {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.admin-container .announcement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-container .announcement-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-container .announcement-info p {
+  color: var(--text-primary);
+}
+
+.admin-container .announcement-info p strong {
+  font-size: 1.1em;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.admin-container .announcement-info .contentp {
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+.admin-container .announcement-info .administrator,
+.admin-container .announcement-info .date {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.admin-container .announcement-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+/* ========== 按钮样式 ========== */
+.admin-container .button.is-small {
+  font-size: 0.8rem;
+}
+
+.admin-container .button.is-static {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.admin-container .mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+/* ========== 表单样式 ========== */
+.admin-container .input,
+.admin-container .textarea,
+.modal .input,
+.modal .textarea {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.admin-container .input:focus,
+.admin-container .textarea:focus,
+.modal .input:focus,
+.modal .textarea:focus {
+  border: 2px solid var(--brand-primary);
+  box-shadow: 0 0 0 0.25em var(--brand-bg);
+}
+
+.admin-container .input:disabled,
+.modal .input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: var(--bg-secondary);
+}
+
+.admin-container .label,
+.modal .label {
+  color: var(--text-primary);
+}
+
+.admin-container .checkbox,
+.admin-container .radio,
+.modal .checkbox,
+.modal .radio {
+  color: var(--text-primary) !important;
+}
+
+.admin-container .checkbox input,
+.admin-container .radio input,
+.modal .checkbox input,
+.modal .radio input {
+  accent-color: var(--brand-primary);
+}
+
+.admin-container .help,
+.modal .help {
+  color: var(--text-secondary);
+}
+
+.admin-container .help.is-danger,
+.modal .help.is-danger {
+  color: var(--danger);
+}
+
+.admin-container .form-group {
+  margin-bottom: 1rem;
+}
+
+.admin-container textarea {
+  min-height: 150px;
+}
+
+/* ========== 角色标签 ========== */
+.role-tag {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.role-tag.user {
+  background: var(--success);
+  color: white;
+}
+
+.role-tag.admin {
+  background: var(--danger);
+  color: white;
+}
+
+/* ========== 模态框样式 ========== */
+.modal {
+  display: flex !important;
+}
+
+.modal-card {
+  max-width: 500px;
+  width: 90%;
+  transform: scale(1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-card-head {
+  box-shadow: none;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-card-head .modal-card-title {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.modal-card-head .delete {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
+.modal-card-head .delete:hover {
+  background-color: var(--danger);
+}
+
+.modal-card-body {
+  padding: 1.5rem;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.modal-card-foot {
+  background-color: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 1.5rem;
+  justify-content: flex-end;
+}
+
+.modal-card-foot .button:not(:last-child) {
+  margin-right: 0.5em;
+}
+
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* ========== 上传区域 ========== */
+.admin-container .upload-section {
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.admin-container .upload-section .title {
+  color: var(--text-primary);
+}
+
+.admin-container .drop-zone {
+  border: 2px dashed var(--brand-primary);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  background-color: var(--bg-input);
+}
+
+.admin-container .drop-zone.dragover {
+  background-color: var(--brand-bg);
+  border-color: var(--brand-hover);
+}
+
+.admin-container .drop-zone-text {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.admin-container .drop-zone-highlight {
+  color: var(--brand-primary);
+  font-weight: bold;
+}
+
+.admin-container .drop-zone .help {
+  color: var(--text-secondary);
+}
+
+.admin-container .file-name-display {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--bg-input);
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: var(--text-primary);
+}
+
+/* 上传状态 */
+.admin-container .upload-status {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.admin-container .upload-status.uploading {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+}
+
+.admin-container .upload-status.success {
+  background-color: rgba(76, 175, 80, 0.15);
+  color: #86efac;
+}
+
+.admin-container .upload-status.error {
+  background-color: rgba(244, 67, 54, 0.15);
+  color: #fca5a5;
+}
+
+/* ========== 公告表单特殊样式 ========== */
+.admin-container .announcement-card-A {
+  border-left: none;
+  border-bottom: none;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.admin-container .announcement-card-A .title {
+  color: var(--text-primary);
+}

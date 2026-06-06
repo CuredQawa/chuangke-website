@@ -38,3 +38,21 @@ export const IMAGE_UPLOAD_DIR = "public/images/uploads"
  * @type {number}
  */
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+/**
+ * 标题最大长度
+ * @type {number}
+ */
+export const MAX_TITLE_LENGTH = 200;
+
+/**
+ * 内容最大长度（markdown 原文）
+ * @type {number}
+ */
+export const MAX_CONTENT_LENGTH = 100000;
+
+/**
+ * 图片描述最大长度
+ * @type {number}
+ */
+export const MAX_DESCRIPTION_LENGTH = 500;

@@ -1,86 +1,99 @@
 /**
+ * 文档路由
+ * 提供文档信息的查询、创建、编辑和删除
+ */
+
+import { validateAndSanitizeContent } from '../middleware/content-validators.js';
+
+/**
  * 根据ID获取文档信息
- * @param {Object} req - 请求对象
- * @param {Object} res - 响应对象
- * @returns {Object} 文档信息和作者信息
+ * @param {Object} req
+ * @param {Object} res
  */
 export const getDocById = async (req, res) => {
-    // 从数据库中获取文档内容
     const query = 'SELECT title, content, datetime, author_id, cover_image_url FROM docs WHERE id = $1 AND category = $2';
 
-    const result = await req.db.query(query, [req.params.id, "doc"]);
-    if (result.rows.length === 0) {
-        return res.status(404).json({ message: "文档不存在" });
+    try {
+        const result = await req.db.query(query, [req.params.id, "doc"]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "文档不存在" });
+        }
+
+        const doc = result.rows[0];
+        const authorResult = await req.db.query(
+            'SELECT username, graduation_year, email FROM accounts WHERE id = $1',
+            [doc.author_id]
+        );
+
+        res.json({
+            title: doc.title,
+            content: doc.content,
+            datetime: doc.datetime,
+            cover_image_url: doc.cover_image_url,
+            author: authorResult.rows[0]
+        });
+    } catch (err) {
+        console.error("数据库错误:", err);
+        res.status(500).json({ message: "服务器内部错误" });
     }
-
-    // 获取作者信息
-    const doc = result.rows[0];
-    const authorQuery = 'SELECT username, graduation_year, email FROM accounts WHERE id = $1';
-    const authorResult = await req.db.query(authorQuery, [doc.author_id]);
-
-    const docWithoutAuthorId = {
-        title: doc.title,
-        content: doc.content,
-        datetime: doc.datetime,
-        cover_image_url: doc.cover_image_url
-    };
-
-    res.json({
-        ...docWithoutAuthorId,
-        author: authorResult.rows[0]
-    });
 };
 
 /**
- * 获取所有文档列表
- * @param {Object} req - 请求对象
- * @param {Object} res - 响应对象
- * @returns {Array} 文档列表
+ * 获取所有文档列表（JOIN 一次查询，避免 N+1）
  */
 export const getAllDocs = async (req, res) => {
-    const query = 'SELECT id, title, datetime, author_id, cover_image_url FROM docs WHERE category = $1 ORDER BY datetime DESC';
+    const query = `
+        SELECT d.id, d.title, d.datetime, d.author_id, d.cover_image_url,
+               a.username, a.graduation_year, a.email
+        FROM docs d
+        LEFT JOIN accounts a ON d.author_id = a.id
+        WHERE d.category = $1
+        ORDER BY d.datetime DESC
+    `;
 
-    const result = await req.db.query(query, ["doc"]);
-
-    // 为每个文档获取作者信息
-    const docs = [];
-    for (const row of result.rows) {
-        const authorQuery = 'SELECT username, graduation_year, email FROM accounts WHERE id = $1';
-        const authorResult = await req.db.query(authorQuery, [row.author_id]);
-
-        const docInfo = {
+    try {
+        const result = await req.db.query(query, ["doc"]);
+        const docs = result.rows.map(row => ({
             id: row.id,
             title: row.title,
             datetime: row.datetime,
             cover_image_url: row.cover_image_url,
-            author_id: row.author_id
-        };
-
-        docs.push({
-            ...docInfo,
-            author: authorResult.rows[0]
-        });
+            author_id: row.author_id,
+            author: {
+                username: row.username,
+                graduation_year: row.graduation_year,
+                email: row.email
+            }
+        }));
+        res.json(docs);
+    } catch (err) {
+        console.error("数据库错误:", err);
+        res.status(500).json({ message: "服务器内部错误" });
     }
-
-    res.json(docs);
 };
 
 /**
  * 创建新文档
- * @param {Object} req - 请求对象
- * @param {Object} res - 响应对象
- * @returns {Object} 创建成功消息
  */
 export const newDoc = async (req, res) => {
-    const { title, content, cover_image_url } = req.body;
+    const validated = validateAndSanitizeContent(req.body);
+    if (validated.error) {
+        return res.status(validated.error.status).json({ message: validated.error.message });
+    }
+    const { title, content, cover_image_url } = validated.data;
     const authorID = req.user.id;
-
     const datetime = new Date();
-    const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_url) VALUES ($1, $2, $3, $4, $5, $6)';
+
+    const query = 'INSERT INTO docs (title, content, datetime, author_id, category, cover_image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, title, content, datetime, author_id, cover_image_url';
 
     try {
-        await req.db.query(query, [title, content, datetime, authorID, "doc", cover_image_url]);
-        res.json({ message: "文档发布成功" });
+        const result = await req.db.query(query, [title, content, datetime, authorID, "doc", cover_image_url]);
+        const doc = result.rows[0];
+        const authorResult = await req.db.query(
+            'SELECT username, graduation_year, email FROM accounts WHERE id = $1',
+            [authorID]
+        );
+        res.json({ ...doc, author: authorResult.rows[0] });
     } catch (err) {
         console.error("数据库错误:", err);
         res.status(500).json({ message: "服务器内部错误" });
@@ -89,13 +102,9 @@ export const newDoc = async (req, res) => {
 
 /**
  * 编辑文档
- * @param {Object} req - 请求对象
- * @param {Object} res - 响应对象
- * @returns {Object} 编辑成功消息
  */
 export const editDoc = async (req, res) => {
     const docID = req.params.id;
-    const { title, content, cover_image_url } = req.body;
     const userID = req.user.id;
     const userRole = req.user.role;
 
@@ -106,12 +115,15 @@ export const editDoc = async (req, res) => {
         return res.status(404).json({ message: "文档不存在" });
     }
 
-    const doc = docResult.rows[0];
-
-    // 权限判断正确：管理员 or 自己
-    if (userRole !== 'admin' && doc.author_id !== userID) {
+    if (userRole !== 'admin' && docResult.rows[0].author_id !== userID) {
         return res.status(403).json({ message: "权限不足，无法编辑此文档" });
     }
+
+    const validated = validateAndSanitizeContent(req.body);
+    if (validated.error) {
+        return res.status(validated.error.status).json({ message: validated.error.message });
+    }
+    const { title, content, cover_image_url } = validated.data;
 
     const query = 'UPDATE docs SET title = $1, content = $2, cover_image_url = $3 WHERE id = $4 AND category = $5';
 
@@ -126,9 +138,6 @@ export const editDoc = async (req, res) => {
 
 /**
  * 删除文档
- * @param {Object} req - 请求对象
- * @param {Object} res - 响应对象
- * @returns {Object} 删除成功消息
  */
 export const deleteDoc = async (req, res) => {
     const docID = req.params.id;
@@ -142,10 +151,7 @@ export const deleteDoc = async (req, res) => {
         return res.status(404).json({ message: "文档不存在" });
     }
 
-    const doc = docResult.rows[0];
-
-    // 权限判断正确
-    if (userRole !== 'admin' && doc.author_id !== userID) {
+    if (userRole !== 'admin' && docResult.rows[0].author_id !== userID) {
         return res.status(403).json({ message: "权限不足，无法删除此文档" });
     }
 

@@ -1,0 +1,56 @@
+<footer class="footer is-risecolor">
+  <div class="content has-text-centered">
+
+    <p class="linkguide">友情链接</p>
+    <div class="buttons footerlink-school">
+      <a class="othersites" href="https://zjyz.org.cn/" target="_blank"><button
+          class="footerlink-button">湛江第一中学官网</button></a>
+      <a class="othersites" href="http://itedu.zjyz.org.cn/" target="_blank"><button
+          class="footerlink-button">湛江一中云课堂</button></a>
+    </div>
+
+    <br>
+
+    <p class="linkguide">到处链接</p>
+    <div class="gridcontainer">
+      <div class="grid">
+        <div class="cell"><a class="ga othersites" href="https://github.com/" target="_blank">GitHub</a></div>
+        <div class="cell"><a class="ga othersites" href="https://bulma.org.cn/" target="_blank">Bulma</a></div>
+        <div class="cell"><a class="ga othersites" href="https://www.iconfont.cn/" target="_blank">iconfont 矢量图标库</a></div>
+        <div class="cell"><a class="ga othersites" href="https://expressjs.com/" target="_blank">Express</a></div>
+        <div class="cell"><a class="ga othersites" href="https://www.runoob.com/" target="_blank">菜鸟教程</a></div>
+        <div class="cell"><a class="ga othersites" href="https://nodejs.org/zh-cn" target="_blank">Node.js</a></div>
+        <div class="cell"><a class="ga othersites" href="https://www.python.org/" target="_blank">Python</a></div>
+        <div class="cell"><a class="ga othersites" href="https://www.handlebarsjs.cn/" target="_blank">Handlebars</a></div>
+        <div class="cell"><a class="ga othersites" href="https://www.bilibili.com/" target="_blank">Bilibili</a></div>
+        <div class="cell"><a class="ga othersites" href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a></div>
+        <div class="cell"><a class="ga othersites" href="https://makerworld.com.cn/zh" target="_blank">Maker World</a></div>
+        <div class="cell"><a class="ga othersites" href="https://vercel.com/home" target="_blank">Vercel</a></div>
+        <div class="cell"><a class="ga othersites" href="https://www.csdn.net/" target="_blank">CSDN</a></div>
+        <div class="cell"><a class="ga othersites" href="https://rust-lang.org/" target="_blank">Rust</a></div>
+      </div>
+    </div>
+
+    <br>
+
+    <p class="linkguide">Website Contributors</p>
+    <p><a class="ga" href="https://blog.disappear.website" target="_blank">27届 disparaître</a></p>
+    <p><a class="ga" href="https://zasongguo.eu.org/" target="_blank">27届 砸松果</a></p>
+    <p><a class="ga" href="https://tac.cc.cd/" target="_blank">27届 随风摇曳</a></p>
+    <p><a class="ga" href="https://zlawa.zone.id/" target="_blank">28届 子澪呀</a></p>
+
+    <div class="mascotcontainner">
+      <div class="mascot">
+        <img class="mimg" src="/images/mascot.webp" alt="吉祥物">
+      </div>
+    </div>
+
+    <p class="linkguide">
+      <strong>▲▲</strong> 创客社吉祥物 <strong>▲▲</strong>
+    </p>
+    <div class="where-our-web">
+      <p>此网站运行在<strong> PinusCore RK3562 </strong>上</p>
+    </div>
+    <br><br>
+  </div>
+</footer>

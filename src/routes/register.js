@@ -40,6 +40,26 @@ export const register = async (req, res) => {
             return res.status(409).json({ message: '该邮箱已被注册' });
         }
 
+        // 检查用户名是否已存在
+        const usernameCheck = await db.query(
+            'SELECT id FROM accounts WHERE username = $1',
+            [username]
+        );
+
+        if (usernameCheck.rows.length > 0) {
+            return res.status(409).json({ message: '该用户名已被使用' });
+        }
+
+        // 密码强度校验
+        if (typeof password !== 'string' || password.length < 8) {
+            return res.status(400).json({ message: '密码至少需要 8 个字符' });
+        }
+
+        // 角色白名单
+        if (!['user', 'admin'].includes(role)) {
+            return res.status(400).json({ message: '无效的角色' });
+        }
+
         // 密码加密
         const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
@@ -53,6 +73,10 @@ export const register = async (req, res) => {
             message: '注册成功',
         });
     } catch (err) {
+        // 唯一约束冲突（并发场景）
+        if (err.code === '23505') {
+            return res.status(409).json({ message: '该邮箱或用户名已被注册' });
+        }
         console.error("数据库错误:", err);
         res.status(500).json({ message: "服务器内部错误" });
     }
