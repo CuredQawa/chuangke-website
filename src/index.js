@@ -24,14 +24,15 @@ app.use(helmet({
             imgSrc: ["'self'", "data:", "https:", "blob:"],
             fontSrc: ["'self'", "https:", "data:"],
             connectSrc: ["'self'"],
-            frameAncestors: ["'self'"]
+            frameAncestors: ["'self'"],
+            upgradeInsecureRequests: null
         }
     },
     crossOriginEmbedderPolicy: false
 }));
 
 // CORS：默认同源（不启用 CORS 头）
-// 跨域场景需显式设置 CORS_ORIGIN=https://your.domain，多个 origin 用逗号分隔
+// 跨域场景需显式设置 CORS_ORIGIN = https://your.domain，多个 origin 用逗号分隔
 const corsOrigins = (process.env.CORS_ORIGIN || '')
     .split(',')
     .map(s => s.trim())
